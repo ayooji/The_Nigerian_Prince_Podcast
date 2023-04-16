@@ -1,8 +1,8 @@
-import React , { useState, useEffect }  from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Image, Text, Link } from "@nextui-org/react";
-import guests from '../public/guests.json';
+import guests from "../public/guests.json";
 
-import { AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineUser, AiOutlineClose } from "react-icons/ai";
 
 const GuestButton = ({ episodeId }) => {
   const guest = getGuestByEpisodeId(episodeId);
@@ -29,10 +29,23 @@ const GuestButton = ({ episodeId }) => {
         <AiOutlineUser size="1.5em" className="text-white" />
       </button>
       <Modal noPadding open={visible} onClose={closeModal}>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50"
+          onClick={(e) => e.stopPropagation()}
+        ></div>
+        <button
+          className="absolute top-0 right-0 p-4"
+          onClick={(e) => {
+            e.stopPropagation();
+            closeModal();
+          }}
+        >
+          <AiOutlineClose className="text-white" />
+        </button>
         <Modal.Body>
           <Image
             showSkeleton
-            alt='The Nigerian Prince Podcast - Guest'
+            alt="The Nigerian Prince Podcast - Guest"
             src={guest.image}
             width={400}
             height={490}
