@@ -3,17 +3,32 @@ import { getEpisodes } from "../../lib/buzzsprout";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import Link from "next/link";
-import { Card, Text, Image, Grid, Spacer } from "@nextui-org/react";
+import ShareButtons from "../../components/ShareButtons";
+import { IoShareSocial, IoSquare } from "react-icons/io5";
+import { RiFacebookFill, RiTwitterFill, RiWhatsappFill } from "react-icons/ri";
+import {
+  Card,
+  Text,
+  Image,
+  Grid,
+  Spacer,
+  Loading,
+  Row,
+} from "@nextui-org/react";
 import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
 import { Pagination } from "@nextui-org/react";
+import { FaFacebook, FaTwitter, FaInstagram, FaStar } from "react-icons/fa";
 
 const EpisodesPage = ({ episodes, currentPage }) => {
+  const [loading, setLoading] = useState(false);
+  const [clickedEpisodeId, setClickedEpisodeId] = useState(null);
   const showEpisodesFrom = (currentPage - 1) * 8;
   const showEpisodesTo = showEpisodesFrom + 8;
   const episodesToDisplay = episodes.slice(showEpisodesFrom, showEpisodesTo);
+  const [favoriteEpisodes, setFavoriteEpisodes] = useState(new Set());
+
   const router = useRouter();
-  
 
   const handlePageChange = (newPage) => {
     const href = `/episode?page=${newPage}`;
@@ -21,11 +36,11 @@ const EpisodesPage = ({ episodes, currentPage }) => {
   };
 
   const handleCardClick = async (episodeId) => {
-    setIsLoading(true);
+    setClickedEpisodeId(episodeId);
+    setLoading(true);
     await router.push(`/episode/${episodeId}`);
-    setIsLoading(false);
+    setLoading(false);
   };
-
   return (
     <div className="container mx-auto px-4">
       <div className="container mx-auto px-4">
@@ -43,15 +58,23 @@ const EpisodesPage = ({ episodes, currentPage }) => {
         >
           {episodesToDisplay.map((episode) => (
             <Grid
-              xs={12}
+              xs={24}
               md={3}
               key={episode.id}
               onClick={() => handleCardClick(episode.id)}
             >
               <div
                 key={episode.id}
-                className="rounded overflow-hidden shadow-lg bg-gray-700"
+                className="rounded overflow-hidden shadow-lg bg-gray-700 w-full md:w-card-mobile"
               >
+                {loading && episode.id === clickedEpisodeId && (
+                  <Grid.Container
+                    justify="center"
+                    className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 bg-black"
+                  >
+                    <Loading size="xl" color="success" type="spinner" />
+                  </Grid.Container>
+                )}
                 <Card
                   className="card-gradient card-box-shadow card-box-shadow-hover-hover card-active"
                   isHoverable
@@ -62,7 +85,10 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                     <Image
                       src={episode.artwork_url || "/logo.jpg"}
                       alt="Episode artwork"
-                      className="object-cover w-full h-56"
+                      className="object-cover w-full h-mobile md:h-56" // Add the 'h-mobile' class for mobile
+                      style={{
+                        height: episode.artwork_url ? "250px" : "inherit", // Shrinks image height on mobile if 'artwork_url' is available
+                      }}
                     />
                   </Card.Body>
                   <Card.Header>
@@ -83,14 +109,23 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                           <span>{episode.title}</span>
                         </Link>
                       </Text>
+
                       <Spacer />
                     </div>
                   </Card.Header>
                   <Card.Footer>
-                    <Text className="mt-2 p-1" color="gray-300">
-                      Published:{" "}
-                      {new Date(episode.published_at).toLocaleDateString()}
-                    </Text>
+                    <Row wrap="wrap" justify="space-between" align="center">
+                      <Text className="mt-2 p-1" color="gray-300">
+                        Published:{" "}
+                        {new Date(episode.published_at).toLocaleDateString()}
+                      </Text>
+                      <div className="flexitems-center justify-end space-x-3">
+                        <ShareButtons
+                          url={`https://nigerianprincepodcast.com/episode/${episode.id}`} // Replace with your website URL
+                          title={episode.title}
+                        />
+                      </div>
+                    </Row>
                   </Card.Footer>
                 </Card>
               </div>

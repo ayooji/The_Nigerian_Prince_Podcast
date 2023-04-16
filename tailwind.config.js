@@ -16,6 +16,13 @@ module.exports = {
           ...defaultTheme.fontFamily.sans,
         ]
       },
+      width: {
+        'card-mobile': 'calc(100% - 1rem)', // Adjust this value as needed
+      },
+      height: {
+        'mobile': '250px', // Add the 'h-mobile
+      },
+      
       maxWidth: {
         '8xl': '90rem',
         '9xl': '105rem',
