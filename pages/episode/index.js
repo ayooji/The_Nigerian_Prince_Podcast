@@ -19,6 +19,8 @@ import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
 import { Pagination } from "@nextui-org/react";
 import { FaFacebook, FaTwitter, FaInstagram, FaStar } from "react-icons/fa";
+import guests from '../../public/guests.json';
+import GuestButton from "@/components/GuestButton";
 
 const EpisodesPage = ({ episodes, currentPage }) => {
   const [loading, setLoading] = useState(false);
@@ -41,6 +43,9 @@ const EpisodesPage = ({ episodes, currentPage }) => {
     await router.push(`/episode/${episodeId}`);
     setLoading(false);
   };
+
+ 
+
   return (
     <div className="container mx-auto px-4">
       <div className="container mx-auto px-4">
@@ -119,12 +124,15 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                         Published:{" "}
                         {new Date(episode.published_at).toLocaleDateString()}
                       </Text>
-                      <div className="flexitems-center justify-end space-x-3">
+                     
+                      <GuestButton episodeId={episode.id} />
+                        
                         <ShareButtons
                           url={`https://nigerianprincepodcast.com/episode/${episode.id}`} // Replace with your website URL
                           title={episode.title}
                         />
-                      </div>
+                        
+                  
                     </Row>
                   </Card.Footer>
                 </Card>
