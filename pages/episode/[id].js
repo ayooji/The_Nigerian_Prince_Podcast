@@ -5,6 +5,7 @@ import "react-h5-audio-player/lib/styles.css";
 import "tailwindcss/tailwind.css";
 import { Card, Text, Image, Row, Col, Spacer, Grid } from "@nextui-org/react";
 import Head from "next/head";
+
 const EpisodePage = ({ episode }) => {
   return (
     <>
@@ -22,6 +23,8 @@ const EpisodePage = ({ episode }) => {
           gap={2}
           justify="center"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+        <Grid xs={24} md={9}
         >
           <Card variant="bordered" className="bg-gray-700">
             <Card.Body>
@@ -56,11 +59,14 @@ const EpisodePage = ({ episode }) => {
               </Row>
             </Card.Body>
           </Card>
+        </Grid>
         </Grid.Container>
         <Card.Footer>
-          <Text small color="gray-300" className="mt-2">
+         
+          <Text small color="gray-300" className="mt-2" >
             Published: {new Date(episode.published_at).toLocaleDateString()}
           </Text>
+      
         </Card.Footer>
       </div>
     </>
