@@ -13,6 +13,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@nextui-org/react": "^1.0.0-beta.12",
+    "@supabase/supabase-js": "^2.21.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.4.1",
     "@tailwindcss/typography": "^0.5.9",
