@@ -1,5 +1,6 @@
 import React from "react";
 import { Navbar, Button, Link, Image, Spacer, Text } from "@nextui-org/react";
+import AuthButtons from './AuthButtons';
 
 const Header = () => {
   const collapseItems = [
@@ -28,24 +29,17 @@ const Header = () => {
         </Text>
       </Navbar.Brand>
 
-      <Navbar.Content hideIn="xs">
+      <Navbar.Content hideIn="xs" variant="underline">
         <Navbar.Link href="/">Home</Navbar.Link>
         <Navbar.Link href="/episode">Episodes</Navbar.Link>
-        <Navbar.Link href="/village-square">Village Square</Navbar.Link>
+        <Navbar.Link isActive href="/village-square">Village Square</Navbar.Link>
         <Navbar.Link href="/about">About</Navbar.Link>
         <Navbar.Link href="/guests">Guests</Navbar.Link>
         <Navbar.Link href="/sponsorship">Sponsorship &amp; Ads</Navbar.Link>
         <Navbar.Link href="/contact">Contact</Navbar.Link>
       </Navbar.Content>
       <Navbar.Content>
-        <Navbar.Link color="inherit" href="#">
-          Login
-        </Navbar.Link>
-        <Navbar.Item>
-          <Button auto flat as={Link} href="#">
-            Sign Up
-          </Button>
-        </Navbar.Item>
+      <AuthButtons />
       </Navbar.Content>
       <Navbar.Collapse>
         {collapseItems.map((item, index) => (
