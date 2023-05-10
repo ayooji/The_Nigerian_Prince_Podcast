@@ -1,17 +1,45 @@
-import React from "react";
-import { Navbar, Button, Link, Image, Spacer, Text } from "@nextui-org/react";
+import React, { useState, useEffect } from 'react';
+import { Navbar, Button, Link, Image, Spacer, Text } from '@nextui-org/react';
 import AuthButtons from './AuthButtons';
+import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/router';
 
 const Header = () => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const router = useRouter();
   const collapseItems = [
-    "Home",
-    "Episodes",
-    "Village Square",
-    "About",
-    "Guests",
-    "Sponsorship & Ads",
-    "Contact",
+    'Home',
+    'Episodes',
+    'Village Square',
+    'About',
+    'Guests',
+    'Sponsorship & Ads',
+    'Contact',
   ];
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error);
+    } else {
+      setCurrentUser(null);
+    }
+  };
+
+  useEffect(() => {
+    const onAuthStateChanged = (event) => {
+      const { session } = event.detail;
+      setCurrentUser(session?.user);
+    };
+    // Attach the event listener
+    window.addEventListener('onAuthStateChanged', onAuthStateChanged);
+
+    // Cleanup
+    return () => {
+      // Remove the event listener
+      window.removeEventListener('onAuthStateChanged', onAuthStateChanged);
+    };
+  }, []);
 
   return (
     <Navbar isBordered variant="sticky">
@@ -32,14 +60,20 @@ const Header = () => {
       <Navbar.Content hideIn="xs" variant="underline">
         <Navbar.Link href="/">Home</Navbar.Link>
         <Navbar.Link href="/episode">Episodes</Navbar.Link>
-        <Navbar.Link isActive href="/village-square">Village Square</Navbar.Link>
+        <Navbar.Link isActive href="/village-square">
+          Village Square
+        </Navbar.Link>
         <Navbar.Link href="/about">About</Navbar.Link>
         <Navbar.Link href="/guests">Guests</Navbar.Link>
         <Navbar.Link href="/sponsorship">Sponsorship &amp; Ads</Navbar.Link>
         <Navbar.Link href="/contact">Contact</Navbar.Link>
       </Navbar.Content>
       <Navbar.Content>
-      <AuthButtons />
+        {currentUser ? (
+          <Button onClick={signOut}>Sign Out</Button>
+        ) : (
+          <AuthButtons />
+        )}
       </Navbar.Content>
       <Navbar.Collapse>
         {collapseItems.map((item, index) => (
