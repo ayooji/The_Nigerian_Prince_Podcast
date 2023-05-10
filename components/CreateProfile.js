@@ -4,6 +4,7 @@ import { Button, Input, Grid, Text, Spacer, Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
 
 const CreateProfile = ({ currentUser }) => {
+    console.log("CreateProfile currentUser:", currentUser);
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [bio, setBio] = useState("");
@@ -14,7 +15,7 @@ const CreateProfile = ({ currentUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+  
     const { data, error } = await supabase.from("profiles").insert({
       user_id: currentUser.id,
       name,
@@ -22,11 +23,12 @@ const CreateProfile = ({ currentUser }) => {
       bio,
       social_links: socialLinks,
     });
+  
     console.log("Profile creation data:", data);
     console.log("Profile creation error:", error);
-
+  
     if (error) {
-      console.error("Error creating profile:", error);
+      console.error("Error creating profile:", error.message);
       setIsLoading(false);
     } else {
       router.push("/episode");
