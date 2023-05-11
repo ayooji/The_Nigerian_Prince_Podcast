@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { supabase } from "@/lib/supabaseClient";
-import { Button, Input, Grid, Text, Spacer, Textarea } from "@nextui-org/react";
+import { Button, Input, Grid, Text, Spacer, Textarea, Card } from "@nextui-org/react";
 import React, { useState } from "react";
 
 const CreateProfile = ({ currentUser }) => {
@@ -43,6 +43,7 @@ const CreateProfile = ({ currentUser }) => {
     <Grid.Container alignItems="center" justify="center" direction="column">
       <Spacer />
       <Text h3>Create your profile</Text>
+      <Grid>
       <form onSubmit={handleSubmit}>
         <Input
           placeholder="Name"
@@ -93,6 +94,7 @@ const CreateProfile = ({ currentUser }) => {
           Save
         </Button>
       </form>
+      </Grid>
     </Grid.Container>
   );
 };
