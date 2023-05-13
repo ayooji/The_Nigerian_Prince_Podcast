@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Button, Link, Image, Spacer, Text } from '@nextui-org/react';
+import { Navbar, Button, Link, Image, Spacer, Text, Avatar, Dropdown } from '@nextui-org/react';
 import AuthButtons from './AuthButtons';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/router';
@@ -70,7 +70,66 @@ const Header = () => {
       </Navbar.Content>
       <Navbar.Content>
         {currentUser ? (
-          <Button onClick={signOut}>Sign Out</Button>
+          <Navbar.Content
+          css={{
+            "@xs": {
+              w: "12%",
+              jc: "flex-end",
+            },
+          }}
+        >
+          <Dropdown placement="bottom-right">
+            <Navbar.Item>
+              <Dropdown.Trigger>
+                <Avatar
+                  bordered
+                  as="button"
+                  color="gradient"
+                  size="md"
+                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                  zoomed
+                />
+              </Dropdown.Trigger>
+            </Navbar.Item>
+            <Dropdown.Menu
+              aria-label="User menu actions"
+              color="warning"
+              onAction={(actionKey) => console.log({ actionKey })}
+            >
+              <Dropdown.Item key="profile" css={{ height: "$18" }}>
+                <Text b color="inherit" css={{ d: "flex" }}>
+                  Signed in as
+                </Text>
+                <Text b color="inherit" css={{ d: "flex" }}>
+                  zoey@example.com
+                </Text>
+              </Dropdown.Item>
+              
+              <Dropdown.Item key="my_inbox" withDivider>
+                My Inbox
+              </Dropdown.Item>
+              <Dropdown.Item key="posts" withDivider>
+                Posts
+              </Dropdown.Item>
+              <Dropdown.Item key="votes">Votes</Dropdown.Item>
+              <Dropdown.Item key="comments">Comments</Dropdown.Item>
+              <Dropdown.Item key="favorites">Favorite</Dropdown.Item>
+              <Dropdown.Item key="ticket_&_rewards" withDivider>
+                Tickets & Rewards
+              </Dropdown.Item>
+          
+              <Dropdown.Item key="my_cart">My Cart</Dropdown.Item>
+              <Dropdown.Item key="my_profile">My Profile</Dropdown.Item>
+              <Dropdown.Item key="help_and_feedback" withDivider>
+                Help & Feedback
+              </Dropdown.Item>
+              <Dropdown.Item key="signout" withDivider>
+              <Button color="error" onClick={signOut}>Sign Out</Button>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Navbar.Content>
+          
         ) : (
           <AuthButtons />
         )}
