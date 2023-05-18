@@ -21,9 +21,7 @@ const AuthButtons = () => {
         console.error("Error fetching profile:", error);
       } else if (profiles.length === 0) {
         router.push('/auth/create-profile');
-      } else {
-        router.push('/episode');
-      }
+      } 
     }
   
     // Dispatch the custom event with the session object as the event detail

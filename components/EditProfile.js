@@ -1,41 +1,29 @@
-import { useRouter } from "next/router";
-import { supabase } from "@/lib/supabaseClient";
+import React, { useState, useEffect } from "react";
 import {
-  Button,
-  Input,
   Grid,
   Text,
   Spacer,
+  Input,
   Textarea,
-  Card,
+  Button,
+  Image,
+  Card
 } from "@nextui-org/react";
-import React, { useState, useEffect, useRef, useDidMountEffect } from "react";
-import { ClipLoader } from "react-spinners";
-import SuccessModal from "./SuccessModal";
+import { useRouter } from "next/router";
+import { supabase } from "@/lib/supabaseClient";
 import { useDropzone } from "react-dropzone";
 import getConfig from "next/config";
-import Select from "react-select";
-import { countries } from "countries-list";
 
 const { publicRuntimeConfig } = getConfig();
 
-const CreateProfile = ({ currentUser }) => {
-  const countryInputRef = useRef();
-  console.log("CreateProfile currentUser:", currentUser);
+const EditProfile = ({ currentUser }) => {
+  // Add your component state and logic here
+  // ...
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [localImageUrl, setLocalImageUrl] = useState(""); //
   const [bio, setBio] = useState("");
-  const [socialLinks, setSocialLinks] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [country, setCountry] = useState("");
-
-  const countryOptions = Object.entries(countries).map(([code, country]) => ({
-    value: code,
-    label: country.name,
-  }));
+  const [socialLinks, setSocialLinks] = useState([]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/jpeg, image/png, image/gif, image/webp",
@@ -48,35 +36,30 @@ const CreateProfile = ({ currentUser }) => {
       }
     },
   });
+  // Fetch the current user's profile and pre-fill the form fields
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .single();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+      if (data) {
+        setName(data.name);
+        setImageUrl(data.image_url);
+        setBio(data.bio);
+        setSocialLinks(data.social_links);
+      } else {
+        console.error("Error fetching profile:", error?.message);
+      }
+    };
 
-    const uploadedImageUrl = await handleImageUpload(image);
-
-    const { data, error } = await supabase.from("profiles").insert({
-      user_id: currentUser.id,
-      name,
-      image_url: uploadedImageUrl || imageUrl,
-      bio,
-      social_links: socialLinks,
-      country, // Add the country field
-    });
-
-    console.log("Profile creation data:", data);
-    console.log("Profile creation error:", error);
-
-    if (error) {
-      console.error("Error creating profile:", error.message);
-      setIsLoading(false);
-    } else {
-      setShowSuccessModal(true);
-      setTimeout(() => {
-        router.push("/episode");
-      }, 3000); // Adjust the delay as needed
+    if (currentUser) {
+      fetchProfile();
     }
-  };
+  }, [currentUser]);
+
   const handleImageUpload = async (file) => {
     if (!file) {
       return null;
@@ -99,33 +82,44 @@ const CreateProfile = ({ currentUser }) => {
     setSocialLinks({ ...socialLinks, [e.target.name]: e.target.value });
   };
 
-  const customStyles = {
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: "#333",
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? "#555" : "#333",
-      color: "white",
-    }),
-    control: (provided) => ({
-        ...provided,
-        backgroundColor: "#333",
-        borderColor: "transparent",
-        borderWidth: "1px",
-        color: "white",
-      }),
-      singleValue: (provided) => ({
-        ...provided,
-        color: "white",
-      }),
-    };  
+  // Update the handleSubmit function to update the user's profile
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const uploadedImageUrl = await handleImageUpload(image);
+    if (uploadedImageUrl) {
+      setImageUrl(uploadedImageUrl);
+    }
+    const { data, error } = await supabase
+      .from("profiles")
+      .update({
+        name,
+        image_url: uploadedImageUrl || imageUrl,
+        bio,
+        social_links: socialLinks,
+      })
+      .eq("user_id", currentUser.id);
+
+    console.log("Profile update data:", data);
+    console.log("Profile update error:", error);
+  };
+
+  const handleDeleteProfile = async () => {
+    const { error } = await supabase
+      .from("profiles")
+      .delete()
+      .eq("user_id", currentUser.id);
+
+    if (error) {
+      console.error("Error deleting profile:", error.message);
+    } else {
+      router.push("/");
+    }
+  };
 
   return (
     <Grid.Container alignItems="center" justify="center" direction="column">
       <Spacer />
-      <Text h3>Create your profile</Text>
+      <Text h3>Edit your Profile</Text>
       <Grid>
         <form onSubmit={handleSubmit}>
           <Input
@@ -153,7 +147,6 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
-           
           />
           <input {...getInputProps()} />
           <Spacer />
@@ -182,14 +175,6 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
-          />
-          <Spacer />
-          <Select
-            placeholder="Select Country"
-            options={countryOptions}
-            value={{ value: country, label: country }}
-            onChange={(option) => setCountry(option.label)}
-            styles={customStyles}
           />
           <Spacer />
           <Input
@@ -231,30 +216,18 @@ const CreateProfile = ({ currentUser }) => {
             size="lg"
           />
           <Spacer />
-          <Button
-            disabled={isLoading}
-            type="submit"
-            color="gradient"
-            loading={isLoading}
-            bordered
-          >
+          <Button type="submit" color="gradient" bordered>
             Save
+          </Button>
+          <Spacer />
+          <Button onClick={handleDeleteProfile} color="error" bordered>
+            Delete Profile
           </Button>
         </form>
         {/* Add the SuccessModal component */}
-        <SuccessModal isOpen={showSuccessModal} />
       </Grid>
-      {isLoading && (
-        <>
-          <div className="loading-overlay" />
-          <div className="loading-container">
-            <ClipLoader size={50} />
-            <p>Creating profile...</p>
-          </div>
-        </>
-      )}
     </Grid.Container>
   );
 };
 
-export default CreateProfile;
+export default EditProfile;
