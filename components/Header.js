@@ -77,7 +77,7 @@ const Header = () => {
         return null;
       }
   
-      return `https://${publicRuntimeConfig.NEXT_PUBLIC_SUPABASE_PROJECT_REF}.supabase.co/storage/v1/object/public/avatars/${data[0].image_url}`;
+      return data[0].image_url;
     } catch (error) {
       console.error("Error fetching avatar: ", error);
       return null;

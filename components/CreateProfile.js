@@ -117,7 +117,7 @@ const CreateProfile = ({ currentUser }) => {
       setcurrentUser(user);
     }
 
-    return `https://${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}.supabase.in/storage/v1/object/public/avatars/${fileName}`;
+    return `https://${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}.supabase.co/storage/v1/object/public/avatars/${fileName}`;
   };
 
   const handleSocialLinksChange = (e) => {
