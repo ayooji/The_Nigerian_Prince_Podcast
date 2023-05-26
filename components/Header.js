@@ -12,10 +12,14 @@ import {
 import AuthButtons from "./AuthButtons";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/router";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 const Header = () => {
   const [menuActiveKey, setMenuActiveKey] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState(null);
   const router = useRouter();
   const collapseItems = [
     "Home",
@@ -40,19 +44,45 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const onAuthStateChanged = (event) => {
+    const onAuthStateChanged = async (event) => {
       const { session } = event.detail;
       setCurrentUser(session?.user);
+      
+      if (session?.user?.id) {
+        const avatarUrl = await fetchAvatarUrl(session.user.id);
+        setAvatarUrl(avatarUrl);
+      }
     };
-    // Attach the event listener
+    
     window.addEventListener("onAuthStateChanged", onAuthStateChanged);
-
-    // Cleanup
     return () => {
-      // Remove the event listener
       window.removeEventListener("onAuthStateChanged", onAuthStateChanged);
     };
   }, []);
+  
+  const fetchAvatarUrl = async (user_id) => {
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("image_url")
+        .eq("user_id", user_id);
+  
+      if (error) {
+        console.error("Error fetching avatar: ", error.message);
+        return null;
+      }
+  
+      if (!data || data.length !== 1) {
+        console.error("Unexpected number of rows returned for avatar URL");
+        return null;
+      }
+  
+      return `https://${publicRuntimeConfig.NEXT_PUBLIC_SUPABASE_PROJECT_REF}.supabase.co/storage/v1/object/public/avatars/${data[0].image_url}`;
+    } catch (error) {
+      console.error("Error fetching avatar: ", error);
+      return null;
+    }
+  };
 
   return (
     <Navbar isBordered variant="sticky">
@@ -102,7 +132,7 @@ const Header = () => {
                     as="button"
                     color="gradient"
                     size="md"
-                    src={currentUser?.user_metadata?.avatar_url || "/avatar-placeholder.png"}
+                    src={avatarUrl || "/avatar-placeholder.png"} // Use avatarUrl here
                     alt="User avatar"
                     zoomed
                   />
