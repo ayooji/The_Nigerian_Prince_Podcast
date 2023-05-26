@@ -23,6 +23,7 @@ const CreateProfile = ({ currentUser }) => {
   const countryInputRef = useRef();
   console.log("CreateProfile currentUser:", currentUser);
   const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [localImageUrl, setLocalImageUrl] = useState(""); //
   const [bio, setBio] = useState("");
@@ -54,7 +55,7 @@ const CreateProfile = ({ currentUser }) => {
     setIsLoading(true);
 
     const uploadedImageUrl = await handleImageUpload(image);
-
+    const avatar_url = await uploadImage(image);
     const { data, error } = await supabase.from("profiles").insert({
       user_id: currentUser.id,
       name,
@@ -91,6 +92,30 @@ const CreateProfile = ({ currentUser }) => {
       console.error("Error uploading image:", error.message);
       return null;
     }
+    // Update user metadata with the new avatar URL
+    if (avatar_url) {
+      const updates = {
+        id: currentUser.id,
+        user_metadata: {
+          ...currentUser.user_metadata,
+          avatar_url: avatar_url,
+        },
+      };
+
+      let { error, data } = await supabase.from("users").upsert(updates);
+      if (error) {
+        console.error("Error updating user metadata:", error.message);
+        return null;
+      }
+
+      // refresh the current user to get the updated metadata
+      const { user, error: refreshError } = await supabase.auth.user();
+      if (refreshError) {
+        console.error("Error refreshing user:", refreshError.message);
+        return null;
+      }
+      setcurrentUser(user);
+    }
 
     return `https://${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}.supabase.in/storage/v1/object/public/avatars/${fileName}`;
   };
@@ -110,17 +135,17 @@ const CreateProfile = ({ currentUser }) => {
       color: "white",
     }),
     control: (provided) => ({
-        ...provided,
-        backgroundColor: "#333",
-        borderColor: "transparent",
-        borderWidth: "1px",
-        color: "white",
-      }),
-      singleValue: (provided) => ({
-        ...provided,
-        color: "white",
-      }),
-    };  
+      ...provided,
+      backgroundColor: "#333",
+      borderColor: "transparent",
+      borderWidth: "1px",
+      color: "white",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+  };
 
   return (
     <Grid.Container alignItems="center" justify="center" direction="column">
@@ -153,23 +178,22 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
-           
           />
           <input {...getInputProps()} />
           <Spacer />
           <Grid>
-          <Card isHoverable variant="bordered">
-          {localImageUrl && (
-            <Card.Image
-              src={localImageUrl}
-              width={100}
-              height={100}
-              layout="fixed"
-              alt="Uploaded avatar"
-              className="rounded-full"
-            />
-          )}
-          </Card>
+            <Card isHoverable variant="bordered">
+              {localImageUrl && (
+                <Card.Image
+                  src={localImageUrl}
+                  width={100}
+                  height={100}
+                  layout="fixed"
+                  alt="Uploaded avatar"
+                  className="rounded-full"
+                />
+              )}
+            </Card>
           </Grid>
           <Spacer />
           <Textarea
