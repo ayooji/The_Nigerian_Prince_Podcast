@@ -6,11 +6,9 @@ const BlogList = ({ posts }) => {
       {posts.map((post) => (
         <div key={post.id} className="blog-post-preview">
           <Link href={`/blog/page/${post.id}`}>
-            <a>
-              <h2>{post.title}</h2>
-            </a>
+            <h2 style={{ cursor: "pointer" }}>{post.title}</h2>
           </Link>
-          <p>{post.content.slice(0, 100)}...</p>
+          <p>{post.content ? post.content.slice(0, 100) + '...' : 'No content available'}</p>
         </div>
       ))}
     </div>
