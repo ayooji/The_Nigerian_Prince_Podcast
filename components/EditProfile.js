@@ -19,6 +19,7 @@ const { publicRuntimeConfig } = getConfig();
 
 const EditProfile = ({ currentUser }) => {
   console.log("EditProfile currentUser:", currentUser);
+  const router = useRouter();
   // Add your component state and logic here
   // ...
   const [name, setName] = useState("");
@@ -123,10 +124,12 @@ const EditProfile = ({ currentUser }) => {
       .from("profiles")
       .delete()
       .eq("user_id", currentUser.id);
-
+  
     if (error) {
       console.error("Error deleting profile:", error.message);
     } else {
+      // Log out the user after deleting the profile
+      await supabase.auth.signOut();
       router.push("/");
     }
   };
@@ -255,27 +258,31 @@ const EditProfile = ({ currentUser }) => {
         </form>
         {/* Add the DeleteModal component */}
         <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-          <Modal.Title>Delete Profile</Modal.Title>
-          <Modal.Content>
+          <Modal.Header>
+            <Text id="modal-title" size={18}>
+              Delete Profile
+            </Text>
+          </Modal.Header>
+          <Modal.Body>
             <Text>
               Are you sure you want to delete your profile? This action is
               permanent and cannot be undone.
             </Text>
-          </Modal.Content>
-          <Modal.Action>
-            <Button onClick={() => setShowDeleteModal(false)} auto size="small">
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setShowDeleteModal(false)} auto size="sm">
               Cancel
             </Button>
             <Spacer />
             <Button
               onClick={handleDeleteProfile}
               auto
-              size="small"
+              size="sm"
               color="error"
             >
               Delete
             </Button>
-          </Modal.Action>
+          </Modal.Footer>
         </Modal>
       </Grid>
     </Grid.Container>

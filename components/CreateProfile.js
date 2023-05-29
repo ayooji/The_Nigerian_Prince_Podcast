@@ -247,7 +247,7 @@ const CreateProfile = ({ currentUser }) => {
             disabled={isLoading}
             type="submit"
             color="gradient"
-            loading={isLoading}
+            loading={isLoading ? "true" : undefined}
             bordered
           >
             Save
@@ -261,7 +261,7 @@ const CreateProfile = ({ currentUser }) => {
           <div className="loading-overlay" />
           <div className="loading-container">
             <ClipLoader size={50} />
-            <p>Creating profile...</p>
+            <p>Creating profile...Please wait!</p>
           </div>
         </>
       )}
