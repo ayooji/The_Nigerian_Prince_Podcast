@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { getBlogPostById } from "@/lib/api";
+import { getBlogPostById , getAllBlogPosts} from "../../../lib/supabaseClient";
 import BlogPost from "@/components/blog/BlogPost";
 import { NextSeo } from "next-seo";
 
