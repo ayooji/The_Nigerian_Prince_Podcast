@@ -253,7 +253,7 @@ const EditProfile = ({ currentUser }) => {
             Delete Profile
           </Button>
         </form>
-        {/* Add the SuccessModal component */}
+        {/* Add the DeleteModal component */}
         <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
           <Modal.Title>Delete Profile</Modal.Title>
           <Modal.Content>
