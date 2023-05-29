@@ -54,15 +54,18 @@ const CreateProfile = ({ currentUser }) => {
     e.preventDefault();
     setIsLoading(true);
 
+    console.log("Calling handleImageUpload with image:", image);
     const uploadedImageUrl = await handleImageUpload(image);
-    const avatar_url = await uploadImage(image);
+    console.log("Uploaded image URL:", uploadedImageUrl);
+
+    console.log("Inserting data into profiles table...");
     const { data, error } = await supabase.from("profiles").insert({
       user_id: currentUser.id,
       name,
       image_url: uploadedImageUrl || imageUrl,
       bio,
       social_links: socialLinks,
-      country, // Add the country field
+      country,
     });
 
     console.log("Profile creation data:", data);
@@ -75,15 +78,23 @@ const CreateProfile = ({ currentUser }) => {
       setShowSuccessModal(true);
       setTimeout(() => {
         router.push("/episode");
-      }, 3000); // Adjust the delay as needed
+      }, 3000);
     }
   };
+
   const handleImageUpload = async (file) => {
     if (!file) {
       return null;
     }
 
     const fileName = `${currentUser.id}/${file.name}`;
+    console.log("Deleting existing image...");
+    // Delete the existing image if it exists
+    await supabase.storage.from("avatars").remove([fileName]);
+    console.log("Deleted existing image (if any)");
+
+    console.log("Uploading new image...");
+    // Upload the new image
     const { error } = await supabase.storage
       .from("avatars")
       .upload(fileName, file);
@@ -92,30 +103,7 @@ const CreateProfile = ({ currentUser }) => {
       console.error("Error uploading image:", error.message);
       return null;
     }
-    // Update user metadata with the new avatar URL
-    if (avatar_url) {
-      const updates = {
-        id: currentUser.id,
-        user_metadata: {
-          ...currentUser.user_metadata,
-          avatar_url: avatar_url,
-        },
-      };
-
-      let { error, data } = await supabase.from("users").upsert(updates);
-      if (error) {
-        console.error("Error updating user metadata:", error.message);
-        return null;
-      }
-
-      // refresh the current user to get the updated metadata
-      const { user, error: refreshError } = await supabase.auth.user();
-      if (refreshError) {
-        console.error("Error refreshing user:", refreshError.message);
-        return null;
-      }
-      setcurrentUser(user);
-    }
+    console.log("Image uploaded");
 
     return `https://${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}.supabase.co/storage/v1/object/public/avatars/${fileName}`;
   };

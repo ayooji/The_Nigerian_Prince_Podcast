@@ -47,19 +47,19 @@ const Header = () => {
     const onAuthStateChanged = async (event) => {
       const { session } = event.detail;
       setCurrentUser(session?.user);
-      
+
       if (session?.user?.id) {
         const avatarUrl = await fetchAvatarUrl(session.user.id);
         setAvatarUrl(avatarUrl);
       }
     };
-    
+
     window.addEventListener("onAuthStateChanged", onAuthStateChanged);
     return () => {
       window.removeEventListener("onAuthStateChanged", onAuthStateChanged);
     };
   }, []);
-  
+
   const fetchAvatarUrl = async (user_id) => {
     try {
       const { data, error } = await supabase
@@ -74,16 +74,16 @@ const Header = () => {
   
       if (!data || data.length !== 1) {
         console.error("Unexpected number of rows returned for avatar URL");
+        return null
+      }
+
+        return data[0].image_url;
+      } catch (error) {
+        console.error("Error fetching avatar: ", error);
         return null;
       }
-  
-      return data[0].image_url;
-    } catch (error) {
-      console.error("Error fetching avatar: ", error);
-      return null;
-    }
-  };
-
+    };
+    
   return (
     <Navbar isBordered variant="sticky">
       <Navbar.Brand className="lightingEffect">
@@ -132,7 +132,7 @@ const Header = () => {
                     as="button"
                     color="gradient"
                     size="md"
-                    src={avatarUrl || "/avatar-placeholder.png"} // Use avatarUrl here
+                    src={avatarUrl || "/avatar-placeholder.png"}
                     alt="User avatar"
                     zoomed
                   />
