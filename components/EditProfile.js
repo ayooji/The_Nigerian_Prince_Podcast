@@ -29,6 +29,8 @@ const EditProfile = ({ currentUser }) => {
   const [bio, setBio] = useState("");
   const [socialLinks, setSocialLinks] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/jpeg, image/png, image/gif, image/webp",
@@ -101,22 +103,46 @@ const EditProfile = ({ currentUser }) => {
   // Update the handleSubmit function to update the user's profile
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccessMessage("");
+    setErrorMessage("");
+
     const uploadedImageUrl = await handleImageUpload(image);
     if (uploadedImageUrl) {
       setImageUrl(uploadedImageUrl);
     }
-    const { data, error } = await supabase
-      .from("profiles")
-      .update({
+    console.log("Updating profile for user_id:", currentUser.id);
+
+    const { data, error } = await supabase.from("profiles").upsert(
+      {
+        user_id: currentUser.id,
         name,
         image_url: uploadedImageUrl || imageUrl,
         bio,
         social_links: socialLinks,
-      })
-      .eq("user_id", currentUser.id);
+      },
+      { onConflict: "user_id" }
+    );
 
     console.log("Profile update data:", data);
     console.log("Profile update error:", error);
+
+    if (error) {
+      console.error("Error updating profile:", error.message);
+      setErrorMessage("An error occurred while updating your profile.");
+    } else {
+      console.log("Profile update data:", data);
+      setSuccessMessage("Your profile has been successfully updated!");
+    }
+  };
+
+  const generateRandomToken = (length = 64) => {
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let token = "";
+    for (let i = 0; i < length; i++) {
+      token += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return token;
   };
 
   const handleDeleteProfile = async () => {
@@ -124,10 +150,17 @@ const EditProfile = ({ currentUser }) => {
       .from("profiles")
       .delete()
       .eq("user_id", currentUser.id);
-  
+
     if (error) {
       console.error("Error deleting profile:", error.message);
     } else {
+      // Invalidate all sessions by updating the user's recovery_token
+      const randomToken = generateRandomToken();
+      await supabase
+        .from("auth.users")
+        .update({ data: { recovery_token: randomToken } })
+        .match({ id: currentUser.id });
+
       // Log out the user after deleting the profile
       await supabase.auth.signOut();
       router.push("/");
@@ -274,16 +307,21 @@ const EditProfile = ({ currentUser }) => {
               Cancel
             </Button>
             <Spacer />
-            <Button
-              onClick={handleDeleteProfile}
-              auto
-              size="sm"
-              color="error"
-            >
+            <Button onClick={handleDeleteProfile} auto size="sm" color="error">
               Delete
             </Button>
           </Modal.Footer>
         </Modal>
+        {successMessage && (
+          <Text size="1em" color="success">
+            {successMessage}
+          </Text>
+        )}
+        {errorMessage && (
+          <Text size="1em" color="error">
+            {errorMessage}
+          </Text>
+        )}
       </Grid>
     </Grid.Container>
   );
