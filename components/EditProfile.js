@@ -7,7 +7,8 @@ import {
   Textarea,
   Button,
   Image,
-  Card
+  Card,
+  Modal,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { supabase } from "@/lib/supabaseClient";
@@ -17,13 +18,16 @@ import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 
 const EditProfile = ({ currentUser }) => {
+  console.log("EditProfile currentUser:", currentUser);
   // Add your component state and logic here
   // ...
   const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [localImageUrl, setLocalImageUrl] = useState(""); //
   const [bio, setBio] = useState("");
   const [socialLinks, setSocialLinks] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/jpeg, image/png, image/gif, image/webp",
@@ -36,6 +40,7 @@ const EditProfile = ({ currentUser }) => {
       }
     },
   });
+
   // Fetch the current user's profile and pre-fill the form fields
   useEffect(() => {
     const fetchProfile = async () => {
@@ -44,6 +49,8 @@ const EditProfile = ({ currentUser }) => {
         .select("*")
         .eq("user_id", currentUser.id)
         .single();
+
+      console.log("Fetched profile data:", data);
 
       if (data) {
         setName(data.name);
@@ -66,6 +73,13 @@ const EditProfile = ({ currentUser }) => {
     }
 
     const fileName = `${currentUser.id}/${file.name}`;
+    console.log("Deleting existing image...");
+    // Delete the existing image if it exists
+    await supabase.storage.from("avatars").remove([fileName]);
+    console.log("Deleted existing image (if any)");
+
+    console.log("Uploading new image...");
+    // Upload the new image
     const { error } = await supabase.storage
       .from("avatars")
       .upload(fileName, file);
@@ -74,8 +88,9 @@ const EditProfile = ({ currentUser }) => {
       console.error("Error uploading image:", error.message);
       return null;
     }
+    console.log("Image uploaded");
 
-    return `https://${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}.supabase.in/storage/v1/object/public/avatars/${fileName}`;
+    return `https://${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}.supabase.co/storage/v1/object/public/avatars/${fileName}`;
   };
 
   const handleSocialLinksChange = (e) => {
@@ -151,18 +166,28 @@ const EditProfile = ({ currentUser }) => {
           <input {...getInputProps()} />
           <Spacer />
           <Grid>
-          <Card isHoverable variant="bordered">
-          {localImageUrl && (
-            <Card.Image
-              src={localImageUrl}
-              width={100}
-              height={100}
-              layout="fixed"
-              alt="Uploaded avatar"
-              className="rounded-full"
-            />
-          )}
-          </Card>
+            <Card isHoverable variant="bordered">
+              {imageUrl && (
+                <Image
+                  src={imageUrl}
+                  width={100}
+                  height={100}
+                  layout="fixed"
+                  alt="Profile image"
+                  className="rounded-full"
+                />
+              )}
+              {localImageUrl && (
+                <Card.Image
+                  src={localImageUrl}
+                  width={100}
+                  height={100}
+                  layout="fixed"
+                  alt="Uploaded avatar"
+                  className="rounded-full"
+                />
+              )}
+            </Card>
           </Grid>
           <Spacer />
           <Textarea
@@ -220,11 +245,38 @@ const EditProfile = ({ currentUser }) => {
             Save
           </Button>
           <Spacer />
-          <Button onClick={handleDeleteProfile} color="error" bordered>
+          <Button
+            onClick={() => setShowDeleteModal(true)}
+            color="error"
+            bordered
+          >
             Delete Profile
           </Button>
         </form>
         {/* Add the SuccessModal component */}
+        <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+          <Modal.Title>Delete Profile</Modal.Title>
+          <Modal.Content>
+            <Text>
+              Are you sure you want to delete your profile? This action is
+              permanent and cannot be undone.
+            </Text>
+          </Modal.Content>
+          <Modal.Action>
+            <Button onClick={() => setShowDeleteModal(false)} auto size="small">
+              Cancel
+            </Button>
+            <Spacer />
+            <Button
+              onClick={handleDeleteProfile}
+              auto
+              size="small"
+              color="error"
+            >
+              Delete
+            </Button>
+          </Modal.Action>
+        </Modal>
       </Grid>
     </Grid.Container>
   );
