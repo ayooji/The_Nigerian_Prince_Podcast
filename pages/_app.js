@@ -13,10 +13,7 @@ const lightTheme = createTheme({
   type: "light",
   theme: {
     colors: {
-      primary: "#008000", // Green
-      primaryInverted: "#FFFFFF", // White
-      accent1: "#FF0000", // Red
-      accent2: "#0000FF", // Blue
+   
     },
     typography: {
       fontFamily: "Roboto, sans-serif",
@@ -46,10 +43,7 @@ const darkTheme = createTheme({
   type: "dark",
   theme: {
     colors: {
-      primary: "#008000", // Green
-      primaryInverted: "#FFFFFF", // White
-      accent1: "#FF0000", // Red
-      accent2: "#0000FF", // Blue
+   
     },
     typography: {
       fontFamily: "Roboto, sans-serif",
