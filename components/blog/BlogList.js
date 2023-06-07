@@ -23,28 +23,18 @@ const BlogList = ({ posts }) => {
     },
   };
 
-  const fadeInUpVariants = (delay) => ({
-    initial: { opacity: 0, scale: 0.9, y: 30 },
-    animate: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { duration: 1.2, ease: [0.6, -0.05, 0.01, 0.99], delay: delay },
-    },
-  });
+ 
   
 
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      whileHover="hover"
-      variants={{ ...fadeInUpVariants( 0.5), }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-    >
+ 
+    <motion.div style={{ display: "block", width: "100%" }}  initial="initial">
       <Grid.Container gap={2} justify="center" className="blog-list">
+   
         {posts.map((post) => (
+          
           <Grid xs={24} md={4} key={post.id} post={post}>
+         
             <BlogListItem key={post.id} post={post}>
               <Link href={`/blog/page/${post.id}`}>
                 <h2 style={{ cursor: "pointer" }}>{post.title}</h2>
@@ -55,10 +45,12 @@ const BlogList = ({ posts }) => {
                   : "No content available"}
               </p>
             </BlogListItem>
+            
           </Grid>
         ))}
+     
       </Grid.Container>
-    </motion.div>
+      </motion.div>
   );
 };
 
