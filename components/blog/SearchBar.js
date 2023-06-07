@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input } from "@nextui-org/react";
+import { Input, Grid } from "@nextui-org/react";
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,13 +11,20 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <Input
-      icon="search"
-      color="primary"
-      placeholder="Search blog posts..."
-      value={searchTerm}
-      onChange={handleChange}
-    />
+    <Grid.Container gap={4} justify="center">
+        <Grid>
+        <Input
+        size="lg"
+        color="primary"
+        placeholder="Search blog posts..."
+        value={searchTerm}
+        onChange={handleChange}
+        bordered 
+        
+
+        />
+        </Grid>
+    </Grid.Container>
   );
 };
 

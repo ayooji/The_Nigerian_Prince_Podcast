@@ -12,11 +12,10 @@ import {
   Spacer,
   Loading,
   Row,
-  Button ,
+  Button,
 } from "@nextui-org/react";
 
 export const getStaticProps = async () => {
-  
   const posts = await getAllBlogPosts();
   return {
     props: { posts },
@@ -53,17 +52,18 @@ const BlogIndex = ({ posts }) => {
         }}
       />
       <div className="container mx-auto px-4">
-      <Spacer />
-      <Grid.Container gap={2} justify="center">
-        <Text b >
-          <h1>Blog</h1>
-        </Text>
+        <Spacer />
+        <Grid.Container gap={2} justify="center">
+          <Text b>
+            <h1>Blog</h1>
+          </Text>
         </Grid.Container>
-        <CategoryTabs/>
+        <CategoryTabs />
         <SearchBar onSearch={handleSearch} />
         <Spacer y={0.5} />
-      <BlogList posts={filteredPosts} />
       
+          <BlogList posts={filteredPosts} />
+       
       </div>
     </>
   );
