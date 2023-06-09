@@ -23,19 +23,12 @@ const BlogList = ({ posts }) => {
     },
   };
 
- 
-  
-
   return (
- 
-    <motion.div style={{ display: "block", width: "100%" }}  initial="initial">
+    <motion.div style={{ display: "block", width: "100%" }} initial="initial">
       <Grid.Container gap={2} justify="center" className="blog-list">
-   
         {posts.map((post) => (
-          
           <Grid xs={24} md={4} key={post.id} post={post}>
-         
-            <BlogListItem key={post.id} post={post}>
+            <BlogListItem key={post.id} post={post} user={post.user}>
               <Link href={`/blog/page/${post.id}`}>
                 <h2 style={{ cursor: "pointer" }}>{post.title}</h2>
               </Link>
@@ -45,12 +38,10 @@ const BlogList = ({ posts }) => {
                   : "No content available"}
               </p>
             </BlogListItem>
-            
           </Grid>
         ))}
-     
       </Grid.Container>
-      </motion.div>
+    </motion.div>
   );
 };
 
