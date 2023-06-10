@@ -2,8 +2,16 @@ import React from "react";
 import { Card, Col, Image, Spacer, Tag, Text, Grid } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { motion, useMotionValue } from "framer-motion";
+import {
+  MessageCircle,
+  Clock,
+  BookOpen,
+  Share2,
+  Star,
+  User,
+} from "react-feather";
 
-const BlogListItem = ({ post, index }) => {
+const BlogListItem = ({ post, user }) => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -38,7 +46,7 @@ const BlogListItem = ({ post, index }) => {
       initial="initial"
       animate="animate"
       whileHover="hover"
-      variants={{ ...fadeInUpVariants(index * 0.5), ...hoverVariants }}
+      variants={{ ...fadeInUpVariants(0.5), ...hoverVariants }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
       <Card
@@ -46,28 +54,43 @@ const BlogListItem = ({ post, index }) => {
         onClick={handleClick}
         isPressable
         variant="bordered"
-        css={{ w: "100%", h: "400px" }}
+        css={{ w: "100%", h: "400px", bg: "$black", w: "100%" }}
       >
-        {/* Featured Image */}
-        {post.featured_image && (
-          <Card.Image
-            src={post.featured_image}
-            alt={post.title}
-            width={340}
-            height={200}
-            layout="responsive"
-            objectFit="cover"
-          />
-        )}
-
         {/* Title, date, and category */}
-        <Card.Body>
-          <Text b h4>
-            {post.title}
-          </Text>
-          <Text size="sm" color="success">
-            {new Date(post.created_at).toLocaleDateString()}
-          </Text>
+        <Card.Header css={{ zIndex: 1, top: 2 }}>
+          <Col>
+            <Text b weight="bold" h4 color="black">
+              {post.title}
+            </Text>
+            <Text size="$md" >
+              <User size={14} />
+
+              <span style={{ marginLeft: 4 }}>- Ayo Oji</span>
+
+              <span style={{ marginLeft: 4 }}>
+                - {new Date(post.created_at).toLocaleDateString()}
+              </span>
+            </Text>
+          </Col>
+        </Card.Header>
+        <Card.Body css={{ p: 0 }}>
+          
+          {/* Featured Image */}
+          {post.image_url && (
+            <Card.Image
+              src={post.image_url}
+              alt={post.title}
+              width="100%"
+              height={500}
+              objectFit="fill"
+            />
+          )}
+          {/* Excerpt */}
+          {post.excerpt && (
+            <Card.Body>
+              <Text size="xs">{post.excerpt.slice(0, 100) + "..."}</Text>
+            </Card.Body>
+          )}
           <Spacer y={0.5} />
           {post.category && (
             <Tag size="sm" color="primary">
@@ -75,13 +98,17 @@ const BlogListItem = ({ post, index }) => {
             </Tag>
           )}
         </Card.Body>
+        
 
-        {/* Excerpt */}
-        {post.excerpt && (
-          <Card.Footer>
-            <Text size="xs">{post.excerpt}</Text>
-          </Card.Footer>
-        )}
+        <Card.Footer>
+          <div className="card-icons">
+            <MessageCircle size={18} />
+            <Clock size={18} />
+            <BookOpen size={18} />
+            <Share2 size={18} />
+            <Star size={18} />
+          </div>
+        </Card.Footer>
       </Card>
     </motion.div>
   );

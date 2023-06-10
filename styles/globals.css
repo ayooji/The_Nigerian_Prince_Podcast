@@ -64,3 +64,18 @@
     justify-content: center;
     z-index: 11;
   }
+
+
+.card-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.card-icons > * {
+  margin-right: 10px;
+}
+
+.card-icons:last-child {
+  margin-right: 0;
+}

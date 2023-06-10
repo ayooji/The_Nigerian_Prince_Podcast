@@ -15,7 +15,7 @@ const SearchBar = ({ onSearch }) => {
         <Grid>
         <Input
         size="lg"
-        color="primary"
+        color="success"
         placeholder="Search blog posts..."
         value={searchTerm}
         onChange={handleChange}

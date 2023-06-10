@@ -100,11 +100,15 @@ const Header = () => {
         </Text>
       </Navbar.Brand>
 
-      <Navbar.Content enableCursorHighlight hideIn="xs" activecolor="primary">
+      <Navbar.Content enableCursorHighlight
+          activeColor="success"
+          hideIn="xs"
+          variant="highlight-rounded">
         <Navbar.Link href="/">Home</Navbar.Link>
         <Navbar.Link isActive href="/episode">
           Episodes
         </Navbar.Link>
+        <Spacer x={0.5}/>
         <Navbar.Link b isActive variant="underline" href="/village-square">
           Village Square
         </Navbar.Link>
@@ -140,7 +144,7 @@ const Header = () => {
               </Navbar.Item>
               <Dropdown.Menu
                 aria-label="User menu actions"
-                color="primary"
+                color="success"
                 onClick={(actionKey) => {
                   // Switch case to handle each dropdown item's action key
                   switch (actionKey) {
@@ -205,7 +209,7 @@ const Header = () => {
             <Link
               color="inherit"
               css={{
-                color: index === collapseItems.length - 6 ? "$primary" : "",
+                color: index === collapseItems.length - 6 ? "primary" : "",
 
                 minWidth: "100%",
               }}
