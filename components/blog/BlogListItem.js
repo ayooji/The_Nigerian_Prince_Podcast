@@ -12,6 +12,7 @@ import {
 } from "react-feather";
 
 const BlogListItem = ({ post, user }) => {
+  const authorName = post.profiles?.name || "Unknown Author"; // Get author's name from fetched data
   const router = useRouter();
 
   const handleClick = () => {
@@ -79,7 +80,7 @@ const BlogListItem = ({ post, user }) => {
             <Text size="$md" >
               <User size={14} />
 
-              <span style={{ marginLeft: 4 }}>- Ayo Oji</span>
+              <span style={{ marginLeft: 4 }}>- {authorName}</span>
 
               <span style={{ marginLeft: 4 }}>
                 - {new Date(post.created_at).toLocaleDateString()}
