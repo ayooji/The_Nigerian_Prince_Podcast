@@ -54,11 +54,8 @@ const BlogListItem = ({ post, user }) => {
         onClick={handleClick}
         isPressable
         variant="bordered"
-        css={{ w: "100%", h: "400px", bg: "$black", w: "100%" }}
+        css={{ w: "100%", h: "450px", bg: "$black", w: "100%" }}
       >
-        {/* Title, date, and category */}
-        <Card >
-            
           {/* Featured Image */}
           {post.image_url && (
             <Card.Image
@@ -70,7 +67,8 @@ const BlogListItem = ({ post, user }) => {
               
             />
           )}
-        </Card>
+        {/* Title, date, and category */}
+       
         <Card.Body css={{ p: 0 }}>
        
           {/* Excerpt */}
