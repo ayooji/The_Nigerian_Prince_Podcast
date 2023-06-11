@@ -57,7 +57,23 @@ const BlogListItem = ({ post, user }) => {
         css={{ w: "100%", h: "400px", bg: "$black", w: "100%" }}
       >
         {/* Title, date, and category */}
-        <Card.Header css={{ zIndex: 1, top: 2 }}>
+        <Card >
+            
+          {/* Featured Image */}
+          {post.image_url && (
+            <Card.Image
+              src={post.image_url}
+              alt={post.title}
+              width="100%"
+              height="100%"
+              objectFit="cover"
+              
+            />
+          )}
+        </Card>
+        <Card.Body css={{ p: 0 }}>
+       
+          {/* Excerpt */}
           <Col>
             <Text b weight="bold" h4 color="black">
               {post.title}
@@ -71,26 +87,13 @@ const BlogListItem = ({ post, user }) => {
                 - {new Date(post.created_at).toLocaleDateString()}
               </span>
             </Text>
-          </Col>
-        </Card.Header>
-        <Card.Body css={{ p: 0 }}>
-          
-          {/* Featured Image */}
-          {post.image_url && (
-            <Card.Image
-              src={post.image_url}
-              alt={post.title}
-              width="100%"
-              height={500}
-              objectFit="fill"
-            />
-          )}
-          {/* Excerpt */}
-          {post.excerpt && (
+            {post.excerpt && (
             <Card.Body>
               <Text size="xs">{post.excerpt.slice(0, 100) + "..."}</Text>
             </Card.Body>
           )}
+          </Col>
+          
           <Spacer y={0.5} />
           {post.category && (
             <Tag size="sm" color="primary">
