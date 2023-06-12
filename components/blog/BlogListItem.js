@@ -10,6 +10,7 @@ import {
   Star,
   User,
 } from "react-feather";
+import Link from "next/link";
 
 const BlogListItem = ({ post, user }) => {
   const authorName = post.profiles?.name || "Unknown Author"; // Get author's name from fetched data
@@ -55,29 +56,61 @@ const BlogListItem = ({ post, user }) => {
         onClick={handleClick}
         isPressable
         variant="bordered"
-        css={{ w: "100%", h: "450px", bg: "$black", w: "100%" }}
+        css={{
+          w: "100%",
+          h: "450px",
+          background: "linear-gradient(145deg, #192a56, #273c75)",
+          borderRadius: "15px",
+          boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
+          transform: "perspective(1000px) rotateX(2deg)",
+          transition: "transform 0.5s",
+          "&:hover": {
+            transform: "perspective(1000px) rotateX(5deg) rotateY(3deg)",
+            boxShadow: "0 0 50px rgba(0, 0, 0, 0.5)",
+          },
+        }}
       >
-          {/* Featured Image */}
-          {post.image_url && (
-            <Card.Image
-              src={post.image_url}
-              alt={post.title}
-              width="100%"
-              height="100%"
-              objectFit="cover"
-              
-            />
-          )}
+        {/* Featured Image */}
+        {post.image_url && (
+          <Card.Image
+            src={post.image_url}
+            alt={post.title}
+            width="100%"
+            height="100%"
+            objectFit="cover"
+            borderRadius="15px 15px 0 0"
+            boxShadow="0px 4px 20px rgba(0, 0, 0, 0.1)"
+          />
+        )}
         {/* Title, date, and category */}
-       
-        <Card.Body css={{ p: 0 }}>
-       
+
+        <Card.Body css={{ p: 0, background: "rgba(255, 255, 255, 0.8)" }}>
           {/* Excerpt */}
           <Col>
-            <Text b weight="bold" h4 color="black">
+            <Text
+              size="$md"
+              h5
+              css={{
+                textGradient: "to bottom, $green600, $black",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                fontWeight: "bold",
+                letterSpacing: "0.05em",
+                textShadow: "1px 1px 2px rgba(0,0,0,0.25)",
+                padding: "1em",
+                borderRadius: "0.5em",
+                boxshadow: "2px 2px 6px rgba(0,0,0,0.1)",
+                backgroundColor: "$black",
+                color: "$black",
+                maxWidth: "400px",
+                margin: "0 auto",
+              }}
+              weight="bold"
+            >
               {post.title}
             </Text>
-            <Text size="$md" >
+            <Text size="$md" color="black">
               <User size={14} />
 
               <span style={{ marginLeft: 4 }}>- {authorName}</span>
@@ -87,12 +120,14 @@ const BlogListItem = ({ post, user }) => {
               </span>
             </Text>
             {post.excerpt && (
-            <Card.Body>
-              <Text size="xs">{post.excerpt.slice(0, 100) + "..."}</Text>
-            </Card.Body>
-          )}
+              <Card.Body>
+                <Text size="xs" color="black">
+                  {post.excerpt.slice(0, 100) + "..."}
+                </Text>
+              </Card.Body>
+            )}
           </Col>
-          
+
           <Spacer y={0.5} />
           {post.category && (
             <Tag size="sm" color="primary">
@@ -100,7 +135,6 @@ const BlogListItem = ({ post, user }) => {
             </Tag>
           )}
         </Card.Body>
-        
 
         <Card.Footer>
           <div className="card-icons">

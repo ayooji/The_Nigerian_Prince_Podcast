@@ -176,6 +176,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
           total={100} // Adjust this number to be large enough to cover all potential episode pages
           initialPage={currentPage}
           onChange={handlePageChange}
+          color='success'
         />
       </Grid.Container>
         
