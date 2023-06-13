@@ -7,6 +7,9 @@ import Layout from "../components/Layout";
 import { DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
 
+
+import React from "react";
+
 // Call createTheme for light and dark themes, adding color and typography customization
 
 const lightTheme = createTheme({
@@ -69,7 +72,11 @@ const darkTheme = createTheme({
   },
 });
 
+
+
 function MyApp({ Component, pageProps }) {
+
+  
   return (
     <NextThemesProvider
       defaultTheme="dark"
