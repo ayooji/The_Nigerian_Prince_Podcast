@@ -100,7 +100,7 @@ const BlogListItem = ({ post, user }) => {
                 borderRadius: "0.5em",
                 boxShadow: "2px 2px 6px rgba(0, 0, 0, 0.1)",
                 backgroundColor: "$black",
-                color: "$green600",
+                color: "$white",
                 maxWidth: "400px",
                 margin: "0 auto",
               }}
@@ -121,7 +121,7 @@ const BlogListItem = ({ post, user }) => {
                 }}
               ></span>
             </Text>
-            <Text size="$md" color="white">
+            <Text size="$md" color="$green600">
               <User size={14} />
 
               <span style={{ marginLeft: 4 }}>- {authorName}</span>
