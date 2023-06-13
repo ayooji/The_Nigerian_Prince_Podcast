@@ -36,8 +36,8 @@ const BlogListItem = ({ post, user }) => {
   const hoverVariants = {
     hover: {
       scale: 1.05,
-      backgroundColor: "#6EFFA2", // Replace with desired shining green color
-      boxShadow: "0px 4px 20px rgba(110, 255, 162, 0.4)",
+
+      boxShadow: "0px 8px 20px rgba(110, 255, 162, 0.6)",
       transition: { duration: 0.3, ease: "easeInOut" },
     },
   };
@@ -59,14 +59,14 @@ const BlogListItem = ({ post, user }) => {
         css={{
           w: "100%",
           h: "450px",
-          background: "linear-gradient(145deg, #192a56, #273c75)",
+          background: "linear-gradient(to bottom right, #6EFFA2, #1B1464)",
           borderRadius: "15px",
           boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
           transform: "perspective(1000px) rotateX(2deg)",
-          transition: "transform 0.5s",
+          transition: "transform 0.5s ease-in-out",
           "&:hover": {
-            transform: "perspective(1000px) rotateX(5deg) rotateY(3deg)",
-            boxShadow: "0 0 50px rgba(0, 0, 0, 0.5)",
+            transform: "perspective(1000px) rotateX(10deg) rotateY(8deg) ",
+            boxShadow: "0 0 50px rgba(0, 0, 0, 0.8)",
           },
         }}
       >
@@ -84,33 +84,44 @@ const BlogListItem = ({ post, user }) => {
         )}
         {/* Title, date, and category */}
 
-        <Card.Body css={{ p: 0, background: "rgba(255, 255, 255, 0.8)" }}>
+        <Card.Body css={{ p: 0, background: "$black" }}>
           {/* Excerpt */}
           <Col>
             <Text
-              size="$md"
+              size="$sm"
               h5
               css={{
-                textGradient: "to bottom, $green600, $black",
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
                 fontWeight: "bold",
                 letterSpacing: "0.05em",
-                textShadow: "1px 1px 2px rgba(0,0,0,0.25)",
                 padding: "1em",
                 borderRadius: "0.5em",
-                boxshadow: "2px 2px 6px rgba(0,0,0,0.1)",
+                boxShadow: "2px 2px 6px rgba(0, 0, 0, 0.1)",
                 backgroundColor: "$black",
-                color: "$black",
+                color: "$green600",
                 maxWidth: "400px",
                 margin: "0 auto",
               }}
               weight="bold"
             >
-              {post.title}
+              {post.title.toUpperCase()}
+              <span
+                css={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  zIndex: "-1",
+                  background: "$green600",
+                  opacity: "0.3",
+                  borderRadius: "0.5em",
+                }}
+              ></span>
             </Text>
-            <Text size="$md" color="black">
+            <Text size="$md" color="white">
               <User size={14} />
 
               <span style={{ marginLeft: 4 }}>- {authorName}</span>
@@ -121,7 +132,7 @@ const BlogListItem = ({ post, user }) => {
             </Text>
             {post.excerpt && (
               <Card.Body>
-                <Text size="xs" color="black">
+                <Text size="xs" color="white">
                   {post.excerpt.slice(0, 100) + "..."}
                 </Text>
               </Card.Body>
