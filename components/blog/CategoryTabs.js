@@ -30,9 +30,9 @@ const CategoryTabs = () => {
       boxShadow: "0px 4px 20px rgba(110, 255, 162, 0.4)",
       transition: { duration: 0.3, ease: "easeInOut" , },
       rotate: -10,
-      maskImage: "linear-gradient(to right, transparent 50%, rgba(0, 128, 0, 1) 50%)",
-      maskSize: "500%",
-      maskPosition: "right",
+      maskimage: "linear-gradient(to right, transparent 50%, rgba(0, 128, 0, 1) 50%)",
+      masksize: "500%",
+      maskposition: "0",
 
     },
 

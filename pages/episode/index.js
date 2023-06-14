@@ -31,7 +31,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
   const episodesToDisplay = episodes.slice(showEpisodesFrom, showEpisodesTo);
   const [favoriteEpisodes, setFavoriteEpisodes] = useState(new Set());
   const router = useRouter();
-
+  const episodeId = episodes.id
   
   const handlePageChange = (newPage) => {
     const href = `/episode?page=${newPage}`;
@@ -64,7 +64,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
     },
   };
 
-  
+  const imageSrc = episodes.artwork_url || "/logo.jpg" 
   return (
     <div className="container mx-auto px-4">
       <div className="container mx-auto px-4">
@@ -119,7 +119,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                   >
                     <Card.Body>
                       <Image
-                        src={episode.artwork_url || "/logo.jpg"}
+                        src={imageSrc}
                         alt="Episode artwork"
                         className="object-cover w-full h-mobile md:h-56" // Add the 'h-mobile' class for mobile
                         style={{

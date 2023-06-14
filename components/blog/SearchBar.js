@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input, Grid } from "@nextui-org/react";
+import CategoryTabs from "./CategoryTabs";
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");

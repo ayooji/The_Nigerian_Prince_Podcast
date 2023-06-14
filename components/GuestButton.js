@@ -52,7 +52,7 @@ const GuestButton = ({ episodeId }) => {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Text color="gray">
+          <Text color="success">
             {guest.name} - {guest.bio}
           </Text>
         </Modal.Footer>
