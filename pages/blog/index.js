@@ -26,9 +26,10 @@ export const getStaticProps = async () => {
 
 const BlogIndex = ({ posts, index }) => {
   const [filteredPosts, setFilteredPosts] = useState(() => posts);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleSearch = (term) => {
-    if (term === "") {
+    if (term === "" && selectedCategory === "") {
       setFilteredPosts(posts);
       return;
     }
@@ -37,10 +38,13 @@ const BlogIndex = ({ posts, index }) => {
       const normalizedTerm = term.toLowerCase();
       const normalizedTitle = post.title.toLowerCase();
       const normalizedCategory = post.category.toLowerCase();
-      return (
-        normalizedTitle.includes(normalizedTerm) ||
-        normalizedCategory.includes(normalizedTerm)
+
+      const matchTitle = normalizedTitle.includes(normalizedTerm);
+      const matchCategory = normalizedCategory.includes(
+        selectedCategory.toLowerCase()
       );
+
+      return matchTitle && (selectedCategory === "" || matchCategory);
     });
 
     setFilteredPosts(filtered);
@@ -86,13 +90,17 @@ const BlogIndex = ({ posts, index }) => {
       >
         <Grid.Container className="container mx-auto px-4">
           <Spacer />
+          {/* Update this part */}
           <Grid.Container gap={2} justify="center">
             <Text b>
-              <h1>Blog</h1>
+              <h1>{selectedCategory === "" ? "Blog" : selectedCategory}</h1>
             </Text>
           </Grid.Container>
+          {/* End of updated part */}
 
-          <CategoryTabs />
+          <CategoryTabs
+            onCategoryChange={(category) => setSelectedCategory(category)}
+          />
           <SearchBar onSearch={handleSearch} />
 
           <Spacer y={0.5} />

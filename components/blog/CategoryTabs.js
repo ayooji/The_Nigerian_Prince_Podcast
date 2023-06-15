@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Button, Spacer, Grid } from "@nextui-org/react";
+import { Button, Spacer, Grid, Text } from "@nextui-org/react";
 import { motion, useMotionValue } from "framer-motion";
 
-const categories = [
+export const categories = [
   "Tech Innovations",
   "MMA Arena",
   "Entertainment Buzz",
@@ -22,20 +22,20 @@ const categories = [
   "Street OT Chronicles",
 ];
 
-const CategoryTabs = () => {
+const CategoryTabs = ({ onCategoryChange }) => {
+
   const hoverVariants = {
     hover: {
       scale: 1.05,
       backgroundColor: "#6EFFA2", // Replace with desired shining green color
       boxShadow: "0px 4px 20px rgba(110, 255, 162, 0.4)",
-      transition: { duration: 0.3, ease: "easeInOut" , },
+      transition: { duration: 0.3, ease: "easeInOut" },
       rotate: -10,
-      maskimage: "linear-gradient(to right, transparent 50%, rgba(0, 128, 0, 1) 50%)",
+      maskimage:
+        "linear-gradient(to right, transparent 50%, rgba(0, 128, 0, 1) 50%)",
       masksize: "500%",
       maskposition: "0",
-
     },
-
   };
 
   return (
@@ -54,8 +54,11 @@ const CategoryTabs = () => {
                 whileHover="hover"
                 variants={{ ...hoverVariants }}
                 transition={{ duration: 0.5, delay: 0.2 }}
+                onClick={() => onCategoryChange(category)}
               >
-                <Button auto size="sm" color="success" shadow bordered ghost >
+                
+
+                <Button auto size="sm" color="success" shadow bordered ghost>
                   {category}
                 </Button>
               </motion.div>
