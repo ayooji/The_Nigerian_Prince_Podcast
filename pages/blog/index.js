@@ -36,7 +36,11 @@ const BlogIndex = ({ posts, index }) => {
     const filtered = posts.filter((post) => {
       const normalizedTerm = term.toLowerCase();
       const normalizedTitle = post.title.toLowerCase();
-      return normalizedTitle.includes(normalizedTerm);
+      const normalizedCategory = post.category.toLowerCase();
+      return (
+        normalizedTitle.includes(normalizedTerm) ||
+        normalizedCategory.includes(normalizedTerm)
+      );
     });
 
     setFilteredPosts(filtered);
