@@ -24,7 +24,7 @@ export const getStaticProps = async () => {
   };
 };
 
-const BlogIndex = ({ posts, index }) => {
+const BlogIndex = ({ posts, user }) => {
   const [filteredPosts, setFilteredPosts] = useState(() => posts);
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -105,7 +105,7 @@ const BlogIndex = ({ posts, index }) => {
 
           <Spacer y={0.5} />
 
-          <BlogList posts={filteredPosts} />
+          <BlogList posts={filteredPosts} currentUser={user} />
         </Grid.Container>
       </motion.div>
     </>

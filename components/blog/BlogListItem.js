@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Card, Col, Image, Spacer, Tag, Text, Grid } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { motion, useMotionValue } from "framer-motion";
@@ -9,13 +9,29 @@ import {
   Share2,
   Star,
   User,
+  Award,
 } from "react-feather";
 import Link from "next/link";
+import { supabase } from "../../lib/supabaseClient";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
+import Popup from "reactjs-popup";
+import AuthButtons from "../AuthButtons";
 
-const BlogListItem = ({ post, user }) => {
+const BlogListItem = ({ post, currentUser }) => {
   const authorName = post.profiles?.name || "Unknown Author"; // Get author's name from fetched data
   const router = useRouter();
+  const shareUrl = `https://nigerianprincepodcast.com/blog/page/${post.id}`;
+  const [isSaved, setIsSaved] = useState(false);
+  const [showSavePopup, setShowSavePopup] = useState(false);
 
+  console.log("User:", currentUser);
   const handleClick = () => {
     router.push(`/blog/${post.id}`);
   };
@@ -40,6 +56,83 @@ const BlogListItem = ({ post, user }) => {
       boxShadow: "0px 8px 20px rgba(110, 255, 162, 0.6)",
       transition: { duration: 0.3, ease: "easeInOut" },
     },
+  };
+
+  useEffect(() => {
+    const checkSavedStatus = async () => {
+      if (currentUser) {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("saved_blog_posts")
+          .eq("user_id", currentUser.id)
+          .limit(1);
+
+        if (error) {
+          console.error("Error fetching saved posts:", error.message);
+        } else if (
+          data &&
+          data.length > 0 &&
+          data[0].saved_blog_posts &&
+          data[0].saved_blog_posts.includes(post.id)
+        ) {
+          setIsSaved(true);
+        } else {
+          setIsSaved(false);
+        }
+      }
+    };
+
+    checkSavedStatus();
+  }, [currentUser, post.id]);
+
+  const handleSavePost = async (e) => {
+    e.stopPropagation();
+
+    if (!currentUser) {
+      console.log("Please log in to save posts");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("saved_blog_posts")
+        .eq("id", currentUser.id)
+        .limit(1);
+
+      if (error) {
+        console.error("Error fetching saved posts:", error.message);
+      } else if (!data || data.length === 0) {
+        console.error("User's profile not found in the 'profiles' table.");
+      } else {
+        const savedBlogPosts = data[0].saved_blog_posts || [];
+        const isCurrentlySaved = savedBlogPosts.includes(post.id);
+
+        const updated_saved_blog_posts = isCurrentlySaved
+          ? savedBlogPosts.filter((postId) => postId !== post.id)
+          : [...savedBlogPosts, post.id];
+
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({ saved_blog_posts: updated_saved_blog_posts })
+          .eq("id", currentUser.id);
+
+        if (updateError) {
+          console.error("Error updating saved posts:", updateError.message);
+        } else {
+          setIsSaved(!isCurrentlySaved);
+
+          // Show the popup message
+          // Handling popup
+          setShowSavePopup(true);
+          setTimeout(() => {
+            setShowSavePopup(false);
+          }, 3000); // Close the popup after 3 seconds
+        }
+      }
+    } catch (error) {
+      console.error("Error updating saved posts:", error.message);
+    }
   };
 
   return (
@@ -161,12 +254,136 @@ const BlogListItem = ({ post, user }) => {
         </Card.Body>
 
         <Card.Footer>
-          <div className="card-icons">
-            <MessageCircle size={18} />
-            <Clock size={18} />
-            <BookOpen size={18} />
-            <Share2 size={18} />
-            <Star size={18} />
+          <div
+            className="card-icons"
+            style={{
+              position: "relative",
+              zIndex: "2",
+            }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              transition={{ duration: 0.1 }}
+              style={{ display: "inline-flex", verticalAlign: "middle" }}
+            >
+              <span>
+                <MessageCircle size={18} onClick={(e) => e.stopPropagation()} />
+              </span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              transition={{ duration: 0.1 }}
+              style={{ display: "inline-flex", verticalAlign: "middle" }}
+            >
+              <span>
+                <BookOpen size={18} />
+              </span>
+            </motion.div>
+            <Popup
+              on="click"
+              position="top center"
+              arrow={false}
+              contentStyle={{
+                background: "black",
+                padding: "5px",
+                borderRadius: "5px",
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+              }}
+              trigger={
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.1 }}
+                  style={{ display: "inline-flex", verticalAlign: "middle" }}
+                >
+                  <Share2 size={18} />
+                </motion.div>
+              }
+            >
+              <Grid.Container gap={2} justify="center">
+                <FacebookShareButton url={shareUrl}>
+                  <FacebookIcon size={18} round />
+                </FacebookShareButton>
+                <Spacer x={2} />
+                <TwitterShareButton url={shareUrl}>
+                  <TwitterIcon size={18} round />
+                </TwitterShareButton>
+                <Spacer x={2} />
+                <WhatsappShareButton url={shareUrl}>
+                  <WhatsappIcon size={18} round />
+                </WhatsappShareButton>
+              </Grid.Container>
+            </Popup>
+            {currentUser ? (
+              <Popup
+                on="click"
+                position="top center"
+                open={showSavePopup}
+                onOpen={() => setShowSavePopup(true)}
+                onClose={() => setShowSavePopup(false)}
+                arrow={false}
+                contentStyle={{
+                  background: "black",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                }}
+                trigger={
+                  <motion.div
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ duration: 0.1 }}
+                    style={{ display: "inline-flex", verticalAlign: "middle" }}
+                  >
+                    {isSaved ? (
+                      <span onClick={(e) => e.stopPropagation()}>
+                        <Award onClick={handleSavePost} size={18} />
+                      </span>
+                    ) : (
+                      <span onClick={(e) => e.stopPropagation()}>
+                        <Star onClick={handleSavePost} size={18} />
+                      </span>
+                    )}
+                  </motion.div>
+                }
+              >
+                <Grid.Container gap={2} justify="center">
+                  <Text h6 size={15} color="white" css={{ m: 2, p: 2 }}>
+                    {isSaved ? "Post saved." : "Post unsaved."}
+                  </Text>
+                </Grid.Container>
+              </Popup>
+            ) : (
+              <Popup
+                on="click"
+                position="top center"
+                arrow={false}
+                contentStyle={{
+                  background: "black",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                }}
+                trigger={
+                  <motion.div
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ duration: 0.1 }}
+                    style={{ display: "inline-flex", verticalAlign: "middle" }}
+                  >
+                    <Star size={18} />
+                  </motion.div>
+                }
+              >
+                <Grid.Container gap={2} justify="center">
+                  <Text h6 size={15} color="white" css={{ m: 2, p: 2 }}>
+                    Please{" "}
+                    <span onClick={() => setShowAuthModal(true)}>
+                      <AuthButtons />
+                    </span>{" "}
+                    to save posts.
+                  </Text>
+                </Grid.Container>
+              </Popup>
+            )}
           </div>
         </Card.Footer>
       </Card>

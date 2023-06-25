@@ -13,7 +13,8 @@ import {
 import BlogListItem from "./BlogListItem";
 import { motion } from "framer-motion";
 
-const BlogList = ({ posts, headerText }) => {
+const BlogList = ({ posts, currentUser, headerText }) => {
+  console.log("Rendering BlogList component with posts", posts);
   return (
     <motion.div style={{ display: "block", width: "100%" }} initial="initial">
       <Spacer />
@@ -46,7 +47,7 @@ const BlogList = ({ posts, headerText }) => {
         <Grid.Container gap={2} justify="center" className="blog-list">
           {posts.map((post) => (
             <Grid xs={24} md={4} key={post.id} post={post}>
-              <BlogListItem key={post.id} post={post} user={post.user}>
+               <BlogListItem key={post.id} post={post} currentUser={currentUser} >
                 <Link href={`/blog/page/${post.id}`}>
                   <h2 style={{ cursor: "pointer" }}>{post.title}</h2>
                 </Link>

@@ -15,34 +15,42 @@ const CommentForm = ({ post, currentUser }) => {
       setError("Please enter a comment");
       return;
     }
-    
-    const { error } = await supabase
-      .from("comments")
-      .insert([{ post_id: post.id, user_id: currentUser.id, content }]);
 
-    if(error) {
-        setError("Error submitting comment: " + error.message);
-      } else {
-        setContent("");
-        setSuccess("Comment submitted.");
+    const fetchCommentCount = async (postId) => {
+      try {
+        const { data: comments, error } = await supabase
+          .from("blog_comments")
+          .select("id")
+          .eq("post_id", postId);
+
+        if (error) {
+          console.error("Error fetching comment count:", error.message);
+          throw error;
+        }
+
+        return comments.length;
+      } catch (error) {
+        console.error("Error fetching comment count:", error.message);
+        return 0;
       }
     };
-  
-    return (
-      <div>
-        <h3>Leave a comment</h3>
-        <form onSubmit={handleSubmit}>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          />
-          <button type="submit">Submit</button>
-        </form>
-        {error && <p>{error}</p>}
-        {success && <p>{success}</p>}
-      </div>
-    );
   };
-  
-  export default CommentForm;
+
+  return (
+    <div>
+      <h3>Leave a comment</h3>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+        />
+        <button type="submit">Submit</button>
+      </form>
+      {error && <p>{error}</p>}
+      {success && <p>{success}</p>}
+    </div>
+  );
+};
+
+export default CommentForm;

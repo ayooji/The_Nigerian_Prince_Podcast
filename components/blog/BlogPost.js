@@ -7,37 +7,39 @@ import { supabase } from "@/lib/supabaseClient";
 import { useState, useEffect } from "react";
 
 const BlogPost = ({ post, currentUser }) => {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(null);
+
   const fetchComments = async (postId) => {
     try {
       const { data: comments, error: commentsError } = await supabase
         .from("blog_comments")
         .select("id, post_id, content, created_at, user_id")
         .eq("post_id", postId);
-  
+
       if (commentsError) {
         console.error("Error fetching comments:", commentsError.message);
         throw commentsError;
       }
-  
+
       const user_ids = comments.map((comment) => comment.user_id);
-  
+
       const { data: users, error: usersError } = await supabase
-        .from("profiles").select("user_id, name")
+        .from("profiles")
+        .select("user_id, name")
         .in("user_id", user_ids);
-  
+
       if (usersError) {
         console.error("Error fetching user names:", usersError.message);
         throw usersError;
       }
-  
+
       let commentsWithUserNames = comments.map((comment) => {
         return {
           ...comment,
           name: users.find((user) => user.user_id === comment.user_id)?.name,
         };
       });
-  
+
       return commentsWithUserNames;
     } catch (error) {
       console.error("Error fetching comments:", error.message);
@@ -56,14 +58,20 @@ const BlogPost = ({ post, currentUser }) => {
       });
   }, [post.id]);
 
-  console.log('Rendering BlogPost component');
-  
+  console.log("Rendering BlogPost component");
+
   return (
     <div className="blog-post">
       <h1>{post.title}</h1>
       <ReactQuill value={post.content} readOnly={true} theme="snow" />
       <hr />
-      <CommentList comments={comments} />
+      {comments === null ? (
+        <p>Loading comments...</p>
+      ) : comments.length === 0 ? (
+        <p>No comments available.</p>
+      ) : (
+        <CommentList comments={comments} />
+      )}
       {currentUser && <CommentForm post={post} currentUser={currentUser} />}
     </div>
   );

@@ -23,7 +23,6 @@ export const categories = [
 ];
 
 const CategoryTabs = ({ onCategoryChange }) => {
-
   const hoverVariants = {
     hover: {
       scale: 1.05,
@@ -56,8 +55,6 @@ const CategoryTabs = ({ onCategoryChange }) => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 onClick={() => onCategoryChange(category)}
               >
-                
-
                 <Button auto size="sm" color="success" shadow bordered ghost>
                   {category}
                 </Button>
