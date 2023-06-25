@@ -9,7 +9,7 @@ const AuthButtons = () => {
   const router = useRouter();
 
   const handleSession = async (session) => {
-    console.log("User session:", session);
+    console.log("User:", session);
   
     if (session?.user) {
       const { data: profiles, error } = await supabase
