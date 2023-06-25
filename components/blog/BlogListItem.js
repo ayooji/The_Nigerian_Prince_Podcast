@@ -30,6 +30,8 @@ const BlogListItem = ({ post, currentUser }) => {
   const shareUrl = `https://nigerianprincepodcast.com/blog/page/${post.id}`;
   const [isSaved, setIsSaved] = useState(false);
   const [showSavePopup, setShowSavePopup] = useState(false);
+  const channel = supabase.channel("db-blog_comments");
+  const [commentCount, setCommentCount] = useState(0);
 
   console.log("User:", currentUser);
   const handleClick = () => {
@@ -134,6 +136,48 @@ const BlogListItem = ({ post, currentUser }) => {
       console.error("Error updating saved posts:", error.message);
     }
   };
+
+  channel.on(
+    "postgres_changes",
+    {
+      event: "INSERT",
+      schema: "public",
+      table: "blog_comments",
+    },
+    (payload) => {
+      const newComment = payload.new;
+      console.log("New comment added:", newComment);
+      // Check if the comment is for the current blog post
+      if (newComment.post_id === post.id) {
+        // Increment the comment count and update the UI
+        setCommentCount((prevCount) => prevCount + 1);
+      }
+    }
+  );
+
+  channel.subscribe((status) => {
+    if (status === "SUBSCRIBED") {
+      console.log("Subscribed to blog comments");
+    }
+  });
+
+  useEffect(() => {
+    // Fetch the initial comment count for the current blog post
+    const fetchCommentCount = async () => {
+      const { data, error } = await supabase
+        .from('blog_comments')
+        .select('id')
+        .eq('post_id', post.id);
+    
+      if (error) {
+        console.error("Error fetching comment count:", error.message);
+      } else {
+        setCommentCount(data.length);
+      }
+    };
+
+    fetchCommentCount();
+  }, [post.id]);
 
   return (
     <motion.div
@@ -261,27 +305,69 @@ const BlogListItem = ({ post, currentUser }) => {
               zIndex: "2",
             }}
           >
-            <motion.div
-              whileHover={{ scale: 1.2 }}
-              transition={{ duration: 0.1 }}
-              style={{ display: "inline-flex", verticalAlign: "middle" }}
-            >
-              <span>
-                <MessageCircle size={18} onClick={(e) => e.stopPropagation()} />
-              </span>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.2 }}
-              transition={{ duration: 0.1 }}
-              style={{ display: "inline-flex", verticalAlign: "middle" }}
-            >
-              <span>
-                <BookOpen size={18} />
-              </span>
-            </motion.div>
             <Popup
-              on="click"
+              on="hover"
+              position="top center"
+              arrow={false}
+              contentStyle={{
+                background: "black",
+                padding: "5px",
+                borderRadius: "5px",
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+              }}
+              trigger={
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.1 }}
+                  style={{ display: "inline-flex", verticalAlign: "middle" }}
+                >
+                  <span>
+                    <MessageCircle
+                      size={18}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <span>({commentCount})</span>
+                  </span>
+                </motion.div>
+              }
+            >
+              <Grid.Container gap={2} justify="center">
+                <Text h6 size={15} color="white" css={{ m: 2, p: 2 }}>
+                  View or Add Comments
+                </Text>
+              </Grid.Container>
+            </Popup>
+
+            <Popup
+              on="hover"
+              position="top center"
+              arrow={false}
+              contentStyle={{
+                background: "black",
+                padding: "5px",
+                borderRadius: "5px",
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+              }}
+              trigger={
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.1 }}
+                  style={{ display: "inline-flex", verticalAlign: "middle" }}
+                >
+                 
+                    <BookOpen size={18} />
+                 
+                </motion.div>
+              }
+            >
+              <Grid.Container gap={2} justify="center">
+                <Text h6 size={15} color="white" css={{ m: 2, p: 2 }}>
+                  Read Full Article
+                </Text>
+              </Grid.Container>
+            </Popup>
+            <Popup
+              on="hover"
               position="top center"
               arrow={false}
               contentStyle={{
@@ -300,6 +386,12 @@ const BlogListItem = ({ post, currentUser }) => {
                 </motion.div>
               }
             >
+              <Grid.Container gap={2} justify="center">
+                <Text h6 size={15} color="white" css={{ m: 2, p: 2 }}>
+                  Share Post
+                </Text>
+              </Grid.Container>
+
               <Grid.Container gap={2} justify="center">
                 <FacebookShareButton url={shareUrl}>
                   <FacebookIcon size={18} round />
@@ -354,7 +446,7 @@ const BlogListItem = ({ post, currentUser }) => {
               </Popup>
             ) : (
               <Popup
-                on="click"
+                on="hover"
                 position="top center"
                 arrow={false}
                 contentStyle={{
@@ -369,10 +461,24 @@ const BlogListItem = ({ post, currentUser }) => {
                     transition={{ duration: 0.1 }}
                     style={{ display: "inline-flex", verticalAlign: "middle" }}
                   >
-                    <Star size={18} />
+                    {isSaved ? (
+                      <span onClick={(e) => e.stopPropagation()}>
+                        <Award onClick={handleSavePost} size={18} />
+                      </span>
+                    ) : (
+                      <span onClick={(e) => e.stopPropagation()}>
+                        <Star onClick={handleSavePost} size={18} />
+                      </span>
+                    )}
                   </motion.div>
                 }
               >
+                <Grid.Container gap={2} justify="center">
+                  <Text b h6 size={15} color="white" css={{ m: 2, p: 2 }}>
+                    {isSaved ? "Unsave Post" : "Save Post"}
+                  </Text>
+                </Grid.Container>
+
                 <Grid.Container gap={2} justify="center">
                   <Text h6 size={15} color="white" css={{ m: 2, p: 2 }}>
                     Please{" "}
