@@ -29,6 +29,7 @@
     "framer-motion": "^10.12.16",
     "glslify": "^7.1.1",
     "i18n-iso-countries": "^7.6.0",
+    "lunr": "^2.3.9",
     "next": "^13.2.4",
     "next-seo": "^6.0.0",
     "next-themes": "^0.2.1",

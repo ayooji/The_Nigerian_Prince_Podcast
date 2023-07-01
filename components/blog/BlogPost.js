@@ -63,7 +63,7 @@ const BlogPost = ({ post, currentUser }) => {
   return (
     <div className="blog-post">
       <h1>{post.title}</h1>
-      <ReactQuill value={post.content} readOnly={true} theme="snow" />
+      <ReactQuill value={post.content_json.body} readOnly={true} theme="snow" />
       <hr />
       {comments === null ? (
         <p>Loading comments...</p>

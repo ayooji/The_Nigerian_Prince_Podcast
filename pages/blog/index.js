@@ -2,8 +2,7 @@ import { getAllBlogPosts } from "../../lib/supabaseClient";
 import BlogList from "@/components/blog/BlogList";
 import { NextSeo } from "next-seo";
 import CategoryTabs from "@/components/blog/CategoryTabs";
-import SearchBar from "@/components/blog/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   Text,
@@ -13,6 +12,7 @@ import {
   Loading,
   Row,
   Button,
+  Pagination,
 } from "@nextui-org/react";
 import { motion, useMotionValue } from "framer-motion";
 
@@ -28,25 +28,13 @@ const BlogIndex = ({ posts, user }) => {
   const [filteredPosts, setFilteredPosts] = useState(() => posts);
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  const [page, setPage] = useState(1);
+
   const handleSearch = (term) => {
     if (term === "" && selectedCategory === "") {
       setFilteredPosts(posts);
       return;
     }
-
-    const filtered = posts.filter((post) => {
-      const normalizedTerm = term.toLowerCase();
-      const normalizedTitle = post.title.toLowerCase();
-      const normalizedCategory = post.category.toLowerCase();
-
-      const matchTitle = normalizedTitle.includes(normalizedTerm);
-      const matchCategory = normalizedCategory.includes(
-        selectedCategory.toLowerCase()
-      );
-
-      return matchTitle && (selectedCategory === "" || matchCategory);
-    });
-
     setFilteredPosts(filtered);
   };
 
@@ -72,6 +60,16 @@ const BlogIndex = ({ posts, user }) => {
       transition: { duration: 0.3, ease: "easeInOut" },
     },
   };
+
+  useEffect(() => {
+    getAllBlogPosts(page)
+      .then((fetchedPosts) => {
+        setFilteredPosts(fetchedPosts);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error.message);
+      });
+  }, [page]);
 
   return (
     <>
@@ -101,11 +99,14 @@ const BlogIndex = ({ posts, user }) => {
           <CategoryTabs
             onCategoryChange={(category) => setSelectedCategory(category)}
           />
-          <SearchBar onSearch={handleSearch} />
 
           <Spacer y={0.5} />
 
           <BlogList posts={filteredPosts} currentUser={user} />
+          <Spacer x={0.5} />
+          <Grid.Container gap={2} justify="center">
+          <Pagination total={10} page={page} onChange={(e) => setPage(e)} />
+          </Grid.Container>
         </Grid.Container>
       </motion.div>
     </>
