@@ -13,18 +13,16 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <Grid.Container gap={4} justify="center">
-        <Grid>
+      <Grid>
         <Input
-        size="lg"
-        color="success"
-        placeholder="Search blog posts..."
-        value={searchTerm}
-        onChange={handleChange}
-        bordered 
-        
-
+          size="lg"
+          color="success"
+          placeholder="Search blog posts..."
+          value={searchTerm}
+          onChange={handleChange}
+          bordered
         />
-        </Grid>
+      </Grid>
     </Grid.Container>
   );
 };

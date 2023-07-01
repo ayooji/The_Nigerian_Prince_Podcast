@@ -13,6 +13,7 @@ import {
   Row,
   Button,
   Pagination,
+  Input,
 } from "@nextui-org/react";
 import { motion, useMotionValue } from "framer-motion";
 
@@ -27,8 +28,26 @@ export const getStaticProps = async () => {
 const BlogIndex = ({ posts, user }) => {
   const [filteredPosts, setFilteredPosts] = useState(() => posts);
   const [selectedCategory, setSelectedCategory] = useState("");
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  useEffect(() => {
+    setFilteredPosts(
+      posts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (post.content_json &&
+            post.content_json.body
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()))
+      )
+    );
+  }, [searchTerm, posts]);
 
   const handleSearch = (term) => {
     if (term === "" && selectedCategory === "") {
@@ -101,11 +120,23 @@ const BlogIndex = ({ posts, user }) => {
           />
 
           <Spacer y={0.5} />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleChange}
+          />
 
           <BlogList posts={filteredPosts} currentUser={user} />
           <Spacer x={0.5} />
           <Grid.Container gap={2} justify="center">
-          <Pagination total={10} page={page} onChange={(e) => setPage(e)} />
+            <Pagination
+              shadow
+              color="gradient"
+              total={10}
+              page={page}
+              onChange={(e) => setPage(e)}
+            />
           </Grid.Container>
         </Grid.Container>
       </motion.div>
