@@ -5,7 +5,7 @@ import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
 import { supabase } from "@/lib/supabaseClient";
 import { useState, useEffect } from "react";
-
+import { Card, Col, Image, Spacer, Tag, Text, Grid } from "@nextui-org/react";
 const BlogPost = ({ post, currentUser }) => {
   const [comments, setComments] = useState(null);
 
@@ -60,10 +60,54 @@ const BlogPost = ({ post, currentUser }) => {
 
   console.log("Rendering BlogPost component");
 
+  const modules = {
+    toolbar: false, // Disables toolbar, as this is a read-only instance.
+    clipboard: {
+      // Overrides default pasting behavior.
+      matchVisual: false,
+    },
+  };
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+    "color",
+    "table",
+  ];
+
   return (
-    <div className="blog-post">
-      <h1>{post.title}</h1>
-      <ReactQuill value={post.content_json.body} readOnly={true} theme="snow" />
+    <div className="post-header">
+      <Image src={post.image_url} alt={post.title} className="post-image" />
+      <div className="post-content">
+        <h1 className="post-title">{post.title}</h1>
+        <div className="post-info">
+          <span className="post-author">
+            By {post.profiles?.name || "Unknown Author"}
+          </span>
+          <span className="post-date">
+            Published on {new Date(post.created_at).toLocaleDateString()}
+          </span>
+        </div>
+      </div>
+      <ReactQuill
+        value={post.content_json.body}
+        readOnly={true}
+        theme="snow"
+        modules={modules}
+        formats={formats}
+      />
       <hr />
       {comments === null ? (
         <p>Loading comments...</p>
