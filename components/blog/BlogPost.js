@@ -88,36 +88,82 @@ const BlogPost = ({ post, currentUser }) => {
   ];
 
   return (
-    <div className="post-header">
-      <Image src={post.image_url} alt={post.title} className="post-image" />
-      <div className="post-content">
-        <h1 className="post-title">{post.title}</h1>
-        <div className="post-info">
-          <span className="post-author">
-            By {post.profiles?.name || "Unknown Author"}
-          </span>
-          <span className="post-date">
-            Published on {new Date(post.created_at).toLocaleDateString()}
-          </span>
-        </div>
+    <Grid.Container gap={2} justify="center">
+      <div className="post-header">
+        <Grid md={8} xs={24} justify="center">
+          <Card variant="bordered" isHoverable>
+            <Image
+              src={post.image_url}
+              alt={post.title}
+              className="post-image"
+            />
+          </Card>
+        </Grid>
+
+        <Grid justify="center">
+          <div>
+            <Text
+              size={25}
+              h1
+              css={{
+                textGradient: "45deg, $white -5%, $green600 90%",
+                display: "-webkit-box",
+                WebkitLineClamp: 6,
+                WebkitBoxOrient: "horizontal",
+              }}
+            >
+              {post.title}
+            </Text>
+
+            <div className="post-info">
+              <span className="post-author">
+                By {post.profiles?.name || "Unknown Author"}
+              </span>
+              <span className="post-date">
+                Published on {new Date(post.created_at).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
+        </Grid>
+
+        <Grid.Container justify="center">
+          <Card
+            variant="bordered"
+            isHoverable
+            css={{
+              borderRadius: "15px",
+              boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
+              padding: "1em",
+              fontFamily: "'Times New Roman', Times, serif",
+              lineHeight: "1.6",
+              fontSize: "1.1em",
+
+              border: "1px solid #999",
+              overflow: "auto",
+              whiteSpace: "normal",
+              textAlign: "justify",
+            }}
+          >
+            <ReactQuill
+              value={post.content_json.body}
+              readOnly={true}
+              theme="snow"
+              modules={modules}
+              formats={formats}
+            />
+          </Card>
+        </Grid.Container>
+        <hr />
+        {comments === null ? (
+          <p>Loading comments...</p>
+        ) : comments.length === 0 ? (
+          <p>No comments available.</p>
+        ) : (
+          <CommentList comments={comments} />
+        )}
+        {currentUser && <CommentForm post={post} currentUser={currentUser} />}
       </div>
-      <ReactQuill
-        value={post.content_json.body}
-        readOnly={true}
-        theme="snow"
-        modules={modules}
-        formats={formats}
-      />
-      <hr />
-      {comments === null ? (
-        <p>Loading comments...</p>
-      ) : comments.length === 0 ? (
-        <p>No comments available.</p>
-      ) : (
-        <CommentList comments={comments} />
-      )}
-      {currentUser && <CommentForm post={post} currentUser={currentUser} />}
-    </div>
+    </Grid.Container>
   );
 };
 
