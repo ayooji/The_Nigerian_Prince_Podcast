@@ -111,3 +111,8 @@
 }
 
 
+@media only screen and (max-width: 768px) {
+  .quill-container  {
+    max-width: 190% !important;
+  }
+}

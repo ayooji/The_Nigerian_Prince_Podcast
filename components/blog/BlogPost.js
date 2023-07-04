@@ -90,15 +90,13 @@ const BlogPost = ({ post, currentUser }) => {
   return (
     <Grid.Container gap={2} justify="center">
       <div className="post-header">
-        <Grid md={7} xs={24} justify="center">
+        <Grid md={4} xs={24} justify="center">
           <Card variant="bordered" isHoverable>
             <Image
               src={post.image_url}
               alt={post.title}
               className="post-image"
               objectFit="cover"
-             
-           
             />
           </Card>
         </Grid>
@@ -130,34 +128,27 @@ const BlogPost = ({ post, currentUser }) => {
         </Grid>
 
         <Grid.Container justify="center">
-          <Card
-            variant="bordered"
-            isHoverable
-            css={{
-              borderRadius: "15px",
-              boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
-              padding: "1em",
-              fontFamily: "'Times New Roman', Times, serif",
-              lineHeight: "1.6",
-              fontSize: "1.1em",
-              background: "linear-gradient(to bottom, #2b2b2b,  #004f00)",
+          <Grid.Container justify="center">
+            <ReactQuill
+              value={post.content_json.body}
+              readOnly={true}
+              theme="snow"
+              modules={modules}
+              formats={formats}
+              className="quill-container"
+            
+              style={{
+               
+                boxShadow: "0 0 10px rgba(0, 128, 0, 0.5)",
+                border: "2.5px solid rgba(0, 128, 0, 0.5)",
+                borderRadius: "10px",
+                overflow: "hidden",
+                backgroundColor: '$black',
+                maxWidth: '90%', height: 'auto',
 
-              border: "1px solid #999",
-              overflow: "auto",
-              whiteSpace: "normal",
-              textAlign: "justify",
-            }}
-          >
-            <Grid.Container justify="center" md={12}>
-              <ReactQuill
-                value={post.content_json.body}
-                readOnly={true}
-                theme="snow"
-                modules={modules}
-                formats={formats}
-              />
-            </Grid.Container>
-          </Card>
+              }}
+            />
+          </Grid.Container>
         </Grid.Container>
         <hr />
         {comments === null ? (
@@ -168,7 +159,6 @@ const BlogPost = ({ post, currentUser }) => {
           <CommentList comments={comments} />
         )}
         {currentUser && <CommentForm post={post} currentUser={currentUser} />}
-        
       </div>
     </Grid.Container>
   );
