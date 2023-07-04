@@ -90,12 +90,15 @@ const BlogPost = ({ post, currentUser }) => {
   return (
     <Grid.Container gap={2} justify="center">
       <div className="post-header">
-        <Grid md={8} xs={24} justify="center">
+        <Grid md={7} xs={24} justify="center">
           <Card variant="bordered" isHoverable>
             <Image
               src={post.image_url}
               alt={post.title}
               className="post-image"
+              objectFit="cover"
+             
+           
             />
           </Card>
         </Grid>
@@ -137,6 +140,7 @@ const BlogPost = ({ post, currentUser }) => {
               fontFamily: "'Times New Roman', Times, serif",
               lineHeight: "1.6",
               fontSize: "1.1em",
+              background: "linear-gradient(to bottom, #2b2b2b,  #004f00)",
 
               border: "1px solid #999",
               overflow: "auto",
@@ -144,13 +148,15 @@ const BlogPost = ({ post, currentUser }) => {
               textAlign: "justify",
             }}
           >
-            <ReactQuill
-              value={post.content_json.body}
-              readOnly={true}
-              theme="snow"
-              modules={modules}
-              formats={formats}
-            />
+            <Grid.Container justify="center" md={12}>
+              <ReactQuill
+                value={post.content_json.body}
+                readOnly={true}
+                theme="snow"
+                modules={modules}
+                formats={formats}
+              />
+            </Grid.Container>
           </Card>
         </Grid.Container>
         <hr />
@@ -162,6 +168,7 @@ const BlogPost = ({ post, currentUser }) => {
           <CommentList comments={comments} />
         )}
         {currentUser && <CommentForm post={post} currentUser={currentUser} />}
+        
       </div>
     </Grid.Container>
   );
