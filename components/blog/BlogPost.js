@@ -6,6 +6,8 @@ import CommentForm from "./CommentForm";
 import { supabase } from "@/lib/supabaseClient";
 import { useState, useEffect } from "react";
 import { Card, Col, Image, Spacer, Tag, Text, Grid } from "@nextui-org/react";
+import { isMobile } from "react-device-detect";
+
 const BlogPost = ({ post, currentUser }) => {
   const [comments, setComments] = useState(null);
 
@@ -135,19 +137,32 @@ const BlogPost = ({ post, currentUser }) => {
               theme="snow"
               modules={modules}
               formats={formats}
-              className="quill-container"
-            
+              className="ql-container"
               style={{
-               
                 boxShadow: "0 0 10px rgba(0, 128, 0, 0.5)",
                 border: "2.5px solid rgba(0, 128, 0, 0.5)",
                 borderRadius: "10px",
                 overflow: "hidden",
-                backgroundColor: '$black',
-                maxWidth: '90%', height: 'auto',
-
+                backgroundColor: "$black",
+                maxWidth: "90%",
+                height: "auto",
               }}
             />
+            <style jsx global>
+              {`
+                .ql-container img {
+                  width: 100%;
+                  height: auto;
+                  display: block;
+                  margin: 0 auto;
+                }
+                @media only screen and (min-width: 768px) {
+                  .ql-container img {
+                    width: 50%;
+                  }
+                }
+              `}
+            </style>
           </Grid.Container>
         </Grid.Container>
         <hr />
