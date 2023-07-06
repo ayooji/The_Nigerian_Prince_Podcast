@@ -12,7 +12,7 @@ const EpisodePage = ({ episode }) => {
       <Head>
         <title>{episode.title}</title>
       </Head>
-      <div className="container mx-auto px-4">
+      <Grid.Container className="container mx-auto px-4">
         <Spacer />
         <Grid.Container gap={1} justify="center">
           <Text b h3 justify="center" className="text-white text-4xl my-8">
@@ -24,51 +24,50 @@ const EpisodePage = ({ episode }) => {
           justify="center"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-        <Grid xs={24} md={9}
-        >
-          <Card variant="bordered" className="bg-gray-700">
-            <Card.Body>
-              <Row>
-                <Col>
+          <Grid md={5} xs={24} justify="center">
+            <Card variant="bordered" className="bg-gray-700">
+              <Card.Body>
+                <Row>
                   <Col>
-                    <Card.Image
-                      src={episode.artwork_url || "/logo.jpg"}
-                      alt="Episode artwork"
-                      objectFit="cover"
-                      width="100%"
-                      height="100%"
-                    />
-                  </Col>
-                  <div className="bg-gray-800 rounded-lg p-1 mx-4 h-full">
-                    <div className="bg-gray-900 rounded-lg p-4 h-full">
-                      <AudioPlayer
-                        className="w-full"
-                        src={episode.audio_url}
-                        style={{ maxWidth: "100%" }}
+                    <Col>
+                      <Card.Image
+                        src={episode.artwork_url || "/logo.jpg"}
+                        alt="Episode artwork"
+                        objectFit="cover"
+                        width="100%"
+                        height="100%"
                       />
-                      <div className="mt-4 prose prose-lg text-white">
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: episode.description,
-                          }}
+                    </Col>
+                    <div className="bg-gray-800 rounded-lg p-1 mx-4 h-full">
+                      <div className="bg-gray-900 rounded-lg p-4 h-full">
+                        <AudioPlayer
+                          className="w-full"
+                          src={episode.audio_url}
+                          style={{ maxWidth: "100%" }}
+                          
                         />
+                        <div className="mt-4 prose prose-lg text-white">
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: episode.description,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Grid>
+                  </Col>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <Text small color="gray-300" className="mt-2">
+                  Published:{" "}
+                  {new Date(episode.published_at).toLocaleDateString()}
+                </Text>
+              </Card.Footer>
+            </Card>
+          </Grid>
         </Grid.Container>
-        <Card.Footer>
-         
-          <Text small color="gray-300" className="mt-2" >
-            Published: {new Date(episode.published_at).toLocaleDateString()}
-          </Text>
-      
-        </Card.Footer>
-      </div>
+      </Grid.Container>
     </>
   );
 };

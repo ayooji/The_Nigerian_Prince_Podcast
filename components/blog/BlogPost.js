@@ -94,7 +94,21 @@ const BlogPost = ({ post, currentUser }) => {
     <Grid.Container gap={2} justify="center">
       <div className="post-header">
         <Grid md={4} xs={24} justify="center">
-          <Card variant="bordered" isHoverable>
+          <Card variant="bordered" isHoverable  css={{
+           backgroundColor: "$black",
+           borderRadius: "16px",
+           padding: "16px",
+           fontFamily: "sans-serif",
+           fontSize: "16px",
+           lineHeight: "1.5",
+           color: "#333",
+           transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+           "&:hover": {
+             transform: "translateY(-5px)",
+             boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+           },
+           borderImage: "linear-gradient(to bottom left, transparent, $green700, $blue700 ) 40",
+         }}>
             <Image
               src={post.image_url}
               alt={post.title}
