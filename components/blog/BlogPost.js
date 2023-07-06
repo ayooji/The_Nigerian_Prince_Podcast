@@ -50,6 +50,7 @@ const BlogPost = ({ post, currentUser }) => {
   };
 
   useEffect(() => {
+    
     fetchComments(post.id)
       .then((fetchedComments) => {
         console.log("Fetched comments:", fetchedComments);
@@ -130,7 +131,33 @@ const BlogPost = ({ post, currentUser }) => {
         </Grid>
 
         <Grid.Container justify="center">
-          <Grid.Container justify="center">
+          <Grid.Container justify="center" className="react-quill-container">
+            <style jsx global>
+              {`
+                .ql-container img {
+                  width: 100%;
+                  height: auto;
+                  display: block;
+                  margin: 0 auto;
+                }
+                @media only screen and (min-width: 768px) {
+                  .ql-container img {
+                    width: 50%;
+                  }
+                }
+
+                .react-quill-container {
+                  width: 100%;
+                }
+
+                @media only screen and (min-width: 768px) {
+                  .react-quill-container {
+                    width: 70%;
+                    margin: auto;
+                  }
+                }
+              `}
+            </style>
             <ReactQuill
               value={post.content_json.body}
               readOnly={true}
@@ -148,19 +175,42 @@ const BlogPost = ({ post, currentUser }) => {
                 height: "auto",
               }}
             />
+
             <style jsx global>
               {`
-                .ql-container img {
+                .ql-container img .ql-video{
                   width: 100%;
                   height: auto;
                   display: block;
                   margin: 0 auto;
                 }
+               
                 @media only screen and (min-width: 768px) {
                   .ql-container img {
-                    width: 50%;
+                    width: 60%;
                   }
                 }
+
+                .react-quill-container {
+                  width: 100%;
+                }
+
+                @media only screen and (min-width: 768px) {
+                  .react-quill-container {
+                    width: 80%;
+                    margin: auto;
+                  }
+                }
+                .ql-container video {
+                  width: 100%;
+                  height: auto;
+                  display: block;
+                  margin: 0 auto;
+                }
+
+              
+
+
               `}
             </style>
           </Grid.Container>
