@@ -9,6 +9,7 @@ import SEO from "../next-seo.config";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/router";
 import AuthContext from '../contexts/authContext';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // Call createTheme for light and dark themes, adding color and typography customization
 
@@ -68,7 +69,10 @@ const darkTheme = createTheme({
   },
 });
 
+const queryClient = new QueryClient();
+
 function MyApp({ Component, pageProps }) {
+
   const [user, setUser] = useState(null);
   const router = useRouter();
   const fetchUserProfile = async (userId) => {
@@ -119,10 +123,12 @@ function MyApp({ Component, pageProps }) {
       }}
     >
       <NextUIProvider>
+      <QueryClientProvider client={queryClient}>
         <DefaultSeo {...SEO} />
         <Layout>
           <Component {...pageProps} user={user} />
         </Layout>
+        </QueryClientProvider>
       </NextUIProvider>
     </NextThemesProvider>
     </AuthContext.Provider>

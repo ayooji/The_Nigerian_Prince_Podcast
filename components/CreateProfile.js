@@ -152,6 +152,7 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
+            type="text"
           />
           <Spacer />
           <Input
@@ -166,6 +167,7 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
+            type="text"
           />
           <input {...getInputProps()} />
           <Spacer />
@@ -194,6 +196,7 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
+            type="text"
           />
           <Spacer />
           <Select
@@ -215,6 +218,7 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
+            type="text"
           />
           <Spacer />
           <Input
@@ -228,6 +232,7 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
+            type="text"
           />
           <Spacer />
           <Input
@@ -241,6 +246,7 @@ const CreateProfile = ({ currentUser }) => {
             fullWidth
             color="primary"
             size="lg"
+            type="text"
           />
           <Spacer />
           <Button

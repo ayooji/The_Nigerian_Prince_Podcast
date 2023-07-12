@@ -3,11 +3,16 @@ import React, { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import AuthButtons from "../AuthButtons";
 import { useRouter } from "next/router";
+import { useMutation } from 'react-query';
 
-const CommentForm = ({ post, currentUser }) => {
+
+
+const CommentForm = ({ post, currentUser, setComments, comments }) => {
   const [loading, setLoading] = useState(false);
   const [newComment, setNewComment] = useState("");
   const router = useRouter();
+
+  
 
   const addNewComment = async () => {
     try {
@@ -22,6 +27,7 @@ const CommentForm = ({ post, currentUser }) => {
 
       // After submitting the form, replace the current page in history to trigger a re-render
       router.replace(router.asPath);
+      setNewComment(''); 
     } catch (error) {
       alert(error.message);
     } finally {
@@ -34,7 +40,7 @@ const CommentForm = ({ post, currentUser }) => {
     return (
       <Grid.Container justify="center">
         <div>
-          <Text p>Please log in to leave comments.</Text>
+          <Text >Please log in to leave comments.</Text>
           <Grid.Container justify="center">
           <AuthButtons />
           </Grid.Container>
