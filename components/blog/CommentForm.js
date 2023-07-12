@@ -32,46 +32,47 @@ const CommentForm = ({ post, currentUser }) => {
   // If currentUser is null, it means the user is not logged in.
   if (!currentUser)
     return (
-      <div>
-        <p>Please log in to leave comments.</p>
-        <AuthButtons />
-      </div>
+      <Grid.Container justify="center">
+        <div>
+          <Text p>Please log in to leave comments.</Text>
+          <Grid.Container justify="center">
+          <AuthButtons />
+          </Grid.Container>
+        </div>
+      </Grid.Container>
     );
 
   return (
     <div>
-     
       <Spacer y={0.5} />
       <Grid.Container gap={2} justify="center">
-      <Textarea
-        type="text"
-        size="xl"
-        placeholder="Leave Your Comment..."
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-        bordered
-        color="success"
-        minRows={1}
-        maxRows={10}
-        
-      />
-       </Grid.Container>
+        <Textarea
+          type="text"
+          size="xl"
+          placeholder="Leave Your Comment..."
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          bordered
+          color="success"
+          minRows={1}
+          maxRows={10}
+        />
+      </Grid.Container>
       <Spacer y={0.5} />
       <Grid.Container gap={2} justify="center">
-      <Button
-        loading={loading.toString()}
-        onClick={addNewComment}
-        disabled={newComment.trim() === ""}
-        color="gradient"
-        size="md"
-        shadow
-        auto
-        bordered
-        ghost
-        
-      >
-        Submit
-      </Button>
+        <Button
+          loading={loading.toString()}
+          onClick={addNewComment}
+          disabled={newComment.trim() === ""}
+          color="gradient"
+          size="md"
+          shadow
+          auto
+          bordered
+          ghost
+        >
+          Submit
+        </Button>
       </Grid.Container>
     </div>
   );
