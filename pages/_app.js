@@ -8,6 +8,7 @@ import { DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/router";
+import AuthContext from '../contexts/authContext';
 
 // Call createTheme for light and dark themes, adding color and typography customization
 
@@ -109,6 +110,7 @@ function MyApp({ Component, pageProps }) {
   }, [router]);
 
   return (
+    <AuthContext.Provider value={{ user, setUser }}>
     <NextThemesProvider
       defaultTheme="dark"
       attribute="class"
@@ -123,6 +125,7 @@ function MyApp({ Component, pageProps }) {
         </Layout>
       </NextUIProvider>
     </NextThemesProvider>
+    </AuthContext.Provider>
   );
 }
 

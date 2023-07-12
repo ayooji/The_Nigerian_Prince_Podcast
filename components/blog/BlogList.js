@@ -22,7 +22,7 @@ const BlogList = ({ posts, currentUser, headerText }) => {
         {headerText && (
           <Grid.Container gap={2} justify="center">
             <Text
-              b
+              
               size="$xl"
               css={{
                 textGradient: "45deg, $white -100%, $green800 100%",

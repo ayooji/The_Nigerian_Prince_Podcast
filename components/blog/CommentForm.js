@@ -1,54 +1,78 @@
-import { useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { Button, Input, Grid, Text, Textarea, Spacer } from "@nextui-org/react";
+import React, { useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import AuthButtons from "../AuthButtons";
+import { useRouter } from "next/router";
 
 const CommentForm = ({ post, currentUser }) => {
-  const [content, setContent] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
+  const addNewComment = async () => {
+    try {
+      setLoading(true);
+      const result = await supabase
+        .from("blog_comments")
+        .insert([
+          { post_id: post.id, content: newComment, user_id: currentUser.id },
+        ]);
 
-    if (!content.trim()) {
-      setError("Please enter a comment");
-      return;
+      if (result.error) throw result.error;
+
+      // After submitting the form, replace the current page in history to trigger a re-render
+      router.replace(router.asPath);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
     }
-
-    const fetchCommentCount = async (postId) => {
-      try {
-        const { data: comments, error } = await supabase
-          .from("blog_comments")
-          .select("id")
-          .eq("post_id", postId);
-
-        if (error) {
-          console.error("Error fetching comment count:", error.message);
-          throw error;
-        }
-
-        return comments.length;
-      } catch (error) {
-        console.error("Error fetching comment count:", error.message);
-        return 0;
-      }
-    };
   };
+
+  // If currentUser is null, it means the user is not logged in.
+  if (!currentUser)
+    return (
+      <div>
+        <p>Please log in to leave comments.</p>
+        <AuthButtons />
+      </div>
+    );
 
   return (
     <div>
-      <h3>Leave a comment</h3>
-      <form onSubmit={handleSubmit}>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        />
-        <button type="submit">Submit</button>
-      </form>
-      {error && <p>{error}</p>}
-      {success && <p>{success}</p>}
+     
+      <Spacer y={0.5} />
+      <Grid.Container gap={2} justify="center">
+      <Textarea
+        type="text"
+        size="xl"
+        placeholder="Leave Your Comment..."
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}
+        bordered
+        color="success"
+        minRows={1}
+        maxRows={10}
+        
+      />
+       </Grid.Container>
+      <Spacer y={0.5} />
+      <Grid.Container gap={2} justify="center">
+      <Button
+        loading={loading.toString()}
+        onClick={addNewComment}
+        disabled={newComment.trim() === ""}
+        color="gradient"
+        size="md"
+        shadow
+        auto
+        bordered
+        ghost
+        
+      >
+        Submit
+      </Button>
+      </Grid.Container>
     </div>
   );
 };

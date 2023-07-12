@@ -5,10 +5,20 @@ import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
 import { supabase } from "@/lib/supabaseClient";
 import { useState, useEffect } from "react";
-import { Card, Col, Image, Spacer, Tag, Text, Grid } from "@nextui-org/react";
+import {
+  Card,
+  Col,
+  Image,
+  Spacer,
+  Tag,
+  Text,
+  Grid,
+  Link,
+} from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
 
-const BlogPost = ({ post, currentUser }) => {
+
+const BlogPost = ({ post, currentUser  }) => {
   const [comments, setComments] = useState(null);
 
   const fetchComments = async (postId) => {
@@ -50,7 +60,6 @@ const BlogPost = ({ post, currentUser }) => {
   };
 
   useEffect(() => {
-    
     fetchComments(post.id)
       .then((fetchedComments) => {
         console.log("Fetched comments:", fetchedComments);
@@ -62,6 +71,7 @@ const BlogPost = ({ post, currentUser }) => {
   }, [post.id]);
 
   console.log("Rendering BlogPost component");
+  console.log(currentUser);
 
   const modules = {
     toolbar: false, // Disables toolbar, as this is a read-only instance.
@@ -90,25 +100,32 @@ const BlogPost = ({ post, currentUser }) => {
     "table",
   ];
 
+
   return (
     <Grid.Container gap={2} justify="center">
       <div className="post-header">
         <Grid md={4} xs={24} justify="center">
-          <Card variant="bordered" isHoverable  css={{
-           backgroundColor: "$black",
-           borderRadius: "16px",
-           padding: "16px",
-           fontFamily: "sans-serif",
-           fontSize: "16px",
-           lineHeight: "1.5",
-           color: "#333",
-           transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-           "&:hover": {
-             transform: "translateY(-5px)",
-             boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-           },
-           borderImage: "linear-gradient(to bottom left, transparent, $green700, $blue700 ) 40",
-         }}>
+          <Card
+            variant="bordered"
+            isHoverable
+            css={{
+              backgroundColor: "$black",
+              borderRadius: "16px",
+              padding: "16px",
+              fontFamily: "sans-serif",
+              fontSize: "16px",
+              lineHeight: "1.5",
+              color: "#333",
+              transition:
+                "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+              "&:hover": {
+                transform: "translateY(-5px)",
+                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+              },
+              borderImage:
+                "linear-gradient(to bottom left, transparent, $green700, $blue700 ) 40",
+            }}
+          >
             <Image
               src={post.image_url}
               alt={post.title}
@@ -192,13 +209,13 @@ const BlogPost = ({ post, currentUser }) => {
 
             <style jsx global>
               {`
-                .ql-container img .ql-video{
+                .ql-container img .ql-video {
                   width: 100%;
                   height: auto;
                   display: block;
                   margin: 0 auto;
                 }
-               
+
                 @media only screen and (min-width: 768px) {
                   .ql-container img {
                     width: 60%;
@@ -221,10 +238,6 @@ const BlogPost = ({ post, currentUser }) => {
                   display: block;
                   margin: 0 auto;
                 }
-
-              
-
-
               `}
             </style>
           </Grid.Container>
@@ -237,7 +250,13 @@ const BlogPost = ({ post, currentUser }) => {
         ) : (
           <CommentList comments={comments} />
         )}
-        {currentUser && <CommentForm post={post} currentUser={currentUser} />}
+        
+        <div>
+        
+        {
+           <CommentForm post={post} currentUser={currentUser} />
+        }
+        </div>
       </div>
     </Grid.Container>
   );

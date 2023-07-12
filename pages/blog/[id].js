@@ -2,6 +2,12 @@ import { useRouter } from "next/router";
 import { getBlogPostById , getAllBlogPosts} from "../../lib/supabaseClient";
 import BlogPost from "@/components/blog/BlogPost";
 import { NextSeo } from "next-seo";
+import React, { useContext } from 'react';
+import AuthContext from '../../contexts/authContext';
+
+
+
+
 
 export const getStaticPaths = async () => {
   const posts = await getAllBlogPosts();
@@ -20,6 +26,7 @@ export const getStaticProps = async ({ params }) => {
 };
 
 const BlogPostPage = ({ post }) => {
+  const { user } = useContext(AuthContext);
   const router = useRouter();
 
   if (router.isFallback) {
@@ -37,7 +44,7 @@ const BlogPostPage = ({ post }) => {
         }}
       />
       <div>
-        <BlogPost post={post} />
+      <BlogPost post={post} currentUser={user} />
       </div>
     </>
   );
