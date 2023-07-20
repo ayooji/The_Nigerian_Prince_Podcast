@@ -22,7 +22,6 @@ const BlogList = ({ posts, currentUser, headerText }) => {
         {headerText && (
           <Grid.Container gap={2} justify="center">
             <Text
-              
               size="$xl"
               css={{
                 textGradient: "45deg, $white -100%, $green800 100%",
@@ -47,7 +46,7 @@ const BlogList = ({ posts, currentUser, headerText }) => {
         <Grid.Container gap={2} justify="center" className="blog-list">
           {posts.map((post) => (
             <Grid xs={24} md={4} key={post.id} post={post}>
-               <BlogListItem key={post.id} post={post} currentUser={currentUser} >
+              <BlogListItem key={post.id} post={post} currentUser={currentUser}>
                 <Link href={`/blog/page/${post.id}`}>
                   <h2 style={{ cursor: "pointer" }}>{post.title}</h2>
                 </Link>

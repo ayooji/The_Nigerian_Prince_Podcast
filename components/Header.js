@@ -66,24 +66,24 @@ const Header = () => {
         .from("profiles")
         .select("image_url")
         .eq("user_id", user_id);
-  
+
       if (error) {
         console.error("Error fetching avatar: ", error.message);
         return null;
       }
-  
+
       if (!data || data.length !== 1) {
         console.error("Unexpected number of rows returned for avatar URL");
-        return null
-      }
-
-        return data[0].image_url;
-      } catch (error) {
-        console.error("Error fetching avatar: ", error);
         return null;
       }
-    };
-    
+
+      return data[0].image_url;
+    } catch (error) {
+      console.error("Error fetching avatar: ", error);
+      return null;
+    }
+  };
+
   return (
     <Navbar isBordered variant="sticky">
       <Navbar.Brand className="lightingEffect">
@@ -100,19 +100,22 @@ const Header = () => {
         </Text>
       </Navbar.Brand>
 
-      <Navbar.Content enableCursorHighlight
-          activeColor="success"
-          hideIn="xs"
-          variant="highlight-rounded">
+      <Navbar.Content
+        enableCursorHighlight
+        activeColor="success"
+        hideIn="xs"
+        variant="highlight-rounded"
+      >
         <Navbar.Link href="/">Home</Navbar.Link>
         <Navbar.Link isActive href="/episode">
           Episodes
         </Navbar.Link>
-        <Spacer x={0.5}/>
+        <Navbar.Link href="/blog">Blogs</Navbar.Link>
+        <Spacer x={0.5} />
         <Navbar.Link b isActive variant="underline" href="/village-square">
           Village Square
         </Navbar.Link>
-        <Navbar.Link href="/blog">Blogs</Navbar.Link>
+
         <Navbar.Link href="/guests">Guests</Navbar.Link>
         <Navbar.Link href="/sponsorship">Sponsorship &amp; Ads</Navbar.Link>
         <Navbar.Link href="/events">Events</Navbar.Link>
