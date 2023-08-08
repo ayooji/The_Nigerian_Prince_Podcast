@@ -67,7 +67,7 @@ const CommentList = ({ comments }) => {
                   </Text>
                   <Text
                     color="#787F85"
-                    size={14}
+                    size={12}
                   >
                     {new Date(comment.created_at).toLocaleString()}
                   </Text>
