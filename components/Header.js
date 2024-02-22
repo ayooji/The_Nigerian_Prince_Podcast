@@ -118,7 +118,7 @@ const Header = () => {
 
         <Navbar.Link href="/guests">Guests</Navbar.Link>
         <Navbar.Link href="/sponsorship">Sponsorship &amp; Ads</Navbar.Link>
-        <Navbar.Link href="/events">Events</Navbar.Link>
+        <Navbar.Link href="/shop">Shop</Navbar.Link>
         <Navbar.Link href="/about">About</Navbar.Link>
       </Navbar.Content>
       <Navbar.Content>

@@ -12,13 +12,9 @@ export const categories = [
   "Current Events Digest",
   "Business & Finance Insights",
   "Entrepreneurship",
-  "Education Corner",
-  "Lifestyle Trends",
   "Food & Nutrition",
   "Agriculture & Farming",
   "Science Discoveries",
-  "Sports World",
-  "Arts & Culture Scene",
   "Street OT Chronicles",
 ];
 
