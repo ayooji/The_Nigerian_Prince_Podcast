@@ -110,3 +110,27 @@
   height: 100;
 }
 
+/* Custom CSS for golden card effect */
+.card-golden {
+  background: linear-gradient(145deg, #18ad4a, #ffb700);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-golden:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.card-text {
+  color: #000000;
+}
+
+.card-footer-buttons button {
+  margin-right: 5px;
+}
+
+.card-footer-buttons .fa-icon {
+  color: #ffd700;
+}

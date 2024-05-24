@@ -3,6 +3,7 @@ import { Grid, Container, Text, Spacer } from "@nextui-org/react";
 import GuestCard from "../components/GuestCard"; // Ensure the correct import path
 import guests from "../public/guests.json"; // Importing the guest data
 
+
 const GuestPage = () => {
   return (
     <div className="container mx-auto px-4">
