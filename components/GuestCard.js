@@ -95,7 +95,7 @@ const GuestCard = ({ guest }) => {
             <Grid>
               <button
                 style={buttonStyle}
-                onClick={() => window.open(`/episodes/${guest.episodeId}`, "_blank")}
+                onClick={() => window.open(`/episode/${guest.episodeId}`, "_blank")}
               >
                 <FaPodcast style={iconStyle} />
                 Listen
