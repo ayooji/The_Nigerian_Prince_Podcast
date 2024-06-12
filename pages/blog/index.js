@@ -12,10 +12,10 @@ import {
   Loading,
   Row,
   Button,
-  Pagination,
   Input,
 } from "@nextui-org/react";
 import { motion, useMotionValue } from "framer-motion";
+import { Pagination } from "react-bootstrap";
 
 export const getStaticProps = async () => {
   const posts = await getAllBlogPosts();
@@ -130,13 +130,21 @@ const BlogIndex = ({ posts, user }) => {
           <BlogList posts={filteredPosts} currentUser={user} />
           <Spacer x={0.5} />
           <Grid.Container gap={2} justify="center">
-            <Pagination
-              shadow
-              color="gradient"
-              total={10}
-              page={page}
-              onChange={(e) => setPage(e)}
-            />
+            <Pagination>
+              <Pagination.First onClick={() => setPage(1)} />
+              <Pagination.Prev onClick={() => setPage(page - 1)} />
+              {[...Array(10).keys()].map((num) => (
+                <Pagination.Item
+                  key={num}
+                  active={num + 1 === page}
+                  onClick={() => setPage(num + 1)}
+                >
+                  {num + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next onClick={() => setPage(page + 1)} />
+              <Pagination.Last onClick={() => setPage(10)} />
+            </Pagination>
           </Grid.Container>
         </Grid.Container>
       </motion.div>

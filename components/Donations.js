@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Text, Button, Input, Spacer } from '@nextui-org/react';
+import { Container, Text, Button, Input, Spacer, Card, Grid } from '@nextui-org/react';
 import { FaBitcoin, FaEthereum, FaPaypal } from 'react-icons/fa';
 
 const Donations = () => {
@@ -12,46 +12,65 @@ const Donations = () => {
         Your donations help us continue producing high-quality content and reach a wider audience. Thank you for your support!
       </Text>
 
-      {/* Fiat Donations */}
-      <Text h3 css={{ textAlign: 'center', marginBottom: '10px' }}>
-        Donate with PayPal
-      </Text>
-      <div style={{ textAlign: 'center' }}>
-        <Button auto color="gradient" css={{ display: 'block', margin: '0 auto' }} onClick={() => window.open('https://paypal.me/yourpaypal', '_blank')}>
-          <FaPaypal style={{ marginRight: '10px' }} />
-          Donate with PayPal
-        </Button>
-      </div>
+      <Grid.Container gap={2} justify="center">
+        {/* Fiat Donations */}
+        <Grid xs={12} sm={6} md={4}>
+          <Card css={{ padding: '20px', textAlign: 'center', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+            <Text h3 css={{ marginBottom: '10px' }}>Donate with PayPal</Text>
+            <Button
+              auto
+              color="gradient"
+              css={{ margin: '0 auto', background: 'linear-gradient(45deg, #0070F3, #0059F2)' }}
+              onClick={() => window.open('https://paypal.me/yourpaypal', '_blank')}
+            >
+              <FaPaypal style={{ marginRight: '10px' }} />
+              Donate with PayPal
+            </Button>
+          </Card>
+        </Grid>
 
-      <Spacer y={2} />
+        {/* Cryptocurrency Donations */}
+        <Grid xs={12} sm={6} md={4}>
+          <Card css={{ padding: '20px', textAlign: 'center', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+            <Text h3 css={{ marginBottom: '10px' }}>Donate with Cryptocurrency</Text>
+            <Button
+              auto
+              color="gradient"
+              css={{ margin: '10px auto', background: 'linear-gradient(45deg, #FF9900, #FF6600)' }}
+              onClick={() => window.open('bitcoin:yourbitcoinaddress', '_blank')}
+            >
+              <FaBitcoin style={{ marginRight: '10px' }} />
+              Donate with Bitcoin
+            </Button>
+            <Button
+              auto
+              color="gradient"
+              css={{ margin: '10px auto', background: 'linear-gradient(45deg, #6272A4, #506690)' }}
+              onClick={() => window.open('ethereum:yourethereumaddress', '_blank')}
+            >
+              <FaEthereum style={{ marginRight: '10px' }} />
+              Donate with Ethereum
+            </Button>
+          </Card>
+        </Grid>
 
-      {/* Cryptocurrency Donations */}
-      <Text h3 css={{ textAlign: 'center', marginBottom: '10px' }}>
-        Donate with Cryptocurrency
-      </Text>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <Button auto color="gradient" css={{ display: 'block', margin: '10px auto' }} onClick={() => window.open('bitcoin:yourbitcoinaddress', '_blank')}>
-          <FaBitcoin style={{ marginRight: '10px' }} />
-          Donate with Bitcoin
-        </Button>
-        <Button auto color="gradient" css={{ display: 'block', margin: '10px auto' }} onClick={() => window.open('ethereum:yourethereumaddress', '_blank')}>
-          <FaEthereum style={{ marginRight: '10px' }} />
-          Donate with Ethereum
-        </Button>
-      </div>
-
-      <Spacer y={2} />
-
-      {/* Custom Donation Amount */}
-      <Text h3 css={{ textAlign: 'center', marginBottom: '10px' }}>
-        Donate a Custom Amount
-      </Text>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <Input placeholder="Enter amount" type="number" />
-        <Button auto color="gradient" css={{ display: 'block', margin: '10px auto' }}>
-          Donate
-        </Button>
-      </div>
+        {/* Custom Donation Amount */}
+        <Grid xs={12} sm={6} md={4}>
+          <Card css={{ padding: '20px', textAlign: 'center', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+            <Text h3 css={{ marginBottom: '10px' }}>Donate a Custom Amount</Text>
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <Input placeholder="Enter amount (USD)" type="number" css={{ marginBottom: '10px', width: '100%' }} />
+              <Button
+                auto
+                color="gradient"
+                css={{ background: 'linear-gradient(45deg, #4CAF50, #388E3C)', margin: '0 auto' }}
+              >
+                Donate
+              </Button>
+            </div>
+          </Card>
+        </Grid>
+      </Grid.Container>
     </Container>
   );
 };

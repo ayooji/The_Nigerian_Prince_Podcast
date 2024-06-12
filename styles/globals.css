@@ -3,21 +3,6 @@
 @import 'tailwindcss/utilities';
 
 
-.lightingEffect {
-    animation: lighting 5.9s infinite; /* Adjust the duration from 1s to n */
-    background: linear-gradient(90deg, transparent, #00ff00, transparent);
-    background-size: 200% 100%;
-  }
-  
-  @keyframes lighting {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-
   .card-gradient {
     background-image: linear-gradient(45deg, #0b2711, #000000);
     position: relative;
@@ -133,4 +118,54 @@
 
 .card-footer-buttons .fa-icon {
   color: #ffd700;
+}
+
+
+/* styles/global.css */
+
+body.dark-mode {
+  background-color: #000000;
+  color: #000000;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgb(245, 243, 243);
+}
+
+/* Add more custom styles as needed */
+
+.card-dark {
+  background-color: #ffffff; /* Darker card background */
+  color: #f4ecec;
+}
+
+.card-dark .card-body {
+  color: #f6f0f0; /* Slightly lighter text for better readability */
+}
+
+.card-dark .card-header, .card-dark .card-footer {
+  background-color: #000000; /* Darker header and footer */
+}
+
+
+/* styles/global.css */
+.navbar-light .navbar-nav .nav-link {
+  color: white; /* Change text color to white */
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:focus {
+  color: #dcdcdc; /* Light gray color on hover or focus */
+}
+
+.navbar-light .navbar-brand {
+  color: white; /* Change brand text color to white */
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/></svg>");
 }

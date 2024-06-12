@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
-import { Pagination } from "@nextui-org/react";
+import { Pagination } from "react-bootstrap";
 import GuestButton from "@/components/GuestButton";
 import { motion, useMotionValue } from "framer-motion";
 
@@ -172,11 +172,31 @@ const EpisodesPage = ({ episodes, currentPage }) => {
             <Spacer y={2} />
             <Grid.Container gap={2} justify="center">
               <Pagination
-                total={100} // Adjust this number to be large enough to cover all potential episode pages
-                initialPage={currentPage}
-                onChange={handlePageChange}
-                color="success"
-              />
+                style={{
+                  backgroundColor: "black",
+                  color: "black",
+                  borderColor: "black",
+                  margin: "0 2px",
+                }}
+              >
+                <Pagination.First onClick={() => handlePageChange(1)} />
+                <Pagination.Prev
+                  onClick={() => handlePageChange(currentPage - 1)}
+                />
+                {[...Array(10).keys()].map((num) => (
+                  <Pagination.Item
+                    key={num}
+                    active={num + 1 === currentPage}
+                    onClick={() => handlePageChange(num + 1)}
+                  >
+                    {num + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => handlePageChange(currentPage + 1)}
+                />
+                <Pagination.Last onClick={() => handlePageChange(10)} />
+              </Pagination>
             </Grid.Container>
           </Grid.Container>
         </motion.div>

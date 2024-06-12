@@ -10,6 +10,9 @@ import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/router";
 import AuthContext from '../contexts/authContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 // Call createTheme for light and dark themes, adding color and typography customization
 
@@ -72,6 +75,11 @@ const darkTheme = createTheme({
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
+
+  useEffect(() => {
+    document.body.classList.add('dark-mode');
+  }, []);
+
 
   const [user, setUser] = useState(null);
   const router = useRouter();

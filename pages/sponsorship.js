@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Container, Text, Button, Spacer, Card } from '@nextui-org/react';
+import { Grid, Container, Text, Spacer, Card } from '@nextui-org/react';
 import { motion } from 'framer-motion';
 import AudienceReach from '../components/AudienceReach';
 import SponsorshipPackages from '../components/SponsorshipPackages';
@@ -36,7 +36,6 @@ const SponsorshipPage = () => {
             <Text h3 css={{ color: '#fff', margin: '20px 0' }}>
               Partner with us to connect with a diverse and engaged audience.
             </Text>
-      
           </motion.div>
         </Grid>
       </Grid.Container>
