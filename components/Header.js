@@ -17,7 +17,7 @@ const Header = () => {
     "Sponsorship & Ads",
     "Events",
     "About",
-    "Shop",
+    "Polls",
     "Contact",
   ];
 
@@ -95,7 +95,7 @@ const Header = () => {
             <Nav.Link href="/village-square">Village Square</Nav.Link>
             <Nav.Link href="/guests">Guests</Nav.Link>
             <Nav.Link href="/sponsorship">Sponsorship & Ads</Nav.Link>
-            <Nav.Link href="/shop">Shop</Nav.Link>
+            <Nav.Link href="/poll">Polls</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
           </Nav>
           <Nav className="ml-auto">

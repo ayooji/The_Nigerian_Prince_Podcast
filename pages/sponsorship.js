@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Container, Text, Spacer, Card } from '@nextui-org/react';
+import { Container, Typography, Grid, Card, CardMedia, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import AudienceReach from '../components/AudienceReach';
 import SponsorshipPackages from '../components/SponsorshipPackages';
@@ -9,10 +9,10 @@ import Donations from '../components/Donations';
 
 const SponsorshipPage = () => {
   return (
-    <div className="container mx-auto px-4">
+    <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Hero Section */}
-      <Grid.Container gap={2} justify="center" alignItems="center" css={{ height: '70vh', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <Grid xs={12} sm={8} md={6}>
+      <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ height: '70vh', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <Grid item xs={12} sm={8} md={6}>
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -27,44 +27,49 @@ const SponsorshipPage = () => {
               textAlign: 'center',
             }}
           >
-            <Card css={{ width: '100%', marginBottom: '20px' }}>
-              <Card.Image src="/sponsorshipImages/heroImage.jpg" objectFit="cover" width="100%" height={300} alt="Hero Image" />
+            <Card sx={{ width: '100%', marginBottom: 2 }}>
+              <CardMedia
+                component="img"
+                image="/sponsorshipImages/heroImage.jpg"
+                alt="Hero Image"
+                sx={{ height: 300, borderRadius: 2 }}
+              />
             </Card>
-            <Text h1 css={{ color: '#fff' }}>
+            <Typography variant="h3" component="h2" color="white" sx={{ mb: 2 }}>
               Reach Your Audience with The Nigerian Prince Podcast
-            </Text>
-            <Text h3 css={{ color: '#fff', margin: '20px 0' }}>
+            </Typography>
+            <Typography variant="h5" component="h3" color="white" sx={{ mb: 2 }}>
               Partner with us to connect with a diverse and engaged audience.
-            </Text>
+            </Typography>
           </motion.div>
         </Grid>
-      </Grid.Container>
+      </Grid>
 
-      <Spacer y={2} />
+      <Box sx={{ py: 4 }}>
+        {/* Audience Reach Section */}
+        <AudienceReach />
 
-      {/* Audience Reach Section */}
-      <AudienceReach />
+        <Box sx={{ py: 4 }}>
+          {/* Sponsorship Packages Section */}
+          <SponsorshipPackages />
+        </Box>
 
-      <Spacer y={2} />
+        <Box sx={{ py: 4 }}>
+          {/* Advertising Opportunities Section */}
+          <AdvertisingOpportunities />
+        </Box>
 
-      {/* Sponsorship Packages Section */}
-      <SponsorshipPackages />
+        <Box sx={{ py: 4 }}>
+          {/* Donations Section */}
+          <Donations />
+        </Box>
 
-      <Spacer y={2} />
-
-      {/* Advertising Opportunities Section */}
-      <AdvertisingOpportunities />
-
-      <Spacer y={2} />
-
-      {/* Donations Section */}
-      <Donations />
-
-      <Spacer y={2} />
-
-      {/* Call to Action Section */}
-      <ContactForm />
-    </div>
+        <Box sx={{ py: 4 }}>
+          {/* Call to Action Section */}
+          <ContactForm />
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
