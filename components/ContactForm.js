@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Text, Input, Textarea, Button, Spacer, Card } from '@nextui-org/react';
+import { Container, Text, Input, Textarea, Button, Spacer, Card ,Grid, Link} from '@nextui-org/react';
+import { FaInstagram } from "react-icons/fa";
 
 const ContactForm = () => {
   return (
@@ -46,6 +47,34 @@ const ContactForm = () => {
       <Spacer y={2} />
       <Text css={{ textAlign: 'center' }}>Or reach us at: sponsor@thenigerianprincepodcast.com</Text>
       <Text css={{ textAlign: 'center' }}>Phone: (123) 456-7890</Text>
+      <Spacer/>
+      <Grid container spacing={2} justifyContent="center">
+          <Grid item>
+            <Link href="https://www.instagram.com/ayo_oji" target="_blank">
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<FaInstagram />}
+              >
+                @ayo_oji
+              </Button>
+            </Link>
+          </Grid>
+          <Grid item>
+            <Link
+              href="https://www.instagram.com/nigerianprincepodcast"
+              target="_blank"
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<FaInstagram />}
+              >
+                @thenigerianprincepodcast
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
     </Container>
   );
 };

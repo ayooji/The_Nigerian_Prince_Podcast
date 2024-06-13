@@ -38,7 +38,7 @@ const AboutPage = () => {
               color: "white",
               position: "relative",
               overflow: "hidden",
-              '&::before': {
+              "&::before": {
                 content: '""',
                 position: "absolute",
                 top: 0,
@@ -56,7 +56,12 @@ const AboutPage = () => {
               component="img"
               image="/guestImages/Ayo_Oji.png"
               alt="Host Image"
-              sx={{ height: 400, borderRadius: 2, position: 'relative', zIndex: 2 }}
+              sx={{
+                height: 400,
+                borderRadius: 2,
+                position: "relative",
+                zIndex: 2,
+              }}
             />
             <CardContent sx={{ position: "relative", zIndex: 2 }}>
               <Typography variant="h4">Ayo Oji</Typography>
@@ -64,14 +69,15 @@ const AboutPage = () => {
               <Typography variant="body1" sx={{ mt: 2 }}>
                 Ayo Oji is the visionary host and founder of The Nigerian Prince
                 Podcast. With a robust background in computer programming and
-                web development, Ayo single-handedly built the podcast's engaging
-                website. His passion for storytelling shines through in every
-                episode as he navigates through diverse topics that resonate
-                deeply with his audience. Ayo's unique approach blends technical
-                expertise with a genuine curiosity about the world, creating a
-                platform where insightful discussions and inspiring stories come
-                to life. Through his podcast, Ayo aims to bridge cultures, inform,
-                and entertain, making a lasting impact on his listeners.
+                web development, Ayo single-handedly built the podcast's
+                engaging website. His passion for storytelling shines through in
+                every episode as he navigates through diverse topics that
+                resonate deeply with his audience. Ayo's unique approach blends
+                technical expertise with a genuine curiosity about the world,
+                creating a platform where insightful discussions and inspiring
+                stories come to life. Through his podcast, Ayo aims to bridge
+                cultures, inform, and entertain, making a lasting impact on his
+                listeners.
               </Typography>
             </CardContent>
           </Card>
@@ -143,8 +149,8 @@ const AboutPage = () => {
         <Typography variant="body2" color={white} sx={{ mb: 2 }}>
           Built by Ayo Oji
         </Typography>
-        <Grid container spacing={2} justifyContent="center">
-          <Grid item>
+        <Grid.container gap={2} spacing={2} justifyContent="center">
+          <Grid item gap={2} spacing={2} justify="center">
             <Link href="https://www.instagram.com/ayo_oji" target="_blank">
               <Button
                 variant="contained"
@@ -169,7 +175,7 @@ const AboutPage = () => {
               </Button>
             </Link>
           </Grid>
-        </Grid>
+        </Grid.container>
       </Box>
     </Container>
   );
