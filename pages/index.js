@@ -60,11 +60,11 @@ const HomePage = ({ episodes, posts }) => {
                 textAlign: 'center',
               }}
             >
-              <Typography variant="h2" component="h1" color="white" sx={{ mb: 2 }}>
+              <Typography variant="h2" component="h1" color="white" sx={{ mb: 2, fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}>
                 The Nigerian Prince Podcast
               </Typography>
-              <Typography variant="h5" component="h2" color="white" sx={{ mb: 2 }}>
-                Join us for engaging conversations and insightful interviews. Hosted by Ayo oji
+              <Typography variant="h5" component="h2" color="white" sx={{ mb: 2, fontWeight: 'bold', textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
+                Join us for engaging conversations and insightful interviews. Hosted by Ayo Oji
               </Typography>
               <Button variant="contained" color="secondary" href="#latest-episodes">
                 Listen to Latest Episodes
@@ -75,15 +75,15 @@ const HomePage = ({ episodes, posts }) => {
 
         <Box sx={{ py: 4 }} id="latest-episodes">
           {/* Latest Episodes Section */}
-          <Typography variant="h4" component="h2" align="center" gutterBottom  color="white">
+          <Typography variant="h4" component="h2" align="center" gutterBottom color="white">
             Latest Episodes
           </Typography>
           <Grid container spacing={4}>
             {episodes.slice(0, 3).map((episode) => (
               <Grid item xs={12} md={4} key={episode.id}>
-                <Card>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                   <CardMedia component="img" image={episode.artwork_url || '/logo.jpg'} alt={episode.title} height="200" />
-                  <CardContent>
+                  <CardContent sx={{ flexGrow: 1 }}>
                     <Typography variant="h5" component="div">
                       {episode.title}
                     </Typography>
@@ -91,6 +91,11 @@ const HomePage = ({ episodes, posts }) => {
                       {new Date(episode.published_at).toLocaleDateString()}
                     </Typography>
                   </CardContent>
+                  <Box sx={{ textAlign: 'center', p: 2 }}>
+                    <Button variant="outlined" color="primary" href={`/episode/${episode.id}`}>
+                      Listen Now
+                    </Button>
+                  </Box>
                 </Card>
               </Grid>
             ))}
@@ -104,7 +109,7 @@ const HomePage = ({ episodes, posts }) => {
 
         <Box sx={{ py: 4 }} id="featured-guests">
           {/* Featured Guests Section */}
-          <Typography variant="h4" component="h2" align="center" gutterBottom  color="white">
+          <Typography variant="h4" component="h2" align="center" gutterBottom color="white">
             Featured Guests
           </Typography>
           <Grid container spacing={4}>
@@ -123,10 +128,10 @@ const HomePage = ({ episodes, posts }) => {
 
         <Box sx={{ py: 4 }} id="village-square">
           {/* Village Square Section */}
-          <Typography variant="h4" component="h2" align="center" gutterBottom  color="white">
+          <Typography variant="h4" component="h2" align="center" gutterBottom color="white">
             The Village Square
           </Typography>
-          <Typography variant="body1" align="center" paragraph  color="white">
+          <Typography variant="body1" align="center" paragraph color="white" sx={{ fontSize: '1.2rem' }}>
             At The Village Square, your stories bring to light diverse perspectives and unseen narratives. Join us in sharing your experiences and insights.
           </Typography>
           <Box sx={{ textAlign: 'center', mt: 4 }}>
@@ -138,7 +143,7 @@ const HomePage = ({ episodes, posts }) => {
 
         <Box sx={{ py: 4 }} id="blog-highlights">
           {/* Blog Highlights Section */}
-          <Typography variant="h4" component="h2" align="center" gutterBottom  color="white">
+          <Typography variant="h4" component="h2" align="center" gutterBottom color="white">
             Blog Highlights
           </Typography>
           <BlogList posts={posts.slice(0, 3)} />
@@ -151,10 +156,10 @@ const HomePage = ({ episodes, posts }) => {
 
         <Box sx={{ py: 4 }} id="sponsorship">
           {/* Sponsorship Section */}
-          <Typography variant="h4" component="h2" align="center" gutterBottom  color="white">
+          <Typography variant="h4" component="h2" align="center" gutterBottom color="white">
             Sponsorship Opportunities
           </Typography>
-          <Typography variant="body1" align="center" paragraph  color="white"> 
+          <Typography variant="body1" align="center" paragraph color="white" sx={{ fontSize: '1.2rem' }}>
             Partner with us to connect with a diverse and engaged audience. Explore our sponsorship packages and advertising opportunities.
           </Typography>
           <Box sx={{ textAlign: 'center', mt: 4 }}>
@@ -171,10 +176,10 @@ const HomePage = ({ episodes, posts }) => {
 
         {/* Footer */}
         <Box sx={{ textAlign: 'center', mt: 5 }}>
-          <Typography variant="body2"  color="white">
+          <Typography variant="body2" color="white">
             &copy; {new Date().getFullYear()} The Nigerian Prince Podcast
           </Typography>
-          <Typography variant="body2"  color="white" sx={{ mb: 2 }}>
+          <Typography variant="body2" color="white" sx={{ mb: 2 }}>
             Built by Ayo Oji
           </Typography>
           <Grid container spacing={2} justifyContent="center">
