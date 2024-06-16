@@ -169,3 +169,40 @@ body.dark-mode {
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/></svg>");
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap');
+
+/* Keyframes for gradient animation */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Hero Text styling */
+.hero-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  background: linear-gradient(45deg, #FFFFFF, #FFFFFF, #008000,  #008000, #FFFFFF,#FFFFFF,  #008000);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientAnimation 10s ease infinite;
+  text-shadow: 2px 2px 4px rgba(16, 16, 16, 0.7);
+}
+
+/* Subtext styling */
+.subtext {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: #FAF0E6;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}

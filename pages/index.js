@@ -1,9 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
-import { Container, Typography, Grid, Card, CardContent, CardMedia, Button, Box, Link } from '@mui/material';
+import { Container, Typography, Grid, Card, CardContent, CardMedia, Button, Box, Link, IconButton } from '@mui/material';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
 import { FaInstagram } from 'react-icons/fa';
+import { SiSpotify, SiApplepodcasts, SiAmazon, SiDeezer } from 'react-icons/si';
 import BlogList from '@/components/blog/BlogList';
 import GuestCard from '../components/GuestCard';
 import ContactForm from '../components/ContactForm';
@@ -60,15 +61,41 @@ const HomePage = ({ episodes, posts }) => {
                 textAlign: 'center',
               }}
             >
-              <Typography variant="h2" component="h1" color="white" sx={{ mb: 2, fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}>
+              <Typography component="h1" className="hero-text" sx={{ mb: 2 }}>
                 The Nigerian Prince Podcast
               </Typography>
-              <Typography variant="h5" component="h2" color="white" sx={{ mb: 2, fontWeight: 'bold', textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
+              <Typography component="h2" className="subtext" sx={{ mb: 2 }}>
                 Join us for engaging conversations and insightful interviews. Hosted by Ayo Oji
               </Typography>
-              <Button variant="contained" color="secondary" href="#latest-episodes">
+              <Button variant="contained" color="secondary" href="#latest-episodes" sx={{ mb: 2 }}>
                 Listen to Latest Episodes
               </Button>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <Link href="https://open.spotify.com/show/4wV3MdX9bXfmTMsuz8s8Dy" target="_blank" sx={{ mx: 1, textDecoration: 'none' }}>
+                  <IconButton sx={{ color: '#1DB954' }} aria-label="Spotify">
+                    <SiSpotify size={30} />
+                  </IconButton>
+                  <Typography variant="body2" color="white">Spotify</Typography>
+                </Link>
+                <Link href="https://podcasts.apple.com/us/podcast/the-nigerian-prince-podcast/id1542551188" target="_blank" sx={{ mx: 1, textDecoration: 'none' }}>
+                  <IconButton sx={{ color: '#FA4A1E' }} aria-label="Apple Podcasts">
+                    <SiApplepodcasts size={30} />
+                  </IconButton>
+                  <Typography variant="body2" color="white">Apple</Typography>
+                </Link>
+                <Link href="https://music.amazon.com/podcasts/27390a77-9142-425d-ade4-700aa00d6c9a/the-nigerian-prince-podcast" target="_blank" sx={{ mx: 1, textDecoration: 'none' }}>
+                  <IconButton sx={{ color: '#FF9900' }} aria-label="Amazon Music">
+                    <SiAmazon size={30} />
+                  </IconButton>
+                  <Typography variant="body2" color="white">Amazon</Typography>
+                </Link>
+                <Link href="https://www.deezer.com/en/show/2031782" target="_blank" sx={{ mx: 1, textDecoration: 'none' }}>
+                  <IconButton sx={{ color: '#FEAA2B' }} aria-label="Deezer">
+                    <SiDeezer size={30} />
+                  </IconButton>
+                  <Typography variant="body2" color="white">Deezer</Typography>
+                </Link>
+              </Box>
             </motion.div>
           </Grid>
         </Grid>
@@ -196,7 +223,7 @@ const HomePage = ({ episodes, posts }) => {
             </Grid>
             <Grid item>
               <Link
-                href="https://www.instagram.com/nigerianprincepodcast"
+                href="https://www.instagram.com/nigerianprincepodcast" 
                 target="_blank"
               >
                 <Button
