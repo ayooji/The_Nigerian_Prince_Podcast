@@ -5,6 +5,9 @@ import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
 import { FaInstagram } from 'react-icons/fa';
 import { SiSpotify, SiApplepodcasts, SiAmazon, SiDeezer } from 'react-icons/si';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import BlogList from '@/components/blog/BlogList';
 import GuestCard from '../components/GuestCard';
 import ContactForm from '../components/ContactForm';
@@ -13,6 +16,31 @@ import { getAllBlogPosts } from '../lib/supabaseClient';
 import guests from '../public/guests.json'; // Ensure this path is correct
 
 const HomePage = ({ episodes, posts }) => {
+  const guestSliderSettings = {
+    infinite: true,
+    speed: 1000, // Reduced speed
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000, // Adjusted autoplay speed
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
     <>
       <NextSeo
@@ -108,18 +136,50 @@ const HomePage = ({ episodes, posts }) => {
           <Grid container spacing={4}>
             {episodes.slice(0, 3).map((episode) => (
               <Grid item xs={12} md={4} key={episode.id}>
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <CardMedia component="img" image={episode.artwork_url || '/logo.jpg'} alt={episode.title} height="200" />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h5" component="div">
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: '#1e1e1e',
+                    color: 'white',
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    transition: 'transform 0.3s, box-shadow 0.3s',
+                    '&:hover': {
+                      transform: 'scale(1.05)',
+                      boxShadow: '0 10px 20px rgba(0, 0, 0, 0.5)',
+                    },
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={episode.artwork_url || '/logo.jpg'}
+                    alt={episode.title}
+                    height="200"
+                    sx={{ borderBottom: '2px solid #00FF00' }}
+                  />
+                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Typography variant="h5" component="div" sx={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '1.25rem', marginTop: '10px' }}>
                       {episode.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="#cccccc">
                       {new Date(episode.published_at).toLocaleDateString()}
                     </Typography>
                   </CardContent>
                   <Box sx={{ textAlign: 'center', p: 2 }}>
-                    <Button variant="outlined" color="primary" href={`/episode/${episode.id}`}>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        backgroundColor: '#00FF00',
+                        color: 'black',
+                        fontWeight: 'bold',
+                        '&:hover': {
+                          backgroundColor: '#00cc00',
+                        },
+                      }}
+                      href={`/episode/${episode.id}`}
+                    >
                       Listen Now
                     </Button>
                   </Box>
@@ -139,13 +199,13 @@ const HomePage = ({ episodes, posts }) => {
           <Typography variant="h4" component="h2" align="center" gutterBottom color="white">
             Featured Guests
           </Typography>
-          <Grid container spacing={4}>
-            {guests.slice(0, 3).map((guest, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
+          <Slider {...guestSliderSettings} style={{ padding: '0 20px' }}>
+            {guests.map((guest, index) => (
+              <div key={index} style={{ padding: '0 10px' }}>
                 <GuestCard guest={guest} />
-              </Grid>
+              </div>
             ))}
-          </Grid>
+          </Slider>
           <Box sx={{ textAlign: 'center', mt: 4 }}>
             <Button variant="contained" color="primary" href="/guests">
               Meet All Guests
@@ -153,16 +213,16 @@ const HomePage = ({ episodes, posts }) => {
           </Box>
         </Box>
 
-        <Box sx={{ py: 4 }} id="village-square">
+        <Box sx={{ py: 4, backgroundColor: '#121212', borderRadius: '10px', p: 4 }} id="village-square">
           {/* Village Square Section */}
-          <Typography variant="h4" component="h2" align="center" gutterBottom color="white">
+          <Typography variant="h4" component="h2" align="center" gutterBottom color="#00FF00">
             The Village Square
           </Typography>
-          <Typography variant="body1" align="center" paragraph color="white" sx={{ fontSize: '1.2rem' }}>
+          <Typography variant="body1" align="center" paragraph color="white" sx={{ fontSize: '1.2rem', fontFamily: 'Roboto, sans-serif' }}>
             At The Village Square, your stories bring to light diverse perspectives and unseen narratives. Join us in sharing your experiences and insights.
           </Typography>
           <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Button variant="contained" color="primary" href="/village-square">
+            <Button variant="contained" sx={{ backgroundColor: '#00FF00', color: 'black', fontWeight: 'bold', '&:hover': { backgroundColor: '#00cc00' } }} href="/village-square">
               Visit The Village Square
             </Button>
           </Box>
