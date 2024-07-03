@@ -27,6 +27,7 @@ import { getEpisodes } from "../lib/buzzsprout";
 import { getAllBlogPosts } from "../lib/supabaseClient";
 import guests from "../public/guests.json"; // Ensure this path is correct
 import AudienceReach from "../components/AudienceReach";
+import Donations from '../components/Donations';
 
 const HomePage = ({ episodes, posts }) => {
   const guestSliderSettings = {
@@ -90,18 +91,7 @@ const HomePage = ({ episodes, posts }) => {
         </Head>
 
         {/* Hero Section */}
-        <Grid
-          container
-          spacing={4}
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            height: "70vh",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundImage: "url(/heroImage.jpg)",
-          }}
-        >
+        <Grid container spacing={4} justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={8} md={6}>
             <motion.div
               initial={{ opacity: 0, y: -50 }}
@@ -420,6 +410,10 @@ const HomePage = ({ episodes, posts }) => {
               Learn More
             </Button>
           </Box>
+        </Box>
+        <Box sx={{ py: 4 }}>
+          {/* Donations Section */}
+          <Donations />
         </Box>
 
         <Grid container spacing={4} justifyContent="center" sx={{ my: 4 }}>
