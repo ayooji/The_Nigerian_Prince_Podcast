@@ -15,8 +15,14 @@ import {
 import { Text, Image, Spacer, Loading, Row } from "@nextui-org/react";
 import { NextSeo } from "next-seo";
 import { motion } from "framer-motion";
-import { FaInstagram } from "react-icons/fa";
-import { SiSpotify, SiApplepodcasts, SiAmazon, SiDeezer } from "react-icons/si";
+import { FaInstagram, FaYoutube, FaFacebook, FaTwitter } from "react-icons/fa";
+import {
+  SiSpotify,
+  SiApplepodcasts,
+  SiAmazon,
+  SiDeezer,
+  SiYoutube,
+} from "react-icons/si";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -27,7 +33,8 @@ import { getEpisodes } from "../lib/buzzsprout";
 import { getAllBlogPosts } from "../lib/supabaseClient";
 import guests from "../public/guests.json"; // Ensure this path is correct
 import AudienceReach from "../components/AudienceReach";
-import Donations from '../components/Donations';
+import Donations from "../components/Donations";
+import Footer from "../components/Footer";
 
 const HomePage = ({ episodes, posts }) => {
   const guestSliderSettings = {
@@ -199,6 +206,18 @@ const HomePage = ({ episodes, posts }) => {
                   </IconButton>
                   <Typography variant="body2" color="white">
                     Deezer
+                  </Typography>
+                </Link>
+                <Link
+                  href="https://www.youtube.com/nigerianprincepodcast"
+                  target="_blank"
+                  sx={{ mx: 1, textDecoration: "none" }}
+                >
+                  <IconButton sx={{ color: "#FF0000" }} aria-label="YouTube">
+                    <FaYoutube size={30} />
+                  </IconButton>
+                  <Typography variant="body2" color="white">
+                    YouTube
                   </Typography>
                 </Link>
               </Box>
@@ -416,9 +435,9 @@ const HomePage = ({ episodes, posts }) => {
           <Donations />
         </Box>
 
+        {/* Host Section */}
         <Grid container spacing={4} justifyContent="center" sx={{ my: 4 }}>
-          {/* Host Section */}
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={6}>
             <Card
               sx={{
                 textAlign: "center",
@@ -473,48 +492,13 @@ const HomePage = ({ episodes, posts }) => {
             </Card>
           </Grid>
         </Grid>
-
         <Box sx={{ py: 4 }}>
           {/* Contact Section */}
           <ContactForm />
         </Box>
 
         {/* Footer */}
-        <Box sx={{ textAlign: "center", mt: 5 }}>
-          <Typography variant="body2" color="white">
-            &copy; {new Date().getFullYear()} The Nigerian Prince Podcast
-          </Typography>
-          <Typography variant="body2" color="white" sx={{ mb: 2 }}>
-            Built by Ayo Oji
-          </Typography>
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item>
-              <Link href="https://www.instagram.com/ayo_oji" target="_blank">
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<FaInstagram />}
-                >
-                  @ayo_oji
-                </Button>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link
-                href="https://www.instagram.com/nigerianprincepodcast"
-                target="_blank"
-              >
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<FaInstagram />}
-                >
-                  @thenigerianprincepodcast
-                </Button>
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
+        <Footer />
       </Container>
     </>
   );

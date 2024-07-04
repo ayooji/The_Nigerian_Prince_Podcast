@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { getEpisodes } from "../../lib/buzzsprout";
 import "react-h5-audio-player/lib/styles.css";
 import Link from "next/link";
@@ -16,7 +16,8 @@ import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
 import { Pagination } from "react-bootstrap";
 import GuestButton from "@/components/GuestButton";
-import { motion, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
+import Head from "next/head";
 
 const EpisodesPage = ({ episodes, currentPage }) => {
   const [loading, setLoading] = useState(false);
@@ -24,9 +25,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
   const showEpisodesFrom = (currentPage - 1) * 8;
   const showEpisodesTo = showEpisodesFrom + 8;
   const episodesToDisplay = episodes.slice(showEpisodesFrom, showEpisodesTo);
-  const [favoriteEpisodes, setFavoriteEpisodes] = useState(new Set());
   const router = useRouter();
-  const episodeId = episodes.id;
 
   const handlePageChange = (newPage) => {
     const href = `/episode?page=${newPage}`;
@@ -57,15 +56,27 @@ const EpisodesPage = ({ episodes, currentPage }) => {
   const hoverVariants = {
     hover: {
       scale: 1.05,
-      backgroundColor: "#6EFFA2", // Replace with desired shining green color
+      backgroundColor: "#6EFFA2",
       boxShadow: "0px 4px 20px rgba(110, 255, 162, 0.4)",
       transition: { duration: 0.3, ease: "easeInOut" },
     },
   };
 
-  const imageSrc = episodes.artwork_url || "/logo.jpg";
   return (
     <div className="container mx-auto px-4">
+      <Head>
+        <title>Episodes - The Nigerian Prince Podcast</title>
+        <meta name="description" content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics." />
+        <meta property="og:title" content="Episodes - The Nigerian Prince Podcast" />
+        <meta property="og:description" content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics." />
+        <meta property="og:url" content="https://www.nigerianprincepodcast.com/episodes" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.nigerianprincepodcast.com/logo.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Episodes - The Nigerian Prince Podcast" />
+        <meta name="twitter:description" content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics." />
+        <meta name="twitter:image" content="https://www.nigerianprincepodcast.com/logo.jpg" />
+      </Head>
       <div className="container mx-auto px-4">
         <Spacer />
         <Grid.Container gap={2} justify="center">
@@ -117,11 +128,11 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                     >
                       <Card.Body>
                         <Image
-                          src={imageSrc}
+                          src={episode.artwork_url || "/logo.jpg"}
                           alt="Episode artwork"
-                          className="object-cover w-full h-mobile md:h-56" // Add the 'h-mobile' class for mobile
+                          className="object-cover w-full h-mobile md:h-56"
                           style={{
-                            height: episode.artwork_url ? "250px" : "inherit", // Shrinks image height on mobile if 'artwork_url' is available
+                            height: episode.artwork_url ? "250px" : "inherit",
                           }}
                         />
                       </Card.Body>
@@ -143,7 +154,6 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                               <span>{episode.title}</span>
                             </Link>
                           </Text>
-
                           <Spacer />
                         </div>
                       </Card.Header>
@@ -155,11 +165,9 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                               episode.published_at
                             ).toLocaleDateString()}
                           </Text>
-
                           <GuestButton episodeId={episode.id} />
-
                           <ShareButtons
-                            url={`https://nigerianprincepodcast.com/episode/${episode.id}`} // Replace with your website URL
+                            url={`https://nigerianprincepodcast.com/episode/${episode.id}`}
                             title={episode.title}
                           />
                         </Row>

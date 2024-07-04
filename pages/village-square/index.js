@@ -9,11 +9,14 @@ import {
   Modal,
   Input,
   Textarea,
+  Link,
 } from "@nextui-org/react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Flag from "react-world-flags";
 import { createClient } from "@supabase/supabase-js";
+import { FaInstagram, FaTwitter, FaFacebook, FaYoutube } from "react-icons/fa";
+import Head from "next/head";
 
 // Initialize Supabase client
 const supabaseUrl = "https://your-supabase-url.supabase.co";
@@ -114,7 +117,10 @@ const VillageSquare = () => {
     setFormData({ ...formData, file });
   };
 
-  const countries = ["US", "NG", "GB", "CA", "FR", "DE", "GH", "CI", "BR","AU","PT","CM","ES","JP"]; // Example list of country codes
+  const countries = [
+    "US", "NG", "GB", "CA", "FR", "DE", "GH", "CI", "BR", "AU", "PT", "CM", "ES", "JP",
+    "IT", "IN", "KE", "ZA", "SG", "AE", "NL", "CH", "SE", "FI", "NO", "DK", "IE", "MY", "PH", "MX"
+  ]; // Example list of country codes
 
   const responsive = {
     superLargeDesktop: {
@@ -137,6 +143,40 @@ const VillageSquare = () => {
 
   return (
     <div className="container mx-auto px-4">
+      <Head>
+        <title>The Village Square - The Nigerian Prince Podcast</title>
+        <meta
+          name="description"
+          content="Welcome to The Village Square, a platform for sharing diverse perspectives and unseen narratives. Submit your stories in text, audio, video, or images and be part of the global conversation."
+        />
+        <meta
+          property="og:title"
+          content="The Village Square - The Nigerian Prince Podcast"
+        />
+        <meta
+          property="og:description"
+          content="Welcome to The Village Square, a platform for sharing diverse perspectives and unseen narratives. Submit your stories in text, audio, video, or images and be part of the global conversation."
+        />
+        <meta property="og:url" content="https://www.nigerianprincepodcast.com/village-square" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://www.nigerianprincepodcast.com/heroImage.jpg"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="The Village Square - The Nigerian Prince Podcast"
+        />
+        <meta
+          name="twitter:description"
+          content="Welcome to The Village Square, a platform for sharing diverse perspectives and unseen narratives. Submit your stories in text, audio, video, or images and be part of the global conversation."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.nigerianprincepodcast.com/heroImage.jpg"
+        />
+      </Head>
       <Spacer y={1} />
 
       {/* Header and Welcome Section */}
@@ -162,7 +202,6 @@ const VillageSquare = () => {
               autoPlaySpeed={1600}
               removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
               draggable={true}
-            
             >
               {countries.map((country) => (
                 <div
@@ -301,6 +340,28 @@ const VillageSquare = () => {
             hosted by Ayo Oji
           </Text>
           {/* Additional footer content like links or social media icons can be added here */}
+          <Grid.Container justify="center" gap={2}>
+            <Grid>
+              <Link href="https://www.instagram.com/nigerianprincepodcast" target="_blank">
+                <FaInstagram size={24} />
+              </Link>
+            </Grid>
+            <Grid>
+              <Link href="https://twitter.com/nigerianprincepodcast" target="_blank">
+                <FaTwitter size={24} />
+              </Link>
+            </Grid>
+            <Grid>
+              <Link href="https://www.facebook.com/nigerianprincepodcast" target="_blank">
+                <FaFacebook size={24} />
+              </Link>
+            </Grid>
+            <Grid>
+              <Link href="https://www.youtube.com/nigerianprincepodcast" target="_blank">
+                <FaYoutube size={24} />
+              </Link>
+            </Grid>
+          </Grid.Container>
         </Container>
       </footer>
     </div>

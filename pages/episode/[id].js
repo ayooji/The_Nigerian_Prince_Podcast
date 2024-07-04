@@ -10,7 +10,17 @@ const EpisodePage = ({ episode }) => {
   return (
     <>
       <Head>
-        <title>{episode.title}</title>
+        <title>{episode.title} - The Nigerian Prince Podcast</title>
+        <meta name="description" content={episode.description} />
+        <meta property="og:title" content={`${episode.title} - The Nigerian Prince Podcast`} />
+        <meta property="og:description" content={episode.description} />
+        <meta property="og:url" content={`https://www.nigerianprincepodcast.com/episode/${episode.id}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={episode.artwork_url || "https://www.nigerianprincepodcast.com/logo.jpg"} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${episode.title} - The Nigerian Prince Podcast`} />
+        <meta name="twitter:description" content={episode.description} />
+        <meta name="twitter:image" content={episode.artwork_url || "https://www.nigerianprincepodcast.com/logo.jpg"} />
       </Head>
       <Grid.Container className="container mx-auto px-4">
         <Spacer />
@@ -44,7 +54,6 @@ const EpisodePage = ({ episode }) => {
                           className="w-full"
                           src={episode.audio_url}
                           style={{ maxWidth: "100%" }}
-                          
                         />
                         <div className="mt-4 prose prose-lg text-white">
                           <div
@@ -90,7 +99,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false, // If an episode is not found, show a 404 page
+    fallback: false,
   };
 }
 
