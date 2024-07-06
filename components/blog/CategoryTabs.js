@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import Link from "next/link";
-import { Button, Spacer, Grid, Text } from "@nextui-org/react";
-import { motion, useMotionValue } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import { Tabs, Tab, Box, useMediaQuery, useTheme, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 export const categories = [
   "Tech Innovations",
@@ -19,48 +18,72 @@ export const categories = [
 ];
 
 const CategoryTabs = ({ onCategoryChange }) => {
-  const hoverVariants = {
-    hover: {
-      scale: 1.05,
-      backgroundColor: "#6EFFA2", // Replace with desired shining green color
-      boxShadow: "0px 4px 20px rgba(110, 255, 162, 0.4)",
-      transition: { duration: 0.3, ease: "easeInOut" },
-      rotate: -10,
-      maskimage:
-        "linear-gradient(to right, transparent 50%, rgba(0, 128, 0, 1) 50%)",
-      masksize: "500%",
-      maskposition: "0",
-    },
+  const [value, setValue] = useState(false);
+  const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const tabsRef = useRef(null);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    onCategoryChange(categories[newValue]);
+    router.push(`/blog/category/${encodeURIComponent(categories[newValue])}`);
   };
 
   return (
-    <Grid.Container gap={2} justify="center">
-      {categories.map((category) => (
-        <Link
-          href={`/blog/category/${encodeURIComponent(category)}`}
-          key={category}
-        >
-          <Grid.Container gap={2} justify="center">
-            <Grid xs={24} md={12}>
-              <motion.div
-                style={{ display: "block", width: "100%" }}
-                initial="initial"
-                animate="animate"
-                whileHover="hover"
-                variants={{ ...hoverVariants }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                onClick={() => onCategoryChange(category)}
-              >
-                <Button auto size="sm" color="success" shadow bordered ghost>
-                  {category}
-                </Button>
-              </motion.div>
-            </Grid>
-          </Grid.Container>
-          <Spacer y={0.5} />
-        </Link>
-      ))}
-    </Grid.Container>
+    <Box sx={{ width: "100%", mt: 3, mb: 3, position: "relative" }}>
+      <Tabs
+        ref={tabsRef}
+        value={value}
+        onChange={handleChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="category tabs"
+        textColor="inherit"
+        indicatorColor="primary"
+        centered={!isMobile}
+        sx={{
+          "& .MuiTabs-indicator": {
+            backgroundColor: "#00FF00",
+            height: "4px",
+          },
+          "& .MuiTab-root": {
+            textTransform: "none",
+            fontWeight: "bold",
+            fontSize: "0.85rem",
+            margin: "0 5px",
+            color: "white",
+            border: "1px solid #00FF00",
+            borderRadius: "20px",
+            minWidth: "100px",
+            "&.Mui-selected": {
+              color: "#00FF00",
+              borderColor: "#00FF00",
+            },
+            "&:hover": {
+              color: "#00FF00",
+              opacity: 1,
+              transition: "color 0.3s, transform 0.3s",
+              transform: "scale(1.05)",
+              backgroundColor: "rgba(0, 255, 0, 0.1)",
+            },
+          },
+        }}
+      >
+        {categories.map((category, index) => (
+          <Tab
+            key={index}
+            label={category}
+            sx={{
+              transition: "transform 0.3s",
+              "&:hover": {
+                transform: "scale(1.05)",
+              },
+            }}
+          />
+        ))}
+      </Tabs>
+    </Box>
   );
 };
 
