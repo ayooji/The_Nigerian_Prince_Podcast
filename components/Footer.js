@@ -47,7 +47,7 @@ const Footer = () => {
               <FaInstagram size={30} />
             </IconButton>
             <Typography variant="body2" color="white">
-              Podcast Instagrame
+              Podcast Instagram
             </Typography>
           </Link>
         </Grid>

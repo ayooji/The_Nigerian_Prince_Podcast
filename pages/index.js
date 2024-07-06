@@ -15,7 +15,7 @@ import {
 import { Text, Image, Spacer, Loading, Row } from "@nextui-org/react";
 import { NextSeo } from "next-seo";
 import { motion } from "framer-motion";
-import { FaInstagram, FaYoutube, FaFacebook, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaYoutube, FaFacebook, FaTwitter, FaRumble  } from "react-icons/fa";
 import {
   SiSpotify,
   SiApplepodcasts,
@@ -220,6 +220,7 @@ const HomePage = ({ episodes, posts }) => {
                     YouTube
                   </Typography>
                 </Link>
+                
               </Box>
             </motion.div>
           </Grid>

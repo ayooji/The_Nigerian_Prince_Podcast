@@ -6,6 +6,7 @@ import SponsorshipPackages from '../components/SponsorshipPackages';
 import AdvertisingOpportunities from '../components/AdvertisingOpportunities';
 import ContactForm from '../components/ContactForm';
 import Donations from '../components/Donations';
+import Footer from "@/components/Footer"; 
 
 const SponsorshipPage = () => {
   return (
@@ -69,6 +70,7 @@ const SponsorshipPage = () => {
           <ContactForm />
         </Box>
       </Box>
+      <Footer/>
     </Container>
   );
 };

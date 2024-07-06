@@ -18,6 +18,7 @@ import { Pagination } from "react-bootstrap";
 import GuestButton from "@/components/GuestButton";
 import { motion } from "framer-motion";
 import Head from "next/head";
+import Footer from "@/components/Footer"; 
 
 const EpisodesPage = ({ episodes, currentPage }) => {
   const [loading, setLoading] = useState(false);
@@ -207,6 +208,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
               </Pagination>
             </Grid.Container>
           </Grid.Container>
+          <Footer/>
         </motion.div>
       </div>
     </div>

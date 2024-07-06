@@ -17,6 +17,7 @@ import Flag from "react-world-flags";
 import { createClient } from "@supabase/supabase-js";
 import { FaInstagram, FaTwitter, FaFacebook, FaYoutube } from "react-icons/fa";
 import Head from "next/head";
+import Footer from "@/components/Footer"; 
 
 // Initialize Supabase client
 const supabaseUrl = "https://your-supabase-url.supabase.co";
@@ -332,38 +333,7 @@ const VillageSquare = () => {
 
       {/* Footer */}
       <Spacer x={5} />
-      <footer className="footer">
-        <Container>
-          <Spacer x={5} />
-          <Text css={{ textAlign: "center" }}>
-            &copy; {new Date().getFullYear()} The Nigerian Prince Podcast,
-            hosted by Ayo Oji
-          </Text>
-          {/* Additional footer content like links or social media icons can be added here */}
-          <Grid.Container justify="center" gap={2}>
-            <Grid>
-              <Link href="https://www.instagram.com/nigerianprincepodcast" target="_blank">
-                <FaInstagram size={24} />
-              </Link>
-            </Grid>
-            <Grid>
-              <Link href="https://twitter.com/nigerianprincepodcast" target="_blank">
-                <FaTwitter size={24} />
-              </Link>
-            </Grid>
-            <Grid>
-              <Link href="https://www.facebook.com/nigerianprincepodcast" target="_blank">
-                <FaFacebook size={24} />
-              </Link>
-            </Grid>
-            <Grid>
-              <Link href="https://www.youtube.com/nigerianprincepodcast" target="_blank">
-                <FaYoutube size={24} />
-              </Link>
-            </Grid>
-          </Grid.Container>
-        </Container>
-      </footer>
+      <Footer/>
     </div>
   );
 };

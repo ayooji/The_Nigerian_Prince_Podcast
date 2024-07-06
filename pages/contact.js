@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Typography, Box } from '@mui/material';
 import ContactForm from '../components/ContactForm';
 import { white } from "tailwindcss/colors";
+import Footer from "@/components/Footer"; 
 
 const ContactPage = () => {
   return (
@@ -16,6 +17,7 @@ const ContactPage = () => {
       <Box sx={{ my: 4 }}>
         <ContactForm />
       </Box>
+      <Footer/>
     </Container>
   );
 };

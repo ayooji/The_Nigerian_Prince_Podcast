@@ -2,6 +2,7 @@ import { getAllBlogPosts } from "../../lib/supabaseClient";
 import BlogList from "@/components/blog/BlogList";
 import { NextSeo } from "next-seo";
 import CategoryTabs from "@/components/blog/CategoryTabs";
+import Footer from "@/components/Footer"; 
 import { useState, useEffect } from "react";
 import {
   Card,
@@ -99,6 +100,11 @@ const BlogIndex = ({ posts, user }) => {
           title: "Blog - The Nigerian Prince Podcast",
           description: "A collection of blog posts on various topics.",
         }}
+        twitter={{
+          handle: "@nigerianprincepodcast",
+          site: "@nigerianprincepodcast",
+          cardType: "summary_large_image",
+        }}
       />
       <motion.div
         style={{ display: "block", width: "100%" }}
@@ -107,13 +113,11 @@ const BlogIndex = ({ posts, user }) => {
       >
         <Grid.Container className="container mx-auto px-4">
           <Spacer />
-          {/* Update this part */}
           <Grid.Container gap={2} justify="center">
             <Text b>
               <h1>{selectedCategory === "" ? "Blog" : selectedCategory}</h1>
             </Text>
           </Grid.Container>
-          {/* End of updated part */}
 
           <CategoryTabs
             onCategoryChange={(category) => setSelectedCategory(category)}
@@ -148,6 +152,7 @@ const BlogIndex = ({ posts, user }) => {
           </Grid.Container>
         </Grid.Container>
       </motion.div>
+      <Footer />
     </>
   );
 };
