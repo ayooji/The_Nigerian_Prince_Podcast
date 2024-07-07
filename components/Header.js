@@ -111,8 +111,8 @@ const Header = () => {
                   />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
+                  <Dropdown.Item href="/profile/edit">Edit Profile</Dropdown.Item>
+
                   <Dropdown.Item onClick={signOut}>Sign Out</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
