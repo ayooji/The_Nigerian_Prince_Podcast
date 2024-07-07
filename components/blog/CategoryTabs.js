@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Tabs, Tab, Box, useMediaQuery, useTheme, Typography } from "@mui/material";
+import React, { useState, useRef } from "react";
+import { Tabs, Tab, Box, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/router";
 
 export const categories = [
@@ -39,7 +39,7 @@ const CategoryTabs = ({ onCategoryChange }) => {
         variant="scrollable"
         scrollButtons="auto"
         aria-label="category tabs"
-        textColor="inherit"
+        textColor="white"
         indicatorColor="primary"
         centered={!isMobile}
         sx={{
@@ -52,7 +52,7 @@ const CategoryTabs = ({ onCategoryChange }) => {
             fontWeight: "bold",
             fontSize: "0.85rem",
             margin: "0 5px",
-            color: "white",
+            color: "white", // Slightly whiter color
             border: "1px solid #00FF00",
             borderRadius: "20px",
             minWidth: "100px",

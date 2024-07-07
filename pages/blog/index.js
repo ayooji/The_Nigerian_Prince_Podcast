@@ -5,17 +5,12 @@ import CategoryTabs from "@/components/blog/CategoryTabs";
 import Footer from "@/components/Footer"; 
 import { useState, useEffect } from "react";
 import {
-  Card,
-  Text,
-  Image,
   Grid,
   Spacer,
-  Loading,
-  Row,
-  Button,
+  Text,
   Input,
 } from "@nextui-org/react";
-import { motion, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { Pagination } from "react-bootstrap";
 
 export const getStaticProps = async () => {
@@ -27,7 +22,7 @@ export const getStaticProps = async () => {
 };
 
 const BlogIndex = ({ posts, user }) => {
-  const [filteredPosts, setFilteredPosts] = useState(() => posts);
+  const [filteredPosts, setFilteredPosts] = useState(posts);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
@@ -37,17 +32,15 @@ const BlogIndex = ({ posts, user }) => {
   };
 
   useEffect(() => {
-    setFilteredPosts(
-      posts.filter(
-        (post) =>
-          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (post.content_json &&
-            post.content_json.body
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()))
-      )
+    const filtered = posts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (post.content_json &&
+          typeof post.content_json.body === "string" &&
+          post.content_json.body.toLowerCase().includes(searchTerm.toLowerCase()))
     );
+    setFilteredPosts(filtered);
   }, [searchTerm, posts]);
 
   const handleSearch = (term) => {
@@ -55,30 +48,15 @@ const BlogIndex = ({ posts, user }) => {
       setFilteredPosts(posts);
       return;
     }
+    const filtered = posts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(term.toLowerCase()) ||
+        post.category.toLowerCase().includes(term.toLowerCase()) ||
+        (post.content_json &&
+          typeof post.content_json.body === "string" &&
+          post.content_json.body.toLowerCase().includes(term.toLowerCase()))
+    );
     setFilteredPosts(filtered);
-  };
-
-  const fadeInUpVariants = (delay) => ({
-    initial: { opacity: 0, scale: 0.9, y: 30 },
-    animate: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 1.2,
-        ease: [0.6, -0.05, 0.01, 0.99],
-        delay: delay,
-      },
-    },
-  });
-
-  const hoverVariants = {
-    hover: {
-      scale: 1.05,
-      backgroundColor: "#6EFFA2", // Replace with desired shining green color
-      boxShadow: "0px 4px 20px rgba(110, 255, 162, 0.4)",
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
   };
 
   useEffect(() => {
@@ -124,12 +102,18 @@ const BlogIndex = ({ posts, user }) => {
           />
 
           <Spacer y={0.5} />
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={handleChange}
-          />
+          <Grid.Container gap={2} justify="center">
+            <Grid>
+              <Input
+                size="lg"
+                color="success"
+                placeholder="Search blog posts..."
+                value={searchTerm}
+                onChange={handleChange}
+                bordered
+              />
+            </Grid>
+          </Grid.Container>
 
           <BlogList posts={filteredPosts} currentUser={user} />
           <Spacer x={0.5} />
