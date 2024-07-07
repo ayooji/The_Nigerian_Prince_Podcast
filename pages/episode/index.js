@@ -11,6 +11,7 @@ import {
   Spacer,
   Loading,
   Row,
+  Tooltip,
 } from "@nextui-org/react";
 import "tailwindcss/tailwind.css";
 import { useRouter } from "next/router";
@@ -18,7 +19,7 @@ import { Pagination } from "react-bootstrap";
 import GuestButton from "@/components/GuestButton";
 import { motion } from "framer-motion";
 import Head from "next/head";
-import Footer from "@/components/Footer"; 
+import Footer from "@/components/Footer";
 
 const EpisodesPage = ({ episodes, currentPage }) => {
   const [loading, setLoading] = useState(false);
@@ -67,16 +68,40 @@ const EpisodesPage = ({ episodes, currentPage }) => {
     <div className="container mx-auto px-4">
       <Head>
         <title>Episodes - The Nigerian Prince Podcast</title>
-        <meta name="description" content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics." />
-        <meta property="og:title" content="Episodes - The Nigerian Prince Podcast" />
-        <meta property="og:description" content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics." />
-        <meta property="og:url" content="https://www.nigerianprincepodcast.com/episodes" />
+        <meta
+          name="description"
+          content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics."
+        />
+        <meta
+          property="og:title"
+          content="Episodes - The Nigerian Prince Podcast"
+        />
+        <meta
+          property="og:description"
+          content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics."
+        />
+        <meta
+          property="og:url"
+          content="https://www.nigerianprincepodcast.com/episodes"
+        />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.nigerianprincepodcast.com/logo.jpg" />
+        <meta
+          property="og:image"
+          content="https://www.nigerianprincepodcast.com/logo.jpg"
+        />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Episodes - The Nigerian Prince Podcast" />
-        <meta name="twitter:description" content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics." />
-        <meta name="twitter:image" content="https://www.nigerianprincepodcast.com/logo.jpg" />
+        <meta
+          name="twitter:title"
+          content="Episodes - The Nigerian Prince Podcast"
+        />
+        <meta
+          name="twitter:description"
+          content="Explore all episodes of The Nigerian Prince Podcast, featuring engaging conversations and insightful interviews on various topics."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.nigerianprincepodcast.com/logo.jpg"
+        />
       </Head>
       <div className="container mx-auto px-4">
         <Spacer />
@@ -112,6 +137,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                   <div
                     key={episode.id}
                     className="rounded overflow-hidden shadow-lg bg-gray-700 w-full md:w-card-mobile"
+                    style={{ marginBottom: "20px" }} // Added margin-bottom for spacing
                   >
                     {loading && episode.id === clickedEpisodeId && (
                       <Grid.Container
@@ -126,6 +152,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                       isHoverable
                       variant="bordered"
                       isPressable
+                      css={{ height: "100%" }} // Ensure consistent card height
                     >
                       <Card.Body>
                         <Image
@@ -159,18 +186,47 @@ const EpisodesPage = ({ episodes, currentPage }) => {
                         </div>
                       </Card.Header>
                       <Card.Footer>
-                        <Row wrap="wrap" justify="space-between" align="center">
+                        <Row
+                          wrap="wrap"
+                          justify="space-between"
+                          align="center"
+                          css={{ padding: "10px" }}
+                        >
                           <Text className="mt-2 p-1" color="gray-300">
                             Published:{" "}
                             {new Date(
                               episode.published_at
                             ).toLocaleDateString()}
                           </Text>
-                          <GuestButton episodeId={episode.id} />
-                          <ShareButtons
-                            url={`https://nigerianprincepodcast.com/episode/${episode.id}`}
-                            title={episode.title}
-                          />
+                        </Row>
+                        <Row
+                          wrap="wrap"
+                          justify="flex-end"
+                          align="center"
+                          css={{ padding: "10px" }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "10px",
+                            }}
+                          >
+                            <Tooltip content="Guest Image">
+                              <motion.div whileHover={{ scale: 1.1 }}>
+                                <GuestButton episodeId={episode.id} />
+                              </motion.div>
+                            </Tooltip>
+                            <Tooltip content="Share Episode">
+                              <motion.div whileHover={{ scale: 1.1 }}>
+                                <ShareButtons
+                                  url={`https://nigerianprincepodcast.com/episode/${episode.id}`}
+                                  title={episode.title}
+                                  style={{ marginLeft: "10px" }}
+                                />
+                              </motion.div>
+                            </Tooltip>
+                          </div>
                         </Row>
                       </Card.Footer>
                     </Card>
@@ -208,7 +264,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
               </Pagination>
             </Grid.Container>
           </Grid.Container>
-          <Footer/>
+          <Footer />
         </motion.div>
       </div>
     </div>

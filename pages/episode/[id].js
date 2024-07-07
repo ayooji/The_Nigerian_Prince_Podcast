@@ -3,8 +3,20 @@ import { getEpisodeById, getEpisodes } from "../../lib/buzzsprout";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import "tailwindcss/tailwind.css";
-import { Card, Text, Image, Row, Col, Spacer, Grid } from "@nextui-org/react";
+import {
+  Card,
+  Text,
+  Image,
+  Row,
+  Col,
+  Spacer,
+  Grid,
+  Button,
+} from "@nextui-org/react";
 import Head from "next/head";
+import Footer from "@/components/Footer";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 const EpisodePage = ({ episode }) => {
   return (
@@ -12,20 +24,63 @@ const EpisodePage = ({ episode }) => {
       <Head>
         <title>{episode.title} - The Nigerian Prince Podcast</title>
         <meta name="description" content={episode.description} />
-        <meta property="og:title" content={`${episode.title} - The Nigerian Prince Podcast`} />
+        <meta
+          property="og:title"
+          content={`${episode.title} - The Nigerian Prince Podcast`}
+        />
         <meta property="og:description" content={episode.description} />
-        <meta property="og:url" content={`https://www.nigerianprincepodcast.com/episode/${episode.id}`} />
+        <meta
+          property="og:url"
+          content={`https://www.nigerianprincepodcast.com/episode/${episode.id}`}
+        />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content={episode.artwork_url || "https://www.nigerianprincepodcast.com/logo.jpg"} />
+        <meta
+          property="og:image"
+          content={
+            episode.artwork_url ||
+            "https://www.nigerianprincepodcast.com/logo.jpg"
+          }
+        />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${episode.title} - The Nigerian Prince Podcast`} />
+        <meta
+          name="twitter:title"
+          content={`${episode.title} - The Nigerian Prince Podcast`}
+        />
         <meta name="twitter:description" content={episode.description} />
-        <meta name="twitter:image" content={episode.artwork_url || "https://www.nigerianprincepodcast.com/logo.jpg"} />
+        <meta
+          name="twitter:image"
+          content={
+            episode.artwork_url ||
+            "https://www.nigerianprincepodcast.com/logo.jpg"
+          }
+        />
       </Head>
       <Grid.Container className="container mx-auto px-4">
         <Spacer />
-        <Grid.Container gap={1} justify="center">
-          <Text b h3 justify="center" className="text-white text-4xl my-8">
+        <Grid.Container
+          gap={1}
+          justify="center"
+          alignItems="center"
+          direction="column"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            borderRadius: "10px",
+            padding: "20px",
+            boxShadow: "0 10px 20px rgba(0, 0, 0, 0.5)",
+            textAlign: "center",
+          }}
+        >
+          <Text
+            b
+            h3
+            className="text-white text-4xl my-8"
+            css={{
+              textGradient: "45deg, $green500 -20%, $white 10%",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: "bold",
+              marginBottom: "20px",
+            }}
+          >
             {episode.title}
           </Text>
         </Grid.Container>
@@ -75,7 +130,22 @@ const EpisodePage = ({ episode }) => {
               </Card.Footer>
             </Card>
           </Grid>
+          <Link href="/episode" passHref>
+            <Button
+              auto
+              icon={<FaArrowLeft />}
+              css={{
+                backgroundColor: "#00FF00",
+                color: "#000",
+                mb: 4,
+                "&:hover": {
+                  backgroundColor: "#00cc00",
+                },
+              }}
+            ></Button>
+          </Link>
         </Grid.Container>
+        <Footer />
       </Grid.Container>
     </>
   );
