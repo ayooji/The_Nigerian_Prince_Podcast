@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Container,
@@ -14,15 +14,12 @@ import {
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Flag from "react-world-flags";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";
 import { FaInstagram, FaTwitter, FaFacebook, FaYoutube } from "react-icons/fa";
 import Head from "next/head";
-import Footer from "@/components/Footer"; 
-
-// Initialize Supabase client
-const supabaseUrl = "https://your-supabase-url.supabase.co";
-const supabaseKey = "your-supabase-key";
-const supabase = createClient(supabaseUrl, supabaseKey);
+import Footer from "@/components/Footer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const VillageSquare = () => {
   const [visible, setVisible] = useState(false);
@@ -32,6 +29,7 @@ const VillageSquare = () => {
     format: "",
     file: null,
   });
+  const [currentUser, setCurrentUser] = useState(null);
 
   const cardStyle = {
     background: "linear-gradient(45deg, $black -20%, $green500 50%)",
@@ -75,6 +73,14 @@ const VillageSquare = () => {
   const submitHandler = async () => {
     const { title, content, format, file } = formData;
 
+    const { data: user } = await supabase.auth.getUser();
+    if (!user) {
+      alert("You need to be signed in to submit a story.");
+      return;
+    }
+
+    const created_at = new Date().toISOString(); // Get the current timestamp
+
     if (file) {
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("uploads")
@@ -89,7 +95,7 @@ const VillageSquare = () => {
 
       const { data, error } = await supabase
         .from("submissions")
-        .insert([{ title, content, format, file_url: fileUrl }]);
+        .insert([{ title, content, format, file_url: fileUrl, user_id: user.id, created_at }]);
 
       if (error) {
         console.error("Error submitting data:", error);
@@ -97,11 +103,12 @@ const VillageSquare = () => {
         console.log("Data submitted successfully:", data);
         setVisible(false);
         setFormData({ title: "", content: "", format: "", file: null });
+        toast.success("Content submitted successfully! You will be notified via email upon approval.");
       }
     } else {
       const { data, error } = await supabase
         .from("submissions")
-        .insert([{ title, content, format }]);
+        .insert([{ title, content, format, user_id: user.id, created_at }]);
 
       if (error) {
         console.error("Error submitting data:", error);
@@ -109,6 +116,7 @@ const VillageSquare = () => {
         console.log("Data submitted successfully:", data);
         setVisible(false);
         setFormData({ title: "", content: "", format: "", file: null });
+        toast.success("Content submitted successfully! You will be notified via email upon approval.");
       }
     }
   };
@@ -141,6 +149,14 @@ const VillageSquare = () => {
       items: 1,
     },
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
+    };
+    fetchUser();
+  }, []);
 
   return (
     <div className="container mx-auto px-4">
@@ -331,9 +347,8 @@ const VillageSquare = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Footer */}
-      <Spacer x={5} />
-      <Footer/>
+      <ToastContainer />
+      <Footer />
     </div>
   );
 };
