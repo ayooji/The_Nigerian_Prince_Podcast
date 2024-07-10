@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Grid,
-  Container,
   Text,
   Spacer,
   Card,
@@ -9,17 +8,14 @@ import {
   Modal,
   Input,
   Textarea,
-  Link,
+  Tooltip,
 } from "@nextui-org/react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Flag from "react-world-flags";
 import { supabase } from "@/lib/supabaseClient";
-import { FaInstagram, FaTwitter, FaFacebook, FaYoutube } from "react-icons/fa";
 import Head from "next/head";
 import Footer from "@/components/Footer";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const VillageSquare = () => {
   const [visible, setVisible] = useState(false);
@@ -30,6 +26,97 @@ const VillageSquare = () => {
     file: null,
   });
   const [currentUser, setCurrentUser] = useState(null);
+  const [canSubmit, setCanSubmit] = useState(true);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: user } = await supabase.auth.getUser();
+      setCurrentUser(user);
+      if (user) {
+        const { data, error } = await supabase
+          .from("submissions")
+          .select("created_at")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (data) {
+          const lastSubmissionTime = new Date(data.created_at);
+          const currentTime = new Date();
+          const timeDiff = Math.abs(currentTime - lastSubmissionTime);
+          const oneDay = 24 * 60 * 60 * 1000;
+
+          if (timeDiff < oneDay) {
+            setCanSubmit(false);
+          }
+        }
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const closeHandler = () => {
+    setVisible(false);
+  };
+
+  const submitHandler = async () => {
+    const { title, content, format, file } = formData;
+    const { data: user } = await supabase.auth.getUser();
+
+    if (!user) {
+      setTooltipVisible(true);
+      setTimeout(() => setTooltipVisible(false), 3000);
+      return;
+    }
+
+    const user_id = user.id;
+
+    if (file) {
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("uploads")
+        .upload(`public/${file.name}`, file);
+
+      if (uploadError) {
+        console.error("Error uploading file:", uploadError);
+        return;
+      }
+
+      const fileUrl = uploadData.Key;
+
+      const { data, error } = await supabase
+        .from("submissions")
+        .insert([{ title, content, format, user_id, file_url: fileUrl }]);
+
+      if (error) {
+        console.error("Error submitting data:", error);
+      } else {
+        console.log("Data submitted successfully:", data);
+        setVisible(false);
+        setFormData({ title: "", content: "", format: "", file: null });
+        setCanSubmit(false);
+      }
+    } else {
+      const { data, error } = await supabase
+        .from("submissions")
+        .insert([{ title, content, format, user_id }]);
+
+      if (error) {
+        console.error("Error submitting data:", error);
+      } else {
+        console.log("Data submitted successfully:", data);
+        setVisible(false);
+        setFormData({ title: "", content: "", format: "", file: null });
+        setCanSubmit(false);
+      }
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, file });
+  };
 
   const cardStyle = {
     background: "linear-gradient(45deg, $black -20%, $green500 50%)",
@@ -66,69 +153,37 @@ const VillageSquare = () => {
     boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
   };
 
-  const closeHandler = () => {
-    setVisible(false);
-  };
-
-  const submitHandler = async () => {
-    const { title, content, format, file } = formData;
-
-    const { data: user } = await supabase.auth.getUser();
-    if (!user) {
-      alert("You need to be signed in to submit a story.");
-      return;
-    }
-
-    const created_at = new Date().toISOString(); // Get the current timestamp
-
-    if (file) {
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("uploads")
-        .upload(`public/${file.name}`, file);
-
-      if (uploadError) {
-        console.error("Error uploading file:", uploadError);
-        return;
-      }
-
-      const fileUrl = uploadData.Key;
-
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert([{ title, content, format, file_url: fileUrl, user_id: user.id, created_at }]);
-
-      if (error) {
-        console.error("Error submitting data:", error);
-      } else {
-        console.log("Data submitted successfully:", data);
-        setVisible(false);
-        setFormData({ title: "", content: "", format: "", file: null });
-        toast.success("Content submitted successfully! You will be notified via email upon approval.");
-      }
-    } else {
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert([{ title, content, format, user_id: user.id, created_at }]);
-
-      if (error) {
-        console.error("Error submitting data:", error);
-      } else {
-        console.log("Data submitted successfully:", data);
-        setVisible(false);
-        setFormData({ title: "", content: "", format: "", file: null });
-        toast.success("Content submitted successfully! You will be notified via email upon approval.");
-      }
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({ ...formData, file });
-  };
-
   const countries = [
-    "US", "NG", "GB", "CA", "FR", "DE", "GH", "CI", "BR", "AU", "PT", "CM", "ES", "JP",
-    "IT", "IN", "KE", "ZA", "SG", "AE", "NL", "CH", "SE", "FI", "NO", "DK", "IE", "MY", "PH", "MX"
+    "US",
+    "NG",
+    "GB",
+    "CA",
+    "FR",
+    "DE",
+    "GH",
+    "CI",
+    "BR",
+    "AU",
+    "PT",
+    "CM",
+    "ES",
+    "JP",
+    "IT",
+    "IN",
+    "KE",
+    "ZA",
+    "SG",
+    "AE",
+    "NL",
+    "CH",
+    "SE",
+    "FI",
+    "NO",
+    "DK",
+    "IE",
+    "MY",
+    "PH",
+    "MX",
   ]; // Example list of country codes
 
   const responsive = {
@@ -150,14 +205,6 @@ const VillageSquare = () => {
     },
   };
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setCurrentUser(user);
-    };
-    fetchUser();
-  }, []);
-
   return (
     <div className="container mx-auto px-4">
       <Head>
@@ -174,7 +221,10 @@ const VillageSquare = () => {
           property="og:description"
           content="Welcome to The Village Square, a platform for sharing diverse perspectives and unseen narratives. Submit your stories in text, audio, video, or images and be part of the global conversation."
         />
-        <meta property="og:url" content="https://www.nigerianprincepodcast.com/village-square" />
+        <meta
+          property="og:url"
+          content="https://www.nigerianprincepodcast.com/village-square"
+        />
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
@@ -266,19 +316,25 @@ const VillageSquare = () => {
               </Text>
               <Spacer x={0.5} />
               <Grid.Container justify="center">
-                <Button
-                  color="gradient"
-                  auto
-                  ghost
-                  size="lg"
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style = buttonHoverStyle)
-                  }
-                  onMouseOut={(e) => (e.currentTarget.style = buttonStyle)}
-                  onClick={() => setVisible(true)}
+                <Tooltip
+                  content="You can submit once a day or after your previous submission has been reviewed."
+                  visible={tooltipVisible}
                 >
-                  Submit Your Story
-                </Button>
+                  <Button
+                    color="gradient"
+                    auto
+                    ghost
+                    size="lg"
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style = buttonHoverStyle)
+                    }
+                    onMouseOut={(e) => (e.currentTarget.style = buttonStyle)}
+                    onClick={() => setVisible(true)}
+                    disabled={!canSubmit}
+                  >
+                    Submit Your Story
+                  </Button>
+                </Tooltip>
               </Grid.Container>
             </Card.Body>
           </Card>
@@ -347,7 +403,8 @@ const VillageSquare = () => {
         </Modal.Footer>
       </Modal>
 
-      <ToastContainer />
+      {/* Footer */}
+      <Spacer x={5} />
       <Footer />
     </div>
   );
