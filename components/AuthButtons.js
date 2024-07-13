@@ -28,19 +28,19 @@ const AuthButtons = () => {
     const event = new CustomEvent('onAuthStateChanged', { detail: { session } });
     window.dispatchEvent(event);
   };
+  
   useEffect(() => {
-    const unsubscribe = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       handleSession(session);
     });
   
     return () => {
-      if (typeof unsubscribe === 'function') {
-        unsubscribe();
+      if (typeof subscription === 'function') {
+        subscription.unsubscribe();
       }
     };
-    [handleSession]
-  }, );
-
+  }, []);
+  
   return (
     <div>
       <Grid.Container gap={1}>
