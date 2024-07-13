@@ -94,13 +94,12 @@ const Header = () => {
             <Nav.Link href="/village-square">Village Square</Nav.Link>
             <Nav.Link href="/guests">Guests</Nav.Link>
             <Nav.Link href="/sponsorship">Sponsorship & Ads</Nav.Link>
-          
             <Nav.Link href="/about">About</Nav.Link>
             <Nav.Link href="/contact">Contact</Nav.Link>
           </Nav>
           <Nav className="ml-auto">
             {currentUser ? (
-              <Dropdown alignRight>
+              <Dropdown align="right">
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
                   <Image
                     src={avatarUrl || "/avatar-placeholder.png"}
@@ -112,7 +111,6 @@ const Header = () => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item href="/profile/edit">Edit Profile</Dropdown.Item>
-
                   <Dropdown.Item onClick={signOut}>Sign Out</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

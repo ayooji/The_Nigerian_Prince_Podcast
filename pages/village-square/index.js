@@ -17,6 +17,7 @@ import Flag from "react-world-flags";
 import { supabase } from "@/lib/supabaseClient";
 import Head from "next/head";
 import Footer from "@/components/Footer";
+import AuthButtons from "@/components/AuthButtons"; // Import AuthButtons
 
 const VillageSquare = () => {
   const [visible, setVisible] = useState(false);
@@ -29,11 +30,14 @@ const VillageSquare = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [canSubmit, setCanSubmit] = useState(true);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const [authVisible, setAuthVisible] = useState(false); // State for auth modal
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: user } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       setCurrentUser(user);
+
       if (user) {
         const { data, error } = await supabase
           .from("submissions")
@@ -51,24 +55,41 @@ const VillageSquare = () => {
 
           if (timeDiff < oneDay) {
             setCanSubmit(false);
+          } else {
+            setCanSubmit(true);
           }
         }
       }
     };
-    fetchUser();
+
+    const storedCanSubmit = localStorage.getItem("canSubmit");
+    if (storedCanSubmit !== null) {
+      setCanSubmit(JSON.parse(storedCanSubmit));
+    } else {
+      fetchUser();
+    }
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem("canSubmit", JSON.stringify(canSubmit));
+    }
+  }, [canSubmit, currentUser]);
 
   const closeHandler = () => {
     setVisible(false);
   };
 
+  const closeAuthHandler = () => {
+    setAuthVisible(false);
+  };
+
   const submitHandler = async () => {
     const { title, content, format, file } = formData;
-    const { data: user } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      setTooltipVisible(true);
-      setTimeout(() => setTooltipVisible(false), 3000);
+      setAuthVisible(true);
       return;
     }
 
@@ -97,6 +118,9 @@ const VillageSquare = () => {
         setVisible(false);
         setFormData({ title: "", content: "", format: "", file: null });
         setCanSubmit(false);
+        setConfirmationVisible(true);
+        setTimeout(() => setConfirmationVisible(false), 5000);
+        localStorage.setItem("canSubmit", JSON.stringify(false));
       }
     } else {
       const { data, error } = await supabase
@@ -110,6 +134,9 @@ const VillageSquare = () => {
         setVisible(false);
         setFormData({ title: "", content: "", format: "", file: null });
         setCanSubmit(false);
+        setConfirmationVisible(true);
+        setTimeout(() => setConfirmationVisible(false), 5000);
+        localStorage.setItem("canSubmit", JSON.stringify(false));
       }
     }
   };
@@ -330,7 +357,13 @@ const VillageSquare = () => {
                       (e.currentTarget.style = buttonHoverStyle)
                     }
                     onMouseOut={(e) => (e.currentTarget.style = buttonStyle)}
-                    onClick={() => setVisible(true)}
+                    onClick={() => {
+                      if (!currentUser) {
+                        setAuthVisible(true);
+                      } else {
+                        setVisible(true);
+                      }
+                    }}
                     disabled={!canSubmit}
                   >
                     Submit Your Story
@@ -402,6 +435,38 @@ const VillageSquare = () => {
             Submit
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      {/* Confirmation Modal */}
+      <Modal open={confirmationVisible} onClose={() => setConfirmationVisible(false)} closeButton>
+        <Modal.Header>
+          <Text id="modal-title" size={18}>
+            Submission Received
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <Text>
+            Your content has been sent to Ayo and if approved, the content will be featured on the platform.
+            You will get notified by email of approval by the Host Ayo Oji.
+          </Text>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button auto onClick={() => setConfirmationVisible(false)}>
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Auth Modal */}
+      <Modal open={authVisible} onClose={closeAuthHandler} closeButton>
+        <Modal.Header>
+          <Text id="modal-title" size={18}>
+            Please Sign In or Sign Up
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <AuthButtons />
+        </Modal.Body>
       </Modal>
 
       {/* Footer */}
