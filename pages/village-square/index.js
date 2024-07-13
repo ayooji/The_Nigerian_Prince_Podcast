@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Grid,
+  Container,
   Text,
   Spacer,
   Card,
@@ -87,7 +88,7 @@ const VillageSquare = () => {
 
       const { data, error } = await supabase
         .from("submissions")
-        .insert([{ title, content, format, user_id, file_url: fileUrl }]);
+        .insert([{ title, content, format, user_id, file_url: fileUrl, created_at: new Date().toISOString() }]);
 
       if (error) {
         console.error("Error submitting data:", error);
@@ -100,7 +101,7 @@ const VillageSquare = () => {
     } else {
       const { data, error } = await supabase
         .from("submissions")
-        .insert([{ title, content, format, user_id }]);
+        .insert([{ title, content, format, user_id, created_at: new Date().toISOString() }]);
 
       if (error) {
         console.error("Error submitting data:", error);
