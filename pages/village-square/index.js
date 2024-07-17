@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Grid,
-  Container,
   Text,
   Spacer,
   Card,
@@ -17,10 +16,11 @@ import Flag from "react-world-flags";
 import { supabase } from "@/lib/supabaseClient";
 import Head from "next/head";
 import Footer from "@/components/Footer";
-import AuthButtons from "@/components/AuthButtons"; // Import AuthButtons
+import AuthButtons from "@/components/AuthButtons";
 
 const VillageSquare = () => {
   const [visible, setVisible] = useState(false);
+  const [authVisible, setAuthVisible] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -30,51 +30,53 @@ const VillageSquare = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [canSubmit, setCanSubmit] = useState(true);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [confirmationVisible, setConfirmationVisible] = useState(false);
-  const [authVisible, setAuthVisible] = useState(false); // State for auth modal
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setCurrentUser(user);
-
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        console.error("Error fetching user:", userError.message);
+        return;
+      }
       if (user) {
-        const { data, error } = await supabase
-          .from("submissions")
-          .select("created_at")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
-
-        if (data) {
-          const lastSubmissionTime = new Date(data.created_at);
-          const currentTime = new Date();
-          const timeDiff = Math.abs(currentTime - lastSubmissionTime);
-          const oneDay = 24 * 60 * 60 * 1000;
-
-          if (timeDiff < oneDay) {
-            setCanSubmit(false);
-          } else {
-            setCanSubmit(true);
-          }
-        }
+        console.log("Fetched user:", user);
+        setCurrentUser(user);
+        await checkLastSubmission(user.id);
       }
     };
 
-    const storedCanSubmit = localStorage.getItem("canSubmit");
-    if (storedCanSubmit !== null) {
-      setCanSubmit(JSON.parse(storedCanSubmit));
-    } else {
-      fetchUser();
-    }
-  }, []);
+    const checkLastSubmission = async (userId) => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("submission_time")
+        .eq("user_id", userId)
+        .single();  // Use single() to get exactly one row
 
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem("canSubmit", JSON.stringify(canSubmit));
-    }
-  }, [canSubmit, currentUser]);
+      if (error) {
+        console.error("Error fetching submission time:", error.message);
+        return;
+      }
+
+      console.log("Fetched submission time:", data);
+
+      if (data && data.submission_time) {
+        const lastSubmissionTime = new Date(data.submission_time);
+        const currentTime = new Date();
+        const timeDiff = Math.abs(currentTime - lastSubmissionTime);
+        const oneDay = 24 * 60 * 60 * 1000;
+
+        if (timeDiff < oneDay) {
+          setCanSubmit(false);
+        } else {
+          setCanSubmit(true);
+        }
+      } else {
+        setCanSubmit(true);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const closeHandler = () => {
     setVisible(false);
@@ -86,60 +88,99 @@ const VillageSquare = () => {
 
   const submitHandler = async () => {
     const { title, content, format, file } = formData;
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      setAuthVisible(true);
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  
+    if (sessionError) {
+      console.error("Error fetching session:", sessionError.message);
+      setAuthVisible(true); // Show the auth modal if there's an error fetching session
       return;
     }
-
+  
+    if (!session || !session.user) {
+      setAuthVisible(true); // Show the auth modal if no session or user is found
+      return;
+    }
+  
+    const user = session.user;
+  
+    console.log("Submitting user:", user);
+  
+    if (!title || !content || !format) {
+      alert("Please fill in all the fields.");
+      return;
+    }
+  
     const user_id = user.id;
-
+  
+    const { data: submissions, error: submissionError } = await supabase
+      .from("submissions")
+      .select("created_at")
+      .eq("user_id", user_id)
+      .order("created_at", { ascending: false })
+      .limit(1);
+  
+    if (submissionError) {
+      console.error("Error checking last submission:", submissionError.message);
+      return;
+    }
+  
+    console.log("Last submission data:", submissions);
+  
+    if (submissions && submissions.length > 0) {
+      const lastSubmissionTime = new Date(submissions[0].created_at);
+      const currentTime = new Date();
+      const timeDiff = Math.abs(currentTime - lastSubmissionTime);
+      const oneDay = 24 * 60 * 60 * 1000;
+  
+      if (timeDiff < oneDay) {
+        alert("You can only submit once per day.");
+        return;
+      }
+    }
+  
+    let fileUrl = null;
+  
     if (file) {
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("uploads")
         .upload(`public/${file.name}`, file);
-
+  
       if (uploadError) {
         console.error("Error uploading file:", uploadError);
         return;
       }
-
-      const fileUrl = uploadData.Key;
-
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert([{ title, content, format, user_id, file_url: fileUrl, created_at: new Date().toISOString() }]);
-
-      if (error) {
-        console.error("Error submitting data:", error);
-      } else {
-        console.log("Data submitted successfully:", data);
-        setVisible(false);
-        setFormData({ title: "", content: "", format: "", file: null });
-        setCanSubmit(false);
-        setConfirmationVisible(true);
-        setTimeout(() => setConfirmationVisible(false), 5000);
-        localStorage.setItem("canSubmit", JSON.stringify(false));
-      }
-    } else {
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert([{ title, content, format, user_id, created_at: new Date().toISOString() }]);
-
-      if (error) {
-        console.error("Error submitting data:", error);
-      } else {
-        console.log("Data submitted successfully:", data);
-        setVisible(false);
-        setFormData({ title: "", content: "", format: "", file: null });
-        setCanSubmit(false);
-        setConfirmationVisible(true);
-        setTimeout(() => setConfirmationVisible(false), 5000);
-        localStorage.setItem("canSubmit", JSON.stringify(false));
-      }
+  
+      fileUrl = uploadData.Key;
     }
+  
+    const { data, error } = await supabase
+      .from("submissions")
+      .insert([{ title, content, format, user_id, file_url: fileUrl, created_at: new Date().toISOString() }]);
+  
+    if (error) {
+      console.error("Error submitting data:", error);
+      return;
+    }
+  
+    console.log("Data submitted successfully:", data);
+  
+    // Update the submission_time in profiles table
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ submission_time: new Date().toISOString() })
+      .eq("user_id", user_id);
+  
+    if (updateError) {
+      console.error("Error updating submission time:", updateError.message);
+      return;
+    }
+  
+    alert("Your content has been submitted!");
+    setVisible(false);
+    setFormData({ title: "", content: "", format: "", file: null });
+    setCanSubmit(false);
   };
+  
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -357,13 +398,7 @@ const VillageSquare = () => {
                       (e.currentTarget.style = buttonHoverStyle)
                     }
                     onMouseOut={(e) => (e.currentTarget.style = buttonStyle)}
-                    onClick={() => {
-                      if (!currentUser) {
-                        setAuthVisible(true);
-                      } else {
-                        setVisible(true);
-                      }
-                    }}
+                    onPress={() => setVisible(true)}
                     disabled={!canSubmit}
                   >
                     Submit Your Story
@@ -428,31 +463,11 @@ const VillageSquare = () => {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onClick={closeHandler}>
+          <Button auto flat color="error" onPress={closeHandler}>
             Cancel
           </Button>
-          <Button auto onClick={submitHandler}>
+          <Button auto onPress={submitHandler}>
             Submit
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Confirmation Modal */}
-      <Modal open={confirmationVisible} onClose={() => setConfirmationVisible(false)} closeButton>
-        <Modal.Header>
-          <Text id="modal-title" size={18}>
-            Submission Received
-          </Text>
-        </Modal.Header>
-        <Modal.Body>
-          <Text>
-            Your content has been sent to Ayo and if approved, the content will be featured on the platform.
-            You will get notified by email of approval by the Host Ayo Oji.
-          </Text>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button auto onClick={() => setConfirmationVisible(false)}>
-            OK
           </Button>
         </Modal.Footer>
       </Modal>
