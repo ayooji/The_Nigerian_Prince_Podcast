@@ -1,8 +1,12 @@
-import React from 'react';
-import { Container, Text, Card, Grid, Button } from '@nextui-org/react';
+import React, { useState } from 'react';
+import { Container, Text, Card, Grid, Button, Modal } from '@nextui-org/react';
 import { motion } from 'framer-motion';
+import ContactForm from './ContactForm'; // Import your ContactForm component
 
 const AdvertisingOpportunities = () => {
+  const [visible, setVisible] = useState(false);
+  const [message, setMessage] = useState('');
+
   const cardStyle = {
     background: 'black',
     borderRadius: '15px',
@@ -27,6 +31,16 @@ const AdvertisingOpportunities = () => {
     borderImage: 'linear-gradient(45deg, #00FF00, #32CD32) 1',
   };
 
+  const handleContactClick = (adType) => {
+    setMessage(`I am interested in ${adType}`);
+    setVisible(true);
+  };
+
+  const closeHandler = () => {
+    setVisible(false);
+    setMessage('');
+  };
+
   return (
     <Container>
       <Text h2 css={{ textAlign: 'center', marginBottom: '20px', color: 'white' }}>
@@ -48,7 +62,7 @@ const AdvertisingOpportunities = () => {
                 <Text css={{ color: 'white' }}>Contact us for custom pricing.</Text>
               </Card.Body>
               <Card.Footer>
-                <Button auto as="a" href="#contact" css={buttonStyle}>
+                <Button auto css={buttonStyle} onClick={() => handleContactClick('Pre-roll Ads')}>
                   Contact Us
                 </Button>
               </Card.Footer>
@@ -70,7 +84,7 @@ const AdvertisingOpportunities = () => {
                 <Text css={{ color: 'white' }}>Contact us for custom pricing.</Text>
               </Card.Body>
               <Card.Footer>
-                <Button auto as="a" href="#contact" css={buttonStyle}>
+                <Button auto css={buttonStyle} onClick={() => handleContactClick('Mid-roll Ads')}>
                   Contact Us
                 </Button>
               </Card.Footer>
@@ -92,7 +106,7 @@ const AdvertisingOpportunities = () => {
                 <Text css={{ color: 'white' }}>Contact us for custom pricing.</Text>
               </Card.Body>
               <Card.Footer>
-                <Button auto as="a" href="#contact" css={buttonStyle}>
+                <Button auto css={buttonStyle} onClick={() => handleContactClick('Post-roll Ads')}>
                   Contact Us
                 </Button>
               </Card.Footer>
@@ -100,6 +114,15 @@ const AdvertisingOpportunities = () => {
           </motion.div>
         </Grid>
       </Grid.Container>
+
+      <Modal open={visible} onClose={closeHandler} closeButton>
+        <Modal.Header>
+          <Text id="modal-title" size={18}>Advertising</Text>
+        </Modal.Header>
+        <Modal.Body>
+          <ContactForm preFilledMessage={message} />
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };

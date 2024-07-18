@@ -1,5 +1,6 @@
-import React from 'react';
-import { Container, Text, Card, Grid, Button } from '@nextui-org/react';
+import React, { useState } from 'react';
+import { Container, Text, Card, Grid, Button, Modal } from '@nextui-org/react';
+import ContactForm from './ContactForm'; // Import your ContactForm component
 
 const cardStyles = {
   base: {
@@ -38,9 +39,22 @@ const buttonStyle = {
 };
 
 const SponsorshipPackages = () => {
+  const [visible, setVisible] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleContactClick = (packageType) => {
+    setMessage(`I am interested in the ${packageType}`);
+    setVisible(true);
+  };
+
+  const closeHandler = () => {
+    setVisible(false);
+    setMessage('');
+  };
+
   return (
     <Container>
-      <Text h2 css={{ textAlign: 'center', marginBottom: '20px', }}>
+      <Text h2 css={{ textAlign: 'center', marginBottom: '20px' }}>
         Sponsorship Packages
       </Text>
       <Grid.Container gap={2} justify="center">
@@ -56,7 +70,7 @@ const SponsorshipPackages = () => {
               <Text css={textStyle}>• Price: Contact for pricing</Text>
             </Card.Body>
             <Card.Footer css={{ justifyContent: 'center' }}>
-              <Button auto flat css={buttonStyle} as="a" href="#contact" color="gradient">
+              <Button auto flat css={buttonStyle} onClick={() => handleContactClick('Bronze Package')}>
                 Contact Us
               </Button>
             </Card.Footer>
@@ -75,7 +89,7 @@ const SponsorshipPackages = () => {
               <Text css={textStyle}>• Price: Contact for pricing</Text>
             </Card.Body>
             <Card.Footer css={{ justifyContent: 'center' }}>
-              <Button auto flat css={buttonStyle} as="a" href="#contact" color="gradient" >
+              <Button auto flat css={buttonStyle} onClick={() => handleContactClick('Silver Package')}>
                 Contact Us
               </Button>
             </Card.Footer>
@@ -95,13 +109,22 @@ const SponsorshipPackages = () => {
               <Text css={textStyle}>• Price: Contact for pricing</Text>
             </Card.Body>
             <Card.Footer css={{ justifyContent: 'center' }}>
-              <Button auto flat css={buttonStyle} as="a" href="#contact" color="gradient">
+              <Button auto flat css={buttonStyle} onClick={() => handleContactClick('Gold Package')}>
                 Contact Us
               </Button>
             </Card.Footer>
           </Card>
         </Grid>
       </Grid.Container>
+
+      <Modal open={visible} onClose={closeHandler} closeButton>
+        <Modal.Header>
+          <Text id="modal-title" size={18}>Sponsorships</Text>
+        </Modal.Header>
+        <Modal.Body>
+          <ContactForm preFilledMessage={message} />
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };

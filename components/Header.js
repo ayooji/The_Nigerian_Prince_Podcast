@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Nav, Container, Dropdown, Image, Button } from "react-bootstrap";
+import { Navbar, Nav, Container, Dropdown, Image } from "react-bootstrap";
 import AuthButtons from "./AuthButtons";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/router";
+import { FaDonate } from "react-icons/fa"; // Import the donation icon
 
 const Header = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -86,14 +87,18 @@ const Header = () => {
           </span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" >
+        <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/episode">Episodes</Nav.Link>
-            <Nav.Link href="/blog">Blogs</Nav.Link>
+            <Nav.Link href="/episodes">Episodes</Nav.Link>
+            <Nav.Link href="/blogs">Blogs</Nav.Link>
             <Nav.Link href="/village-square">Village Square</Nav.Link>
             <Nav.Link href="/guests">Guests</Nav.Link>
             <Nav.Link href="/sponsorship">Sponsorship & Ads</Nav.Link>
+            <Nav.Link href="/donations" className="d-flex align-items-center">
+              <FaDonate size={20} style={{ marginRight: '5px' }} />
+              Donate
+            </Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
             <Nav.Link href="/contact">Contact</Nav.Link>
           </Nav>

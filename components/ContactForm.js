@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Text, Input, Textarea, Button, Spacer, Card, Modal } from '@nextui-org/react';
 import { supabase } from '@/lib/supabaseClient';
 
-const ContactForm = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+const ContactForm = ({ preFilledMessage = '' }) => {
+  const [formData, setFormData] = useState({ name: '', email: '', message: preFilledMessage });
   const [visible, setVisible] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setFormData((prevData) => ({ ...prevData, message: preFilledMessage }));
+  }, [preFilledMessage]);
 
   const closeHandler = () => {
     setVisible(false);
@@ -15,8 +20,21 @@ const ContactForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const validateForm = () => {
+    let formErrors = {};
+    if (!formData.name) formErrors.name = 'Name is required';
+    if (!formData.email) formErrors.email = 'Email is required';
+    if (!formData.message) formErrors.message = 'Message is required';
+    return formErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
 
     const { name, email, message } = formData;
 
@@ -30,6 +48,7 @@ const ContactForm = () => {
       console.log('Contact form submitted successfully:', data);
       setVisible(true);
       setFormData({ name: '', email: '', message: '' });
+      setErrors({});
     }
   };
 
@@ -50,6 +69,8 @@ const ContactForm = () => {
             value={formData.name}
             onChange={handleChange}
             css={{ marginBottom: '20px' }} 
+            status={errors.name && 'error'}
+            helperText={errors.name}
           />
           <Input 
             fullWidth 
@@ -61,6 +82,8 @@ const ContactForm = () => {
             value={formData.email}
             onChange={handleChange}
             css={{ marginBottom: '20px' }} 
+            status={errors.email && 'error'}
+            helperText={errors.email}
           />
           <Textarea 
             fullWidth 
@@ -73,6 +96,8 @@ const ContactForm = () => {
             value={formData.message}
             onChange={handleChange}
             css={{ marginBottom: '20px' }} 
+            status={errors.message && 'error'}
+            helperText={errors.message}
           />
           <Button 
             auto 
@@ -84,9 +109,6 @@ const ContactForm = () => {
           </Button>
         </form>
       </Card>
-      <Spacer y={2} />
-      <Text css={{ textAlign: 'center' }}>Or reach us at: sponsor@thenigerianprincepodcast.com</Text>
-      <Text css={{ textAlign: 'center' }}>Phone: (123) 456-7890</Text>
 
       {/* Success Modal */}
       <Modal open={visible} onClose={closeHandler} closeButton>

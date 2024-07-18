@@ -434,11 +434,17 @@ const LeafletMap = () => {
           position={[location.lat, location.lng]}
           icon={customIcon}
         >
-          <Popup>{`${location.city}, ${location.country}`}</Popup>
+          <motion.div
+            animate={{ scale: [1, 1.5, 1], rotate: [0, 360, 0] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+          >
+            <Popup>{`${location.city}, ${location.country}`}</Popup>
+          </motion.div>
         </Marker>
       ))}
     </MapContainer>
   );
 };
+
 
 export default LeafletMap;
