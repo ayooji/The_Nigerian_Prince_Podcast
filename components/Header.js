@@ -90,7 +90,7 @@ const Header = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/episodes">Episodes</Nav.Link>
+            <Nav.Link href="/episode">Episodes</Nav.Link>
             <Nav.Link href="/blogs">Blogs</Nav.Link>
             <Nav.Link href="/village-square">Village Square</Nav.Link>
             <Nav.Link href="/guests">Guests</Nav.Link>
