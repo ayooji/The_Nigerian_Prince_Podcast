@@ -3,13 +3,17 @@ import { getEpisodeById, getEpisodes } from "../../lib/buzzsprout";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import "tailwindcss/tailwind.css";
-import { Card, Text, Image, Row, Col, Spacer, Grid, Button } from "@nextui-org/react";
+import { Card, Text, Grid, Button } from "@nextui-org/react";
 import Head from "next/head";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { useTheme } from "@nextui-org/react";
 
 const EpisodePage = ({ episode }) => {
+  const { isDark } = useTheme();
+
   return (
     <>
       <Head>
@@ -25,101 +29,65 @@ const EpisodePage = ({ episode }) => {
         <meta name="twitter:description" content={episode.description} />
         <meta name="twitter:image" content={episode.artwork_url || "https://www.nigerianprincepodcast.com/logo.jpg"} />
       </Head>
-      <Grid.Container className="container mx-auto px-4">
-        <Spacer />
-        <Grid.Container
-          gap={1}
-          justify="center"
-          alignItems="center"
-          direction="column"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
-            borderRadius: "10px",
-            padding: "20px",
-            boxShadow: "0 10px 20px rgba(0, 0, 0, 0.5)",
-            textAlign: "center",
-          }}
-        >
-         
+      <Grid.Container justify="center" css={{ padding: "20px", backgroundColor: isDark ? "#111111" : "#ffffff" }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
           <Text
-            b
-            h3
-            className="text-white text-4xl my-8"
+            h1
             css={{
-              textGradient: "45deg, $green500 -20%, $white 10%",
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: "bold",
+              textAlign: "center",
               marginBottom: "20px",
+              color: isDark ? "#ffffff" : "#000000",
+              fontWeight: "bold",
+              textGradient: "45deg, $green500 -20%, $white 10%",
             }}
           >
             {episode.title}
           </Text>
-        </Grid.Container>
-        <Grid.Container
-          gap={2}
-          justify="center"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <Grid md={5} xs={24} justify="center">
-            <Card variant="bordered" className="bg-gray-700">
-              <Card.Body>
-                <Row>
-                  <Col>
-                    <Col>
-                      <Card.Image
-                        src={episode.artwork_url || "/logo.jpg"}
-                        alt="Episode artwork"
-                        objectFit="cover"
-                        width="100%"
-                        height="100%"
-                      />
-                    </Col>
-                    <div className="bg-gray-800 rounded-lg p-1 mx-4 h-full">
-                      <div className="bg-gray-900 rounded-lg p-4 h-full">
-                        <AudioPlayer
-                          className="w-full"
-                          src={episode.audio_url}
-                          style={{ maxWidth: "100%" }}
-                        />
-                        <div className="mt-4 prose prose-lg text-white">
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: episode.description,
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              </Card.Body>
-              <Card.Footer>
-                <Text small color="gray-300" className="mt-2">
-                  Published:{" "}
-                  {new Date(episode.published_at).toLocaleDateString()}
-                </Text>
-              </Card.Footer>
-            </Card>
+        </motion.div>
+        <Grid.Container gap={2} justify="center">
+          <Grid xs={12} sm={6} md={4}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Card css={{ backgroundColor: isDark ? "#333333" : "#f5f5f5", padding: "20px", textAlign: "center" }}>
+                <Card.Body>
+                  <Card.Image
+                    src={episode.artwork_url || "/logo.jpg"}
+                    alt="Episode artwork"
+                    objectFit="cover"
+                    width="100%"
+                    height="100%"
+                    css={{ borderRadius: "10px" }}
+                  />
+                  <AudioPlayer className="w-full mt-4" src={episode.audio_url} style={{ maxWidth: "100%" }} />
+                  <Text css={{ marginTop: "20px", color: isDark ? "#cccccc" : "#333333" }}>
+                    <div dangerouslySetInnerHTML={{ __html: episode.description }} />
+                  </Text>
+                </Card.Body>
+                <Card.Footer>
+                  <Text small color="gray">
+                    Published: {new Date(episode.published_at).toLocaleDateString()}
+                  </Text>
+                </Card.Footer>
+              </Card>
+            </motion.div>
           </Grid>
         </Grid.Container>
         <Link href="/episode" passHref>
-            <Button
-              auto
-              icon={<FaArrowLeft />}
-              css={{
-                backgroundColor: "#0dbf0d",
-                color: "#000",
-                mb: 4,
-                "&:hover": {
-                  backgroundColor: "#00cc00",
-                },
-              }}
-            >
-              Back to Episodes
-            </Button>
-          </Link>
+          <Button
+            auto
+            icon={<FaArrowLeft />}
+            css={{
+              backgroundColor: "#0dbf0d",
+              color: "#000",
+              marginTop: "20px",
+              "&:hover": {
+                backgroundColor: "#00cc00",
+              },
+            }}
+          >
+            Back to Episodes
+          </Button>
+        </Link>
       </Grid.Container>
-      
       <Footer />
     </>
   );
