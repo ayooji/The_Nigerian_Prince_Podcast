@@ -29,7 +29,7 @@ const EpisodePage = ({ episode }) => {
         <meta name="twitter:description" content={episode.description} />
         <meta name="twitter:image" content={episode.artwork_url || "https://www.nigerianprincepodcast.com/logo.jpg"} />
       </Head>
-      <Grid.Container justify="center" css={{ padding: "20px", backgroundColor: isDark ? "#111111" : "#ffffff" }}>
+      <Grid.Container justify="center" css={{ padding: "20px", backgroundColor: isDark ? "black" : "#ffffff" }}>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
           <Text
             h1
