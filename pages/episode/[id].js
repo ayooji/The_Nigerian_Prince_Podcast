@@ -47,7 +47,7 @@ const EpisodePage = ({ episode }) => {
         <Grid.Container gap={2} justify="center">
           <Grid xs={12} sm={6} md={4}>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card css={{ backgroundColor: isDark ? "#333333" : "#f5f5f5", padding: "20px", textAlign: "center" }}>
+              <Card css={{ backgroundColor: isDark ? "#171717" : "#f5f5f5", padding: "20px", textAlign: "center" }}>
                 <Card.Body>
                   <Card.Image
                     src={episode.artwork_url || "/logo.jpg"}
