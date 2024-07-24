@@ -1,7 +1,7 @@
 # The Nigerian Prince Podcast
 
 Welcome to the repository of **The Nigerian Prince Podcast**, hosted by Ayo Oji. This podcast features engaging conversations with a diverse range of fascinating guests, covering topics such as life, technology, society, culture, politics, entrepreneurship, self-improvement, and more. 
-Coded by Ayo Oji. 
+Code by Ayo Oji. 
 
 ![The Nigerian Prince Podcast](https://www.nigerianprincepodcast.com/logo.jpg)
 
