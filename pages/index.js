@@ -103,6 +103,44 @@ const HomePage = ({ episodes, posts }) => {
             property="og:image"
             content="https://www.nigerianprincepodcast.com/logo.jpg"
           />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:title"
+            content="The Nigerian Prince Podcast - Engaging Conversations & Insightful Interviews"
+          />
+          <meta
+            property="og:description"
+            content="Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content."
+          />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta
+            name="twitter:title"
+            content="The Nigerian Prince Podcast - Engaging Conversations & Insightful Interviews"
+          />
+          <meta
+            name="twitter:description"
+            content="Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content."
+          />
+          <meta
+            name="twitter:image"
+            content="https://www.nigerianprincepodcast.com/logo.jpg"
+          />
+          <meta name="twitter:site" content="@nigerianprincepodcast" />
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "http://schema.org",
+              "@type": "Organization",
+              url: "https://www.nigerianprincepodcast.com",
+              logo: "https://www.nigerianprincepodcast.com/logo.jpg",
+              name: "The Nigerian Prince Podcast",
+              sameAs: [
+                "https://www.facebook.com/nigerianprincepodcast",
+                "https://www.instagram.com/nigerianprincepodcast",
+                "https://www.twitter.com/nigerianprincepodcast",
+              ],
+            })}
+          </script>
+          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         </Head>
 
         {/* Hero Section */}
