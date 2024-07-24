@@ -6,13 +6,10 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Box,
-  Link,
-  IconButton,
 } from "@mui/material";
-import { FaInstagram, FaFacebook, FaTwitter } from "react-icons/fa";
 import Footer from "../components/Footer";
 import Head from "next/head";
+
 const AboutPage = () => {
   return (
     <>

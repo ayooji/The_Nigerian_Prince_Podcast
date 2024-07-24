@@ -12,16 +12,15 @@ import {
   Link,
   IconButton,
 } from "@mui/material";
-import { Text, Image, Spacer, Loading, Row } from "@nextui-org/react";
+import { Text, Spacer, Row } from "@nextui-org/react";
 import { NextSeo } from "next-seo";
 import { motion } from "framer-motion";
-import { FaInstagram, FaYoutube, FaFacebook, FaTwitter, FaRumble  } from "react-icons/fa";
+import { FaInstagram, FaYoutube, FaFacebook, FaTwitter, FaRumble } from "react-icons/fa";
 import {
   SiSpotify,
   SiApplepodcasts,
   SiAmazon,
   SiDeezer,
-  SiYoutube,
 } from "react-icons/si";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -39,11 +38,11 @@ import Footer from "../components/Footer";
 const HomePage = ({ episodes, posts }) => {
   const guestSliderSettings = {
     infinite: true,
-    speed: 1000, // Reduced speed
+    speed: 1000,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000, // Adjusted autoplay speed
+    autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 1024,
@@ -70,8 +69,7 @@ const HomePage = ({ episodes, posts }) => {
         openGraph={{
           url: "https://www.thenigerianprincepodcast.com",
           title: "The Nigerian Prince Podcast",
-          description:
-            "Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content.",
+          description: "Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content.",
           images: [
             {
               url: "https://www.thenigerianprincepodcast.com/heroImage.jpg",
@@ -116,17 +114,16 @@ const HomePage = ({ episodes, posts }) => {
             >
               <Typography
                 component="h1"
-                className="hero-text"
                 sx={{
                   mb: 2,
-                  fontSize: "3rem",
+                  fontSize: "4rem",
                   fontWeight: "bold",
                   background: "linear-gradient(145deg, #00ff00, #ffffff)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  animation: "rotate 5s infinite linear",
+                  animation: "rotate 20s infinite linear",
                   "@keyframes rotate": {
-                    "0%": { transform: "rotateY(0deg)" },
+                    "20%": { transform: "rotateY(0deg)" },
                     "100%": { transform: "rotateY(360deg)" },
                   },
                 }}
@@ -135,7 +132,6 @@ const HomePage = ({ episodes, posts }) => {
               </Typography>
               <Typography
                 component="h2"
-                className="subtext"
                 sx={{
                   mb: 2,
                   fontSize: "1.5rem",
@@ -220,7 +216,6 @@ const HomePage = ({ episodes, posts }) => {
                     YouTube
                   </Typography>
                 </Link>
-                
               </Box>
             </motion.div>
           </Grid>
@@ -436,76 +431,65 @@ const HomePage = ({ episodes, posts }) => {
           <Donations />
         </Box>
 
-      {/* Host Section */}
-<Grid container spacing={4} justifyContent="center" sx={{ my: 4 }}>
-  <Grid item xs={12} md={6}>
-    <Card
-      sx={{
-        textAlign: "center",
-        boxShadow: 6,
-        background: "linear-gradient(145deg, #006400, #000000)",
-        borderRadius: 2,
-        color: "white",
-        position: "relative",
-        overflow: "hidden",
-        '&::before': {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "200%",
-          height: "200%",
-          background: "rgba(255, 255, 255, 0.1)",
-          opacity: 0.3,
-          transform: "rotate(45deg)",
-          zIndex: 1,
-        },
-      }}
-    >
-      <CardMedia
-        component="img"
-        image="/guestImages/Ayo_Oji.png"
-        alt="Host Image"
-        sx={{ height: 400, borderRadius: 2, position: 'relative', zIndex: 2 }}
-      />
-      <CardContent sx={{ position: "relative", zIndex: 2 }}>
-        <Typography variant="h4">Ayo Oji</Typography>
-        <Typography variant="subtitle1">Host & Founder</Typography>
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          Ayo Oji is the visionary host and founder of The Nigerian Prince
-          Podcast. With a robust background in computer programming and
-          web development, Ayo single-handedly built the podcast's engaging
-          website. His passion for storytelling shines through in every
-          episode as he navigates through diverse topics that resonate
-          deeply with his audience. Ayo's unique approach blends technical
-          expertise with a genuine curiosity about the world, creating a
-          platform where insightful discussions and inspiring stories come
-          to life. Through his podcast, Ayo aims to bridge cultures, inform,
-          and entertain, making a lasting impact on his listeners.
-        </Typography>
-        <Box sx={{ mt: 2 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            href="/about"
-            sx={{
-              backgroundColor: "#00FF00",
-              color: "black",
-              fontWeight: "bold",
-              "&:hover": {
-                backgroundColor: "#00cc00",
-              },
-            }}
-          >
-            Learn More
-          </Button>
-        </Box>
-      </CardContent>
-    </Card>
-  </Grid>
-</Grid>
-
-
+        {/* Host Section */}
+        <Grid container spacing={4} justifyContent="center" sx={{ my: 4 }}>
+          <Grid item xs={12} md={6}>
+            <Card
+              sx={{
+                textAlign: "center",
+                boxShadow: 6,
+                background: "linear-gradient(145deg, #006400, #000000)",
+                borderRadius: 2,
+                color: "white",
+                position: "relative",
+                overflow: "hidden",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "200%",
+                  height: "200%",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  opacity: 0.3,
+                  transform: "rotate(45deg)",
+                  zIndex: 1,
+                },
+              }}
+            >
+              <CardMedia
+                component="img"
+                image="/guestImages/Ayo_Oji.png"
+                alt="Host Image"
+                sx={{ height: 400, borderRadius: 2, position: "relative", zIndex: 2 }}
+              />
+              <CardContent sx={{ position: "relative", zIndex: 2 }}>
+                <Typography variant="h4">Ayo Oji</Typography>
+                <Typography variant="subtitle1">Host & Founder</Typography>
+                <Typography variant="body1" sx={{ mt: 2 }}>
+                  Ayo Oji is the visionary host and founder of The Nigerian Prince Podcast. With a robust background in computer programming and web development, Ayo single-handedly built the podcast&apos;s engaging website. His passion for storytelling shines through in every episode as he navigates through diverse topics that resonate deeply with his audience. Ayo&apos;s unique approach blends technical expertise with a genuine curiosity about the world, creating a platform where insightful discussions and inspiring stories come to life. Through his podcast, Ayo aims to bridge cultures, inform, and entertain, making a lasting impact on his listeners.
+                </Typography>
+                <Box sx={{ mt: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    href="/about"
+                    sx={{
+                      backgroundColor: "#00FF00",
+                      color: "black",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "#00cc00",
+                      },
+                    }}
+                  >
+                    Learn More
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
 
         <Box sx={{ py: 4 }}>
           {/* Contact Section */}
