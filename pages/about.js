@@ -1,4 +1,3 @@
-// about.js
 import React from "react";
 import {
   Container,
@@ -14,6 +13,7 @@ import {
 import { FaInstagram, FaFacebook, FaTwitter } from "react-icons/fa";
 import Footer from "../components/Footer";
 import Head from "next/head";
+
 const AboutPage = () => {
   return (
     <>
