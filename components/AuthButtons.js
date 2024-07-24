@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Grid } from '@nextui-org/react';
 import LoginModal from './LoginModal';
 import { supabase } from '@/lib/supabaseClient';
@@ -8,7 +8,7 @@ const AuthButtons = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const router = useRouter();
 
-  const handleSession = async (session) => {
+  const handleSession = useCallback(async (session) => {
     console.log("User:", session);
 
     if (session?.user) {
@@ -27,7 +27,7 @@ const AuthButtons = () => {
     // Dispatch the custom event with the session object as the event detail
     const event = new CustomEvent('onAuthStateChanged', { detail: { session } });
     window.dispatchEvent(event);
-  };
+  }, [router]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
