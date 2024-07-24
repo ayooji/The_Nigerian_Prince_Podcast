@@ -59,3 +59,6 @@ Open http://localhost:3000 to view it in the browser.
 
 License
 This project is licensed under the MIT License.
+
+Contact
+For any inquiries or questions, please contact Ayo Oji 
