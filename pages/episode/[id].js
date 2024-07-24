@@ -88,7 +88,7 @@ const EpisodePage = ({ episode }) => {
           </Button>
         </Link>
       </Grid.Container>
-      <Footer />
+     
     </>
   );
 };

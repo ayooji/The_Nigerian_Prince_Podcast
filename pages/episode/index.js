@@ -264,7 +264,6 @@ const EpisodesPage = ({ episodes, currentPage }) => {
               </Pagination>
             </Grid.Container>
           </Grid.Container>
-          <Footer />
         </motion.div>
       </div>
     </div>
