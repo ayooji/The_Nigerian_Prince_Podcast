@@ -116,7 +116,7 @@ const HomePage = ({ episodes, posts }) => {
                 component="h1"
                 sx={{
                   mb: 2,
-                  fontSize: "4rem",
+                  fontSize: "3rem",
                   fontWeight: "bold",
                   background: "linear-gradient(145deg, #00ff00, #ffffff)",
                   WebkitBackgroundClip: "text",
