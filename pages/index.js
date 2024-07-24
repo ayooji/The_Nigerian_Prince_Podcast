@@ -15,13 +15,14 @@ import {
 import { Text, Spacer, Row } from "@nextui-org/react";
 import { NextSeo } from "next-seo";
 import { motion } from "framer-motion";
-import { FaInstagram, FaYoutube, FaFacebook, FaTwitter, FaRumble } from "react-icons/fa";
 import {
-  SiSpotify,
-  SiApplepodcasts,
-  SiAmazon,
-  SiDeezer,
-} from "react-icons/si";
+  FaInstagram,
+  FaYoutube,
+  FaFacebook,
+  FaTwitter,
+  FaRumble,
+} from "react-icons/fa";
+import { SiSpotify, SiApplepodcasts, SiAmazon, SiDeezer } from "react-icons/si";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -69,7 +70,8 @@ const HomePage = ({ episodes, posts }) => {
         openGraph={{
           url: "https://www.nigerianprincepodcast.com",
           title: "The Nigerian Prince Podcast",
-          description: "Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content.",
+          description:
+            "Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content.",
           images: [
             {
               url: "https://www.nigerianprincepodcast.com/logo.jpg",
@@ -92,6 +94,14 @@ const HomePage = ({ episodes, posts }) => {
           <meta
             name="description"
             content="Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content."
+          />
+          <meta
+            property="og:url"
+            content="https://www.nigerianprincepodcast.com"
+          />
+          <meta
+            property="og:image"
+            content="https://www.nigerianprincepodcast.com/logo.jpg"
           />
         </Head>
 
@@ -461,13 +471,28 @@ const HomePage = ({ episodes, posts }) => {
                 component="img"
                 image="/guestImages/Ayo_Oji.png"
                 alt="Host Image"
-                sx={{ height: 400, borderRadius: 2, position: "relative", zIndex: 2 }}
+                sx={{
+                  height: 400,
+                  borderRadius: 2,
+                  position: "relative",
+                  zIndex: 2,
+                }}
               />
               <CardContent sx={{ position: "relative", zIndex: 2 }}>
                 <Typography variant="h4">Ayo Oji</Typography>
                 <Typography variant="subtitle1">Host & Founder</Typography>
                 <Typography variant="body1" sx={{ mt: 2 }}>
-                  Ayo Oji is the visionary host and founder of The Nigerian Prince Podcast. With a robust background in computer programming and web development, Ayo single-handedly built the podcast&apos;s engaging website. His passion for storytelling shines through in every episode as he navigates through diverse topics that resonate deeply with his audience. Ayo&apos;s unique approach blends technical expertise with a genuine curiosity about the world, creating a platform where insightful discussions and inspiring stories come to life. Through his podcast, Ayo aims to bridge cultures, inform, and entertain, making a lasting impact on his listeners.
+                  Ayo Oji is the visionary host and founder of The Nigerian
+                  Prince Podcast. With a robust background in computer
+                  programming and web development, Ayo single-handedly built the
+                  podcast&apos;s engaging website. His passion for storytelling
+                  shines through in every episode as he navigates through
+                  diverse topics that resonate deeply with his audience.
+                  Ayo&apos;s unique approach blends technical expertise with a
+                  genuine curiosity about the world, creating a platform where
+                  insightful discussions and inspiring stories come to life.
+                  Through his podcast, Ayo aims to bridge cultures, inform, and
+                  entertain, making a lasting impact on his listeners.
                 </Typography>
                 <Box sx={{ mt: 2 }}>
                   <Button
