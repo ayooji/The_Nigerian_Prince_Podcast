@@ -1,3 +1,4 @@
+// about.js
 import React from "react";
 import {
   Container,
@@ -6,10 +7,13 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Box,
+  Link,
+  IconButton,
 } from "@mui/material";
+import { FaInstagram, FaFacebook, FaTwitter } from "react-icons/fa";
 import Footer from "../components/Footer";
 import Head from "next/head";
-
 const AboutPage = () => {
   return (
     <>
@@ -87,10 +91,10 @@ const AboutPage = () => {
                 <Typography variant="body1" sx={{ mt: 2 }}>
                   Ayo Oji is the visionary host and founder of The Nigerian Prince
                   Podcast. With a robust background in computer programming and
-                  web development, Ayo single-handedly built the podcast's engaging
+                  web development, Ayo single-handedly built the podcast&apos;s engaging
                   website. His passion for storytelling shines through in every
                   episode as he navigates through diverse topics that resonate
-                  deeply with his audience. Ayo's unique approach blends technical
+                  deeply with his audience. Ayo&apos;s unique approach blends technical
                   expertise with a genuine curiosity about the world, creating a
                   platform where insightful discussions and inspiring stories come
                   to life. Through his podcast, Ayo aims to bridge cultures, inform,

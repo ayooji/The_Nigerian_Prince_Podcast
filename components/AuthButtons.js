@@ -9,6 +9,8 @@ const AuthButtons = () => {
   const router = useRouter();
 
   const handleSession = async (session) => {
+    console.log("User:", session);
+
     if (session?.user) {
       const { data: profiles, error } = await supabase
         .from('profiles')
@@ -19,7 +21,7 @@ const AuthButtons = () => {
         console.error("Error fetching profile:", error);
       } else if (profiles.length === 0) {
         router.push('/auth/create-profile');
-      } 
+      }
     }
 
     // Dispatch the custom event with the session object as the event detail
@@ -33,9 +35,11 @@ const AuthButtons = () => {
     });
 
     return () => {
-      subscription?.unsubscribe();
+      if (typeof subscription === 'function') {
+        subscription.unsubscribe();
+      }
     };
-  }, []);
+  }, [handleSession]);
 
   return (
     <div>
@@ -50,8 +54,8 @@ const AuthButtons = () => {
             Login or Sign Up
           </Button>
         </Grid>
+        <LoginModal isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />
       </Grid.Container>
-      <LoginModal isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />
     </div>
   );
 };
