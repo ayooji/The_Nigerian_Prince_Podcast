@@ -67,12 +67,12 @@ const HomePage = ({ episodes, posts }) => {
         title="The Nigerian Prince Podcast - Engaging Conversations & Insightful Interviews"
         description="Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content. Hosted by Ayo Oji"
         openGraph={{
-          url: "https://www.thenigerianprincepodcast.com",
+          url: "https://www.nigerianprincepodcast.com",
           title: "The Nigerian Prince Podcast",
           description: "Welcome to The Nigerian Prince Podcast, your go-to source for engaging conversations, insightful interviews, and thought-provoking content.",
           images: [
             {
-              url: "https://www.thenigerianprincepodcast.com/heroImage.jpg",
+              url: "https://www.nigerianprincepodcast.com/logo.jpg",
               width: 800,
               height: 600,
               alt: "The Nigerian Prince Podcast",

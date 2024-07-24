@@ -82,7 +82,7 @@ const EpisodesPage = ({ episodes, currentPage }) => {
         />
         <meta
           property="og:url"
-          content="https://www.nigerianprincepodcast.com/episodes"
+          content="https://www.nigerianprincepodcast.com/episode"
         />
         <meta property="og:type" content="website" />
         <meta
