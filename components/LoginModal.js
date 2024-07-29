@@ -22,7 +22,7 @@ const LoginModal = ({ isOpen, onClose }) => {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: "https://www.nigerianprincepodcast.com/",
+        emailRedirectTo: "https://www.nigerianprincepodcast.com",
       },
     });
     setIsLoading(false);
